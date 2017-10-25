@@ -24,6 +24,8 @@ It consists of 3 client applications and 1 server application.
 
 The clients primarily use websocket connections for all communication. HTTP requests are only used for retrieving data from the MongoDB backend.
 
+![Architecture](./attachments/Architecture.png)
+
 ## API Spec & Websocket Message formats
 
 The text below describes the REST api specification of the server. Which endpoints can be accessed, by which url and what there responses look like.

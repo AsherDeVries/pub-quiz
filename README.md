@@ -48,3 +48,6 @@ List all categories which can be used in the quiz.
 
 ### Database structure
 
+The diagram below shows the structure of the MongoDB database. It shows which collections exist and which relations they have.
+
+![Database structure](./attachments/Quizzer_database.png)

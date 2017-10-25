@@ -45,6 +45,140 @@ List all categories which can be used in the quiz.
 ```
 
 ### Websocket
+#### Team App messages to server
+
+##### Apply for Quiz Night
+
+```
+{
+  quizNightCode: String
+  teamName: String
+  messageType: teamApplication
+}
+```
+
+##### Sending answers
+
+```
+{
+  quizNightCode: String
+  teamName: String
+  answer: String
+  messageType: sendAnswer
+}
+```
+
+#### Team App messages from server
+
+##### Team Approval status
+
+```
+{
+  Approved: Boolean
+  messageType QuizNightApprovalStatus
+}
+```
+
+##### Receiving questions
+
+```
+{
+  category: String
+  question: String
+  roundNumber: Number
+  questionNumber: Number
+  messageType: receiveQuestion
+}
+```
+#### Scoreboard App messages from server
+
+##### Scoreboard Overview
+```
+{
+  roundNumber: Number
+  questionNumber: Number
+  teams: [{
+    teamName: String
+    roundPoints: Number
+    correctAnswers: Number
+  }]
+  messageType: QuizNightScoreOverview
+}
+```
+##### Question Overview
+```
+{
+  category: String
+  question: String
+  teams: [{
+    teamName: String
+    hasSuppliedAnswer: Boolean
+  }]
+  messageType: QuestionScoreOverview
+}
+```
+##### Question Overview Answers
+```
+{
+  category: String
+  question: String
+  teams: [{
+    teamName: String
+    SuppliedAnswer: String
+  }]
+  messageType: QuestionScoreOverviewWithAnswers
+}
+```
+#### QuizMaster App messages to server
+
+##### Question to ask
+
+```
+{
+  question: String
+  category: String
+  messageType: AskQuestion
+}
+```
+#### QuizMaster App messages from server
+
+##### Start quiz night
+
+```
+{
+  quizNightCode: String
+  messageType: StartQuizNight
+}
+```
+##### Team Applications
+
+```
+{
+  teamName: String
+  messageType: TeamApplication
+}
+```
+##### Closing Question
+
+```
+{
+  correctAnswer: String
+  messageType: correctAnswer
+}
+```
+
+##### Submitted Answers
+
+```
+{
+  teamName: String
+  answer: String
+  question: String
+  category: String
+  messageType: SubmittedAnswer
+}
+```
+
 
 ### Database structure
 

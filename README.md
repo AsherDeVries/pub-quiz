@@ -243,7 +243,7 @@ The diagram below shows the structure of the MongoDB database. It shows which co
 ### Team App
 
 #### Applying for quiz night
-![Team App Application](./attachments/UI/Team_App_Application.png)
+![Team App Application](./attachments/UI/Team_App_application.png)
 
 #### Answering questions
 ![Team App Question](./attachments/UI/Team_App_Question.png)
@@ -251,22 +251,22 @@ The diagram below shows the structure of the MongoDB database. It shows which co
 ### Quiz Master App
 
 #### Starting Quiz Night
-![Start Quiz Night](./attachments/UI/Quiz_Master_start_quiz_night.png)
+![Start Quiz Night](./attachments/UI/Quizz_Master_start_quiz_night.png)
 
 #### Waiting for team applications
-![Start Quiz](./attachments/UI/Quiz_Master_start_quiz.png)
+![Start Quiz](./attachments/UI/Quizz_Master_start_quiz.png)
 
 #### Starting quiz round
-![Start Round](./attachments/UI/Quiz_Master_start_round.png)
+![Start Round](./attachments/UI/Quizz_Master_start_round.png)
 
 #### Select round questions
-![Select Round Questions](./attachments/UI/Quiz_Master_select_round_questions.png)
+![Select Round Questions](./attachments/UI/Quizz_Master_select_round_questions.png)
 
 #### Check answers
-![Check Answers](./attachments/UI/Quiz_Master_check_answers.png)
+![Check Answers](./attachments/UI/Quizz_Master_check_answers.png)
 
 #### End Round
-![End Round](./attachments/UI/Quiz_Master_end_of_round.png)
+![End Round](./attachments/UI/Quizz_Master_end_of_round.png)
 
 
 ### Scoreboard App

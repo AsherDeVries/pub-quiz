@@ -20,9 +20,9 @@ The database within Quizzer is used to temporarily cache data about the quiz, so
 
 ## Architecture
 
-The clients primarily use websocket connections for all communication. HTTP requests are only used for retrieving data from the MongoDB backend.
+HTTP requests are used for static data, websockets connections for dynamic data. this way static data like team names or questions can be cached during a quiz night or round. since dynamic data changes during a round or quiz night caching it isn’t useful enough. For example if the team names aren’t cached the scoreboard would keep refreshing the team names even though they haven’t changed during the quiz night.
 
-![Architecture](./attachments/Architecture.png)
+![Quizzer_Architecture](./attachments/Quizzer_Architecture.png)
 
 ## API Spec & Websocket Message formats
 
@@ -238,3 +238,45 @@ The diagram below shows the structure of the MongoDB database. It shows which co
 |Supertest|The motivation with this module is to provide a high-level abstraction for testing HTTP, while still allowing you to drop down to the lower-level API provided by superagent.||
 |SocketIO|Socket.IO enables real-time bidirectional event-based communication.||
 
+## User Interface
+The wireframes for the 3 apps are under this heading.
+
+### Team App
+
+#### Applying for quiz night
+![Team App Application](./attachments/UI/Team_App_application.png)
+
+#### Answering questions
+![Team App Question](./attachments/UI/Team_App_Question.png)
+
+### Quiz Master App
+
+#### Starting Quiz Night
+![Start Quiz Night](./attachments/UI/Quizz_Master_start_quiz_night.png)
+
+#### Waiting for team applications
+![Start Quiz](./attachments/UI/Quizz_Master_start_quiz.png)
+
+#### Starting quiz round
+![Start Round](./attachments/UI/Quizz_Master_start_round.png)
+
+#### Select round questions
+![Select Round Questions](./attachments/UI/Quizz_Master_select_round_questions.png)
+
+#### Check answers
+![Check Answers](./attachments/UI/Quizz_Master_check_answers.png)
+
+#### End Round
+![End Round](./attachments/UI/Quizz_Master_end_of_round.png)
+
+
+### Scoreboard App
+
+#### Scoreboard Overview
+![Scoreboard Overview](./attachments/UI/Scoreboard.png)
+
+#### Scoreboard current question
+![Scoreboard Question](./attachments/UI/Scoreboard_question.png)
+
+#### Scoreboard team answers
+![Scoreboard Answers](./attachments/UI/Scoreboard_answers.png)

@@ -1,0 +1,23 @@
+{
+  "name": "quizzer-server",
+  "version": "0.0.1",
+  "description": "The Quizzer server which keeps hold of the current quiz session. It keeps every sub application up to date with the quiz session's current data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Nick & Wessel",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.12.4",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "supertest": "^3.0.0"
+  }
+}

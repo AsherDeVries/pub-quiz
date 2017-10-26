@@ -1,7 +1,22 @@
 # Quizzer Design Document
 
-The Quizzer is a web application that can be used in bars, sports canteens and maybe even prisons to play quizzes as a team. A pub quiz, basically.
-It consists of 3 client applications and 1 server application.
+The Quizzer is a web application that can be used to organize quizzes in which participants can play in teams. A pub quiz, basically.
+In order to run Quizzer locally, 4 "sub" applications and a single database are needed. The sub applications are technically two web applications, a scoreboard and a server.
+
+**Web application 1: Team app**  
+The application in which teams can join a quiz and submit answers.
+
+**Web application 2: Quizzer master app**  
+The app in which the quizmaster can start and manage a quiz sessions. the master has control over when the quiz starts and ends, who joins the quiz, which answers will be asked and which of them are correct.
+
+**Scoreboard**  
+The Quizzer's scoreboard displays the current scores of the participating teams during and after the quiz. 
+
+**Server**  
+The server within Quizzer keeps hold of the current quiz session. It keeps every sub application up to date with the quiz session's current data.
+
+**Database**  
+The database within Quizzer is used to temporarily cache data about the quiz, so it can be recovered if something goes wrong (immediate server crash).  
 
 ## Technologies
 
@@ -30,9 +45,11 @@ The text below describes the REST api specification of the server. Which endpoin
 
 ### REST
 
-#### List categories
+The paragraph below lists each REST endpoint which can be accessed from the Quizzer's server.
 
-List all categories which can be used in the quiz.
+#### List question categories
+
+List all the question's categories which can be used in the quiz.
 
 ```GET /categories```
 
@@ -44,8 +61,33 @@ List all categories which can be used in the quiz.
 }
 ```
 
+#### List available questions
+
+List all questions of which the quiz master can choose to ask during a quiz session.
+
+```GET /questions```
+
+##### Response
+
+```
+{
+  [
+    {
+      "name" : String,
+      "category" : String,
+      "correctAnswer" : String
+    }
+  ]
+}
+```
+
 ### Websocket
+
+This paragraph lists all the websocket messages which can be sent to and retrieved from the Quizzer's server during a quiz.
+
 #### Team App messages to server
+
+These are the messages currently being send from the Team app to the server within Quizzer.
 
 ##### Apply for Quiz Night
 
@@ -70,6 +112,8 @@ List all categories which can be used in the quiz.
 
 #### Team App messages from server
 
+These are the messages currently being send from the server to the Team app.
+
 ##### Team Approval status
 
 ```
@@ -91,6 +135,8 @@ List all categories which can be used in the quiz.
 }
 ```
 #### Scoreboard App messages from server
+
+These are the messages currently being send from the Team app to the server.
 
 ##### Scoreboard Overview
 ```
@@ -131,6 +177,8 @@ List all categories which can be used in the quiz.
 ```
 #### QuizMaster App messages to server
 
+These are the messages currently being send from the QuizMaster app to the server.
+
 ##### Question to ask
 
 ```
@@ -141,6 +189,8 @@ List all categories which can be used in the quiz.
 }
 ```
 #### QuizMaster App messages from server
+
+These are the messages currently being send from the server to the QuizMaster app.
 
 ##### Start quiz night
 

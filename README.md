@@ -22,7 +22,7 @@ The database within Quizzer is used to temporarily cache data about the quiz, so
 
 The clients primarily use websocket connections for all communication. HTTP requests are only used for retrieving data from the MongoDB backend.
 
-![Architecture](./attachments/Architecture.png)
+![Quizzer_Architecture](./attachments/Quizzer_Architecture.png)
 
 ## API Spec & Websocket Message formats
 

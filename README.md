@@ -238,7 +238,8 @@ The diagram below shows the structure of the MongoDB database. It shows which co
 |Supertest|The motivation with this module is to provide a high-level abstraction for testing HTTP, while still allowing you to drop down to the lower-level API provided by superagent.||
 |SocketIO|Socket.IO enables real-time bidirectional event-based communication.||
 
-## UI
+## User Interface
+The wireframes for the 3 apps are under this heading.
 
 ### Team App
 

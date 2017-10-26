@@ -1,0 +1,43 @@
+{
+  "name": "fall2017-quizz-nickenwessel",
+  "version": "0.0.1",
+  "description": "The application in which teams can join a quiz and submit answers.",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --inline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel.git"
+  },
+  "author": "Nick & Wessel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel/issues"
+  },
+  "homepage": "https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "react-hot-loader": "^3.1.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.17.0",
+    "package.json": "^2.0.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0",
+    "socket.io-client": "^2.0.4"
+  }
+}

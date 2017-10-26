@@ -66,6 +66,41 @@ List all questions of which the quiz master can choose to ask during a quiz sess
 }
 ```
 
+#### List applying teams in quiz
+
+List all applying teams in the quiz.
+
+```GET /teams```
+
+##### Response
+
+```
+{
+  [
+    {
+      "name" : String
+    }
+  ]
+}
+```
+
+#### Apply for a quiz
+
+Apply as a team for a quiz. The team needs to know the correct quiz night code to apply.
+
+```POST /teams```
+
+##### Body
+
+```
+{
+  {
+    "name" : String,
+    "quizNightCode" : String
+  }
+}
+```
+
 ### Websocket
 
 This paragraph lists all the websocket messages which can be sent to and retrieved from the Quizzer's server during a quiz.

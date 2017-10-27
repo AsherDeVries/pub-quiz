@@ -1,9 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class App extends Component {
+import LayoutContainer from '../containers/LayoutContainer';
+
+class App extends React.Component {
   render() {
     return (
-      <div>React simple starter</div>
+      <div>
+        <LayoutContainer />
+      </div>
     );
   }
 }
+
+App.propTypes = {
+  children: PropTypes.element
+};
+
+export default App;

@@ -14,13 +14,11 @@ module.exports = {
   ],
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,                // for every file that ends with '.js' or '.jsx'
-        exclude: /node_modules/,        // except for npm modules in the 'node_modules' directory
-        use: [                          // process the file first with Babel, then with the React Hot Loader
-          "babel-loader"
-        ]
-      }
+      {test: /\.jsx?$/, exclude: /node_modules/, use: ["babel-loader"]},
+      {test: /(\.css|\.scss|\.sass)$/, loaders: ['style-loader', 'css-loader', 'sass-loader']},
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml'},
+      {test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
+      {test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream'}
     ]
   },
   output: {

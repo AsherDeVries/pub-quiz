@@ -1,7 +1,11 @@
 import { combineReducers } from 'redux';
 
+import quizReducer from './quiz/quiz-reducer';
+import sessionReducer from './session/session-reducer';
+
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  quizReducer,
+  sessionReducer
 });
 
 export default rootReducer;

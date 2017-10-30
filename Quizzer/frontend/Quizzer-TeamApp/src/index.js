@@ -1,15 +1,29 @@
+/* eslint-disable import/default */
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import configureStore from './store/configureStore';
+import Root from './components/Root';
+import './styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
+require('./favicon.ico'); // Tell webpack to load favicon.ico
+const store = configureStore();
 
-import App from './components/app';
-import reducers from './reducers';
+render(
+  <AppContainer>
+    <Root store={store} />
+  </AppContainer>,
+  document.getElementById('app')
+);
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
-
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+if (module.hot) {
+  module.hot.accept('./components/Root', () => {
+    const NewRoot = require('./components/Root').default;
+    render(
+      <AppContainer>
+        <NewRoot store={store} />
+      </AppContainer>,
+      document.getElementById('app')
+    );
+  });
+}

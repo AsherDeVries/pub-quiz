@@ -81,6 +81,7 @@ Answer submitted by team | ```{messageType: "ANSWER_SUBMITTED"} teamName:  ```
 Current round
 Score update
 
+
 ## API Specifications
 
 The text below describes the REST api specification of the server. Which endpoints can be accessed, by which url and what there responses look like.

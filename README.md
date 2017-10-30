@@ -1,22 +1,18 @@
 # Quizzer Design Document
 
-The Quizzer is a web application that can be used to organize quizzes in which participants can play in teams. A pub quiz, basically.
-In order to run Quizzer locally, 4 "sub" applications and a single database are needed. The sub applications are technically two web applications, a scoreboard and a server.
+Welcome to Quizzer. Quizzer is a web application that can be used in bars, sports and canteens to play quizzes as a team. A quiz game (also called a _quiz night_) is hosted by the quiz master, who reviews submitted answers by each team and decides how many rounds a game takes. Anyone can be quiz master and host an evening full of joy!
 
-**Web application 1: Team app**  
-The application in which teams can join a quiz and submit answers.
+## Getting started
+Quizzer is devided into 4 code bases:
 
-**Web application 2: Quizzer master app**  
-The app in which the quizmaster can start and manage a quiz sessions. the master has control over when the quiz starts and ends, who joins the quiz, which answers will be asked and which of them are correct.
+- **Web application 1: Team app**, The application in which teams can join a quiz and submit answers.
 
-**Scoreboard**  
-The Quizzer's scoreboard displays the current scores of the participating teams during and after the quiz. 
+- **Web application 2: Quizzer master app**, The app in which the quizmaster can start and manage a quiz session..
 
-**Server**  
-The server within Quizzer keeps hold of the current quiz session. It keeps every sub application up to date with the quiz session's current data.
+- **Web application 3: Scoreboard**, The Quizzer's scoreboard displays the current scores of the participating teams during and after the quiz.
 
-**Database**  
-The database within Quizzer is used to temporarily cache data about the quiz, so it can be recovered if something goes wrong (immediate server crash).  
+- **Backend server**, A RESTful API written in Node.js (more detailed documententation can be found _here_). It also contains websockets.
+ 
 
 ## Architecture
 
@@ -24,7 +20,69 @@ HTTP requests are used for static data, websockets connections for dynamic data.
 
 ![Quizzer_Architecture](./attachments/Quizzer_Architecture.png)
 
-## API Spec & Websocket Message formats
+## Domain model
+The model below is is an overview of all the domain concepts mentioned in the Quizzer case study:
+![alt text](https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel/blob/master/Quizzer_cd.png?raw=true "Domain model")
+
+## The Websocket Interface
+Now that we have our models, let's look at which events occur during a Quiz Night and which messages are sent between clients and servers over the websocket protocol.
+
+**Messages from QuizzerApp to server:**
+
+Event | Message type
+------------- | -------------
+Team signed up | ```{messageType: "CONNECT_TEAM", password: "", name: ""} ```
+Submit answer | ```{messageType: "SUBMIT_ANSWER", questionId: "", answer: "" } ```
+
+
+**Messages from QuizmasterApp to server:**
+
+Event | Message type
+------------- | -------------
+Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER", password: "", name: ""} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", teamName:"", accepted: boolean} ```
+Start round | ```{messageType: "START_ROUND", categories:[{}], questions:[{}]} ```
+Close Question | ```{messageType: "CLOSE_QUESTION", round:"", question_id:''}```
+Review answer | ```{messageType: "UPDATE_SCORE", round: "", score:"", teamName:""} ```
+End quiz night | ```{messageType: "END_GAME"} ```
+
+
+**Messages from Scoreboard to server:**
+
+Event | Message type
+------------- | -------------
+Scoreboard Signup | ```{messageType: "CONNECT_SCOREBOARD", password: ""} ```
+
+
+**Messages from server to QuizzerApp:**
+
+Event | Message type
+------------- | -------------
+Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
+Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", message""} ```
+Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", isCorrect""} ```
+New Question Starts | ```{messageType: "New Question", question:""} ```
+End quiz night | ```{messageType: "END_GAME"}```
+
+
+**Messages from server to QuizmasterApp**
+
+Event | Message type
+------------- | -------------
+Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
+New Round Started | ```{messageType: "NEW_ROUND_STARTED, round:{} ```
+New Question Received for current round | ```{messageType: "NEW_QUESITON", question:{} }```
+Answer Submitted | ```{messageType: "ANSWER_SUBMITTED", answer:"", teamName:""} ```
+Answer Re-submitted | ```{messageType: "ANSWER_SUBMITTED", answer:"", teamName:""} ``` 
+Answer submitted by team | ```{messageType: "ANSWER_SUBMITTED"} teamName:  ```
+
+
+**Messages from server to Scoreboard**
+Current round
+Score update
+
+
+## API Specifications
 
 The text below describes the REST api specification of the server. Which endpoints can be accessed, by which url and what there responses look like.
 
@@ -100,155 +158,6 @@ Apply as a team for a quiz. The team needs to know the correct quiz night code t
   }
 }
 ```
-
-### Websocket
-
-This paragraph lists all the websocket messages which can be sent to and retrieved from the Quizzer's server during a quiz.
-
-#### Team App messages to server
-
-These are the messages currently being send from the Team app to the server within Quizzer.
-
-##### Apply for Quiz Night
-
-```
-{
-  quizNightCode: String
-  teamName: String
-  messageType: teamApplication
-}
-```
-
-##### Sending answers
-
-```
-{
-  quizNightCode: String
-  teamName: String
-  answer: String
-  messageType: sendAnswer
-}
-```
-
-#### Team App messages from server
-
-These are the messages currently being send from the server to the Team app.
-
-##### Team Approval status
-
-```
-{
-  Approved: Boolean
-  messageType QuizNightApprovalStatus
-}
-```
-
-##### Receiving questions
-
-```
-{
-  category: String
-  question: String
-  roundNumber: Number
-  questionNumber: Number
-  messageType: receiveQuestion
-}
-```
-#### Scoreboard App messages from server
-
-These are the messages currently being send from the Team app to the server.
-
-##### Scoreboard Overview
-```
-{
-  roundNumber: Number
-  questionNumber: Number
-  teams: [{
-    teamName: String
-    roundPoints: Number
-    correctAnswers: Number
-  }]
-  messageType: QuizNightScoreOverview
-}
-```
-##### Question Overview
-```
-{
-  category: String
-  question: String
-  teams: [{
-    teamName: String
-    hasSuppliedAnswer: Boolean
-  }]
-  messageType: QuestionScoreOverview
-}
-```
-##### Question Overview Answers
-```
-{
-  category: String
-  question: String
-  teams: [{
-    teamName: String
-    SuppliedAnswer: String
-  }]
-  messageType: QuestionScoreOverviewWithAnswers
-}
-```
-#### QuizMaster App messages to server
-
-These are the messages currently being send from the QuizMaster app to the server.
-
-##### Question to ask
-
-```
-{
-  question: String
-  category: String
-  messageType: AskQuestion
-}
-```
-#### QuizMaster App messages from server
-
-These are the messages currently being send from the server to the QuizMaster app.
-
-##### Start quiz night
-
-```
-{
-  quizNightCode: String
-  messageType: StartQuizNight
-}
-```
-##### Team Applications
-
-```
-{
-  teamName: String
-  messageType: TeamApplication
-}
-```
-##### Closing Question
-
-```
-{
-  correctAnswer: String
-  messageType: correctAnswer
-}
-```
-
-##### Submitted Answers
-
-```
-{
-  teamName: String
-  answer: String
-  question: String
-  category: String
-  messageType: SubmittedAnswer
-}
-```
-
 
 ### Database structure
 

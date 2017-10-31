@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/models/Category.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,UAAf,uB","file":"Category.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport categoriesSchema from '../database/schemas/categories'\n\nexport default mongoose.model('Category', categoriesSchema);"]}

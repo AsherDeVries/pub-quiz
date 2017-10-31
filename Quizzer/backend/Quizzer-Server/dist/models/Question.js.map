@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/models/Question.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,UAAf,sB","file":"Question.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport questionSchema from '../database/schemas/questions';\n\nexport default mongoose.model('Question', questionSchema);"]}

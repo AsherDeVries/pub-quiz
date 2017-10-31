@@ -13,7 +13,7 @@ import {OPEN, CLOSED} from '../constants/messageTypes';
 // version of hot reloading won't hot reload a stateless
 // component at the top-level.
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor() {
     super();
     this.state={
@@ -21,26 +21,26 @@ class App extends React.Component {
       questionProgression: 1,
       category: "Art and Literature",
       question: "Who wrote the Twilight series of novels?",
-      questionStatus: CLOSED,
+      questionStatus: OPEN,
       teams: [
         {
-          teamName: "team1",
+          name: "team1",
           roundPoints: 4
         },
         {
-          teamName: "team2",
+          name: "team2",
           roundPoints: 0
         },
         {
-          teamName: "team3",
+          name: "team3",
           roundPoints: 0
         },
         {
-          teamName: "team4",
+          name: "team4",
           roundPoints: 0
         },
         {
-          teamName: "team5",
+          name: "team5",
           roundPoints: 0
         }
       ],
@@ -50,8 +50,8 @@ class App extends React.Component {
 
   render() {
     return (
-      //<ScoreOverview state={this.state}/>
-      <QuestionOverview category={this.state.category} question={this.state.question} teams={this.state.teams} questionStatus={this.state.questionStatus}/>
+      <ScoreOverview roundNumber={this.state.roundNumber} questionProgression={this.state.questionProgression} teams={this.state.teams}/>
+      //<QuestionOverview category={this.state.category} question={this.state.question} teams={this.state.teams} questionStatus={this.state.questionStatus}/>
     );
   }
 }
@@ -59,5 +59,3 @@ class App extends React.Component {
 App.propTypes = {
   children: PropTypes.element
 };
-
-export default App;

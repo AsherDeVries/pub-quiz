@@ -2,6 +2,7 @@ import React from 'react';
 
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
+import Icons from 'react-uikit-icons';
 
 import TeamProgress from './TeamProgress'
 
@@ -14,6 +15,7 @@ import TeamProgress from './TeamProgress'
         <span>Round: {props.roundNumber}</span>
         <br/>
         <span>Question: {props.questionProgression}/12</span>
+        <br/>
       </Panel>
     </Grid>
 

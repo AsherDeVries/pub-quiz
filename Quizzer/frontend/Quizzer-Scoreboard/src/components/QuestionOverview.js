@@ -15,7 +15,7 @@ const QuestionOverview = (props) => {
         <h3>{props.question}</h3>
       </Panel>
       <Grid textAlign="center" indent margin='right' gutter='small'>
-        {props.teams.map(team => <TeamAnswer team={team} questionStatus={props.questionStatus}/>)}
+        {props.teams.map(team => <TeamAnswer team={team} scoreboardState={props.scoreboardState}/>)}
       </Grid>
     </div>
   );

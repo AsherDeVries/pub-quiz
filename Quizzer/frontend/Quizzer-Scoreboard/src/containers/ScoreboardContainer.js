@@ -42,11 +42,7 @@ function mapStateToProps(state) {
     teams: state.scoreboardReducer.teams,
     scoreboardState: state.scoreboardReducer.scoreboardState,
     category: state.scoreboardReducer.category,
-    question: state.scoreboardReducer.question,
-
-    loadingState: "IDLE",
-    loadingMessage: ""
-
+    question: state.scoreboardReducer.question
   };
 }
 

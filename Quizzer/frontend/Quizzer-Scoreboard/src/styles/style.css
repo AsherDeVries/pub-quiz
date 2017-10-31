@@ -1,7 +1,19 @@
 .uk-panel-box {
-    padding: 15px;
+    padding: 15px 0;
     background: #fafafa;
     color: #444;
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.uk-padding-bottom-remove {
+  padding-bottom: 0px;
+}
+
+.uk-padding-left {
+  padding-left: 15px;
+}
+
+.uk-padding-right {
+  padding-right: 15px;
 }

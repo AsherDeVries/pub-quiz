@@ -1,9 +1,8 @@
 import React from 'react';
 
-import uikit from 'react-uikit-base';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
-import {OPEN, CLOSED} from '../constants/messageTypes';
+import {QUESTION_OPEN, SHOW_ANSWER} from '../constants/messageTypes';
 
 
 const TeamAnswer = (props) => {
@@ -13,7 +12,7 @@ const TeamAnswer = (props) => {
   let QUESTION_STATUS = props.questionStatus;
 
   switch(QUESTION_STATUS) {
-    case OPEN:
+    case QUESTION_OPEN:
       if (hasAnswered) {
         answerStatus = 'Submitted an answer'
       } else {
@@ -22,16 +21,16 @@ const TeamAnswer = (props) => {
 
       return (
         <Panel box col='1-4' margin='top bottom' textAlign='center'>
-          <span>{props.team.teamName}</span>
+          <span>{props.team.name}</span>
           <br/>
           <span>{answerStatus}</span>
         </Panel>
       );
       break;
-    case CLOSED:
+    case SHOW_ANSWER:
       return(
         <Panel box col='1-4' margin='top bottom' textAlign='center'>
-          <span>{props.team.teamName}</span>
+          <span>{props.team.name}</span>
           <br/>
           <span>{answer}</span>
         </Panel>

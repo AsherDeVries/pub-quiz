@@ -1,6 +1,5 @@
 import React from 'react';
 
-import uikit from 'react-uikit-base';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
 

@@ -1,7 +1,9 @@
-const OPEN = 'OPEN';
-const CLOSED = 'CLOSED';
+const QUESTION_OPEN = 'QUESTION_OPEN';
+const SHOW_ANSWER = 'SHOW_ANSWER';
+const SHOW_SCORES = 'SHOW_SCORES';
 
 export {
-  OPEN,
-  CLOSED
+  QUESTION_OPEN,
+  SHOW_ANSWER,
+  SHOW_SCORES
 };

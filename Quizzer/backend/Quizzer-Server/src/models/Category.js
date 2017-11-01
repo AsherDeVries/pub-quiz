@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
-import categoriesSchema from '../database/schemas/categories'
+let categoriesSchema = new mongoose.Schema({
+  _id: String
+});
 
 export default mongoose.model('Category', categoriesSchema);

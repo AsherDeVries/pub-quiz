@@ -1,7 +1,7 @@
 import * as REQUEST_STATE from '../../constants/request';
 
 export default {
-  isLoggedIn: true,
+  isLoggedIn: false,
   loginState: {
     requestStatus: REQUEST_STATE.IDLE,
     message: ""

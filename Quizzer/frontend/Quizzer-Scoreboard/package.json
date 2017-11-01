@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel.git"
+    "url": ""
   },
   "author": "Nick & Wessel",
   "license": "ISC",
@@ -75,10 +75,6 @@
     "webpack-md5-hash": "0.0.5"
   },
   "keywords": [],
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tools/assetsTransformer.js",
@@ -225,6 +221,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-uikit-base": "^2.0.2",
+    "react-uikit-button": "^2.0.2",
+    "react-uikit-flex": "^2.0.3",
     "react-uikit-grid": "^2.0.3",
     "react-uikit-icons": "^2.0.3",
     "react-uikit-panel": "^2.0.2",

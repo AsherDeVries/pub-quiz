@@ -3,6 +3,8 @@ import React from 'react';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
 import Icons from 'react-uikit-icons';
+import Flex from 'react-uikit-flex';
+
 
 import TeamProgress from './TeamProgress'
 
@@ -19,9 +21,9 @@ import TeamProgress from './TeamProgress'
       </Panel>
     </Grid>
 
-    <Grid textAlign="center" indent margin='right' gutter='small'>
+    <Flex center row="wrap" textAlign="center">
       {props.teams.map(team => <TeamProgress key ={team.name} team={team}/>)}
-    </Grid>
+    </Flex>
   </div>
   );
 }

@@ -26,7 +26,32 @@ export default function quiznightReducer(state = initialState, action) {
     case QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED:
       return {
         ...state,
-        currentQuestion: action.question
+        currentQuestion: action.question,
+        questionSequenceNr: action.questionSequenceNr
+      };
+    case QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED:
+      return {
+        ...state,
+        currentSubmittedAnswers: [...state.currentSubmittedAnswers, action.answer]
+      };
+    case QUIZNIGHT_ACTION_TYPES.SET_AMOUNT_QUESTIONS_PER_ROUND:
+      return {
+        ...state,
+        questionsPerRound: action.questionsPerRound
+      };
+    case QUIZNIGHT_ACTION_TYPES.EMPTY_CURRENT_QUESTION:
+      return {
+        ...state,
+        currentQuestion: action.currentQuesiton,
+        currentSubmittedAnswers: action.currentSubmittedAnswers
+      };
+    case QUIZNIGHT_ACTION_TYPES.EMPTY_STATE:
+      return {
+        ...state,
+        currentQuestion: action.currentQuesiton,
+        currentSubmittedAnswers: action.currentSubmittedAnswers,
+        questionSequenceNr: action.questionSequenceNr,
+        questionsPerRound: action.questionsPerRound,
       };
     default:
       return state;

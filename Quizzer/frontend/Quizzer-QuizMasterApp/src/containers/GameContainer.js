@@ -3,14 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as GAME_STATE from '../constants/gameState';
+import * as REQUEST from '../constants/request';
 import StartGameContainer from './StartGameContainer';
 import AcceptTeamContainer from './AcceptTeamContainer';
 import CategoryQuestionOverviewContainer from './CategoryQuestionOverviewContainer';
 import ReviewAnswerContainer from './ReviewAnswerContainer';
+import NewRoundEndGameContainer from './NewRoundEndGameContainer';
+import WithLoading from '../components/shared/WithLoading';
 
 class GameContainer extends Component {
   renderPageBasedOnGameState() {
     switch (this.props.gameState) {
+      case GAME_STATE.WAITING_FOR_NEXT_QUESTION:
+        return <WithLoading loadingState={REQUEST.PENDING} message="Waiting for next question" />;
       case GAME_STATE.CHECKING_ANSWERS:
         return <ReviewAnswerContainer />;
       case GAME_STATE.CREATING_NEW_ROUND:
@@ -18,7 +23,7 @@ class GameContainer extends Component {
       case GAME_STATE.END:
         return <div>Game finished!</div>;
       case GAME_STATE.NEW_ROUND_PENDING:
-        return <div>New round or end quiz night?</div>;
+        return <NewRoundEndGameContainer />;
       case GAME_STATE.WAITING_FOR_APPLICANTS:
         return <AcceptTeamContainer />;
       default:

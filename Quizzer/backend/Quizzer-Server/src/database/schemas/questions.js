@@ -1,9 +1,16 @@
-import categoriesSchema from './categories';
+import { Schema } from 'mongoose';
 
-let questionsPerRoundSchema = new Schema({
+let questionsSchema = new Schema({
   _id: String,
-  correctAnswer: String,
-  category: [categoriesSchema]
+  correctAnswer: {
+    type: String,
+    required: true
+  },
+  category: {
+      type: String,
+      required: true,
+      ref: 'Category'
+  }
 });
 
-export default questionsPerRoundSchema;
+export default questionsSchema;

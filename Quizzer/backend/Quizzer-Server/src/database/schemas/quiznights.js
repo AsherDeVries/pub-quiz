@@ -1,12 +1,37 @@
 import { Schema } from 'mongoose';
 
-import teamsSchema from './quiznights/teams';
-import quizroundsSchema from './quiznights/quizrounds';
-
 let quiznightSchema = new Schema({
   _id: String,
-  teams: [teamsSchema],
-  rounds: [quizroundsSchema]
+  teams: [{
+      _id: String,
+      roundPoints: Number
+    }],
+  rounds: [{
+    _id: Number,
+    teamStatistics: [{
+      team: {
+        type: String,
+        required: true,
+      },
+      givenAnswers:[{
+        value: {
+          type: String,
+          minlength: 1
+        }
+      }],
+      correctAnswersAmount: Number
+    }],
+    chosenQuestions: [{
+      _id: {
+        type: String,
+        ref: 'Question'
+      },
+      hasBeenReviewed: {
+        type: Boolean,
+        required: true
+      }
+    }]
+  }]
 });
 
 export default quiznightSchema;

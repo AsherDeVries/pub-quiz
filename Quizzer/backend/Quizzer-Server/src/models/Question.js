@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-let questionsSchema = new Schema({
+let questionSchema = new mongoose.Schema({
   _id: String,
   correctAnswer: {
     type: String,
@@ -13,4 +13,4 @@ let questionsSchema = new Schema({
   }
 });
 
-export default questionsSchema;
+export default mongoose.model('Question', questionSchema);

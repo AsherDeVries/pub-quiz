@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-let quiznightSchema = new Schema({
+let quiznightSchema = new mongoose.Schema({
   _id: String,
   teams: [{
       _id: String,
@@ -34,4 +34,4 @@ let quiznightSchema = new Schema({
   }]
 });
 
-export default quiznightSchema;
+export default mongoose.model('Quiznight', quiznightSchema);

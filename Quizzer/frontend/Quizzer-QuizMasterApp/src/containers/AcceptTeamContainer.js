@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
 import initialQuiznightState from '../reducers/quiznight/initial-quiznight-state';
-import TeamListComponent from '../components/TeamListComponent';
+import TeamListComponent from '../components/team/TeamListComponent';
 import { acceptTeam } from '../actions/quiznightActions';
 import { startRound } from '../actions/gameActions';
 
@@ -22,6 +22,7 @@ class AcceptTeamContainer extends Component {
     if (this.thereAreAtLeastTwoTeamsAndAllTeamsAreAccepted()) {
       return (
         <FlatButton
+          backgroundColor="#f2f2f2"
           label="Start first round"
           labelPosition="before"
           primary={true}

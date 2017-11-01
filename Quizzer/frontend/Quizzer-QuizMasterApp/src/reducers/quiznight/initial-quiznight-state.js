@@ -1,7 +1,7 @@
 export default {
   id: '',
-  rounds: [
-  ],
+  currentQuestion: {},
+  currentSubmittedAnswers: [],
   teams: [
     { name: "Team 1", isAccepted: false },
     { name: "Team 2", isAccepted: false },

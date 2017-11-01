@@ -18,6 +18,7 @@ class StartGameContainer extends Component {
         <WithLoading loadingState={this.props.startGameRequestState} message="Starting game.." >
           <h1>Welcome to quizzer!!</h1>
           <FlatButton
+            backgroundColor="#f2f2f2"
             label="Start quizzer"
             labelPosition="before"
             primary={true}

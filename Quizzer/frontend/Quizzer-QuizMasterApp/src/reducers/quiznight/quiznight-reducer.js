@@ -14,15 +14,20 @@ export default function quiznightReducer(state = initialState, action) {
        teams: state.teams.filter(team => (team.name !== action.teamName))
      };
     case QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM:
-    return {
-      ...state,
-      teams: state.teams.map(team => {
-        if  (team.name == action.team.name) {
-          return action.team;
-        }
-        return team;
-      })
-    };
+      return {
+        ...state,
+        teams: state.teams.map(team => {
+          if  (team.name == action.team.name) {
+            return action.team;
+          }
+          return team;
+        })
+      };
+    case QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED:
+      return {
+        ...state,
+        currentQuestion: action.question
+      };
     default:
       return state;
   }

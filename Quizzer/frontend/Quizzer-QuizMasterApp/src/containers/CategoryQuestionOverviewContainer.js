@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
 
 import CategoryFilterComponent from '../components/category/CategoryFilterComponent';
 import QuestionListComponent from '../components/question/QuestionListComponent';
 import { startRound } from '../actions/quiznightActions';
 
 import Flex from 'react-uikit-flex';
-import Panel from 'react-uikit-panel';
 import Button from 'react-uikit-button';
 
 const MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND = 3;
@@ -60,7 +58,7 @@ class CategoryQuestionOverviewContainer extends Component {
         <Button center body="Start round!!" context="primary" col="1-3" size="large" onClick={() => this.handleRoundStart()}/>
       );
     } else {
-      return <Button center body="Start round!!" col="1-3" size="large" disabled />
+      return <Button center body="Start round!!" col="1-3" size="large" disabled />;
     }
   }
 

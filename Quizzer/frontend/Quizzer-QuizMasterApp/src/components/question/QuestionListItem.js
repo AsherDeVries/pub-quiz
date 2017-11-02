@@ -41,7 +41,7 @@ class QuestionListItem extends Component {
           <ListItem
             primaryText={this.props.question.id}
             onClick={this.updateCheck}
-            style={this.state.selected ? styles.selected : styles.notSelected, styles.breakWord}
+            style={this.state.selected ? styles.selected : styles.notSelected}
           />
         </Panel>
     );

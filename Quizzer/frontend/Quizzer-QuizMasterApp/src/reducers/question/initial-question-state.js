@@ -9,7 +9,7 @@ export default {
     {id: 'Wat rijmt er op baas?', questionAnswer: 'kaas', category: 'History'},
     {id: 'Of je .... lust.', questionAnswer: 'worst', category: 'History'},
     {id: 'Hoe oud is sinterklaas?', questionAnswer: '80', category: 'History'},
-    {id: 'sdhhhhigniognreuinguirenhquernhinreoihnwerwjhmorenhowernhiowernhoiwernhpiwneriohnweriouneroihhfasdf', questionAnswer: '', category: 'History'},
+    {id: 'sdhhhhigniognreuing', questionAnswer: '', category: 'History'},
     {id: 'asfaaadf', questionAnswer: '', category: 'History'},
     {id: 'saddooddf', questionAnswer: '', category: 'Sports'},
     {id: 'ffgggg', questionAnswer: '', category: 'Sports'},
@@ -22,7 +22,7 @@ export default {
     {id: 'asfdasdfffsaf', questionAnswer: '', category: 'Geography'},
     {id: 'asdfabbbsf', questionAnswer: '', category: 'Art & Literature'},
     {id: 'Wie schreef Harry Potter?', questionAnswer: 'J.K Rowling', category: 'Art & Literature'},
-    {id: 'sdhhhhigniognreuinguirenhquernhinreoihnwerwjhmorenhowernhiowernhoiwernhpiwneriohnweriouneroihhfasdf', questionAnswer: '', category: 'Art & Literature'},
+    {id: 'sdhhhhigniognreuinguirenhqu', questionAnswer: '', category: 'Art & Literature'},
     {id: 'fshqqqj', questionAnswer: '', category: 'Art & Literature'},
     {id: 'ghjpppfg', questionAnswer: '', category: 'Art & Literature'},
     {id: 'bdsh', questionAnswer: '', category: 'Geography'}

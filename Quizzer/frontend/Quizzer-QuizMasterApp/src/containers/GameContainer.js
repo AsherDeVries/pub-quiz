@@ -12,7 +12,6 @@ import NewRoundEndGameContainer from './NewRoundEndGameContainer';
 import WithLoading from '../components/shared/WithLoading';
 
 import Flex from 'react-uikit-flex';
-import Panel from 'react-uikit-panel';
 
 class GameContainer extends Component {
   renderPageBasedOnGameState() {

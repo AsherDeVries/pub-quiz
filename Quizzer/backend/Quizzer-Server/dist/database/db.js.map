@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/database/db.js"],"names":["connect"],"mappings":";;;;;;AAAA;;;;AAEA;;;;kBAEe,YAAM;AACpB,oBAASA,OAAT,CAAiB,wCAAjB;AACA,C","file":"db.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport { db_name } from '../config.json';\n\nexport default () => {\n\tmongoose.connect('mongodb://localhost/' + db_name);\n}\n"]}

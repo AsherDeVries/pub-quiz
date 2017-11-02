@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/models/Quiznight.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,WAAf,uB","file":"Quiznight.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport quiznightsSchema from '../database/schemas/quiznights';\n\nexport default mongoose.model('Quiznight', quiznightsSchema);"]}

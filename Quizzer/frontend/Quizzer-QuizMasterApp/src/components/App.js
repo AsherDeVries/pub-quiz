@@ -1,6 +1,7 @@
-/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import LayoutContainer from '../containers/LayoutContainer';
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -8,10 +9,9 @@ import PropTypes from 'prop-types';
 
 class App extends React.Component {
   render() {
-    const activeStyle = { color: 'blue' };
     return (
       <div>
-        Index
+        <LayoutContainer />
       </div>
     );
   }

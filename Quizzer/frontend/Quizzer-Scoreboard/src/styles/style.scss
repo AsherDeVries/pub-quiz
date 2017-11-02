@@ -9,6 +9,12 @@
 // 4. Import UIkit.
 @import "./node_modules/uikit/src/scss/uikit.scss";
 
+.uk-flex-wrap-space-around {
+    -ms-flex-line-pack: distribute;
+    -webkit-align-content: space-around;
+    align-content: space-around;
+}
+
 .uk-panel-box {
     padding: 15px 0;
     background: #fafafa;

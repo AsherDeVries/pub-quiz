@@ -38,5 +38,4 @@ export default {
       answer: "Stepenie Meyer"
     }
   ],
-
-}
+};

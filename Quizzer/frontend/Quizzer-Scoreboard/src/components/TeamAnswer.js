@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Panel from 'react-uikit-panel';
-import Grid from 'react-uikit-grid';
-import {SCOREBOARD_STATE} from '../constants/scoreboardState'
+
+import {SCOREBOARD_STATE} from '../constants/scoreboardState';
 
 const TeamAnswer = (props) => {
   let answerStatus;
@@ -15,7 +16,7 @@ const TeamAnswer = (props) => {
   switch (props.scoreboardState) {
     case SCOREBOARD_STATE.SHOW_QUESTION:
       return (
-        <Panel box col='1-4' margin='top bottom' textAlign='center'>
+        <Panel box col="1-4" margin="top bottom" textAlign="center">
           <span>{props.team.name}</span>
           <br/>
           <span>{answerStatus}</span>
@@ -23,13 +24,17 @@ const TeamAnswer = (props) => {
       );
     case SCOREBOARD_STATE.SHOW_ANSWERS:
       return(
-        <Panel box col='1-4' margin='top bottom' textAlign='center'>
+        <Panel box col="1-4" margin="top bottom" textAlign="center">
           <span>{props.team.name}</span>
           <br/>
           <span>{props.team.answer}</span>
         </Panel>
       );
   }
-}
+};
+TeamAnswer.propTypes = {
+  team: PropTypes.object.isRequired,
+  scoreboardState: PropTypes.string.isRequired
+};
 
 export default TeamAnswer;

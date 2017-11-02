@@ -57,6 +57,6 @@ WithLoading.propTypes = {
 
 WithLoading.defaultProps = {
   children: <div/>
-}
+};
 
 export default WithLoading;

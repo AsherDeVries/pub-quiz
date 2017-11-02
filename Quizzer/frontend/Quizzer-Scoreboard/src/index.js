@@ -6,7 +6,7 @@ import { AppContainer } from 'react-hot-loader';
 import configureStore from './store/configureStore';
 import Root from './components/Root';
 
-import 'uikit/dist/js/uikit.min.js'
+import 'uikit/dist/js/uikit.min';
 import './styles/style.scss';
 
 const store = configureStore();

@@ -1,10 +1,8 @@
 import * as REQUEST_STATE from '../../constants/request';
 
 export default {
-   quizWebsocketState: {
-     waitingState: REQUEST_STATE.IDLE
-   },
-   question: {
-     questionState: REQUEST_STATE.IDLE
-   }
+  questionWebsocketState: REQUEST_STATE.PENDING,
+  questionWebsocketMessage: "Waiting for the quizmaster to approve your team..",
+  fetchQuestionState: REQUEST_STATE.IDLE,
+  currentQuestion: {}
 };

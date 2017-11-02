@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
+import { blue300 } from 'material-ui/styles/colors';
+
+import Panel from 'react-uikit-panel';
 
 import QuestionListItem from './QuestionListItem';
 
@@ -47,6 +48,7 @@ class QuestionListComponent extends Component {
 
   render() {
     return (
+      <Panel margin="left">
         <List>
           <Subheader style={styles.subheading}>{this.renderCategoryChip()}</Subheader>
           {
@@ -61,9 +63,8 @@ class QuestionListComponent extends Component {
               );
             })
           }
-
         </List>
-
+      </Panel>
     );
   }
 }

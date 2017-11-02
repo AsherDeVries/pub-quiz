@@ -1,3 +1,56 @@
+// 1. Your custom variables and variable overwrites.
+
+// 2. Import default variables and available mixins.
+@import "./node_modules/uikit/src/scss/variables.scss";
+@import "./node_modules/uikit/src/scss/mixins.scss";
+
+// 3. Your custom mixin overwrites.
+
+// 4. Import UIkit.
+@import "./node_modules/uikit/src/scss/uikit.scss";
+
+.uk-button:disabled {
+    color: #999;
+    border-color: rgba(0,0,0,.06);
+    box-shadow: none;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.uk-flex-wrap-space-around {
+    -ms-flex-line-pack: distribute;
+    -webkit-align-content: space-around;
+    align-content: space-around;
+}
+
+.uk-panel-box {
+    padding: 15px 0;
+    background: #fafafa;
+    color: #444;
+    border: 1px solid #ddd;
+}
+
+.uk-flex-space-between {
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.uk-padding-left {
+  padding-left: 15px;
+}
+
+.uk-padding-right {
+  padding-right: 15px;
+}
+
+.uk-padding-bottom-remove {
+  padding-bottom: 0;
+}
+
+.uk-container-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Variables */
 $vin-blue: #5bb7db;
 $vin-green: #60b044;

@@ -10,7 +10,10 @@ import QuestionListItem from './QuestionListItem';
 
 const styles = {
   chip: {
-    margin: 4
+    margin: "0 auto",
+  },
+  subheading: {
+    padding: 0
   }
 };
 
@@ -37,9 +40,6 @@ class QuestionListComponent extends Component {
         backgroundColor={blue300}
         style={styles.chip}
       >
-        <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-          {this.props.category.substring(0, 1)}
-        </Avatar>
         {this.props.category}
       </Chip>
     );
@@ -47,22 +47,23 @@ class QuestionListComponent extends Component {
 
   render() {
     return (
-      <List>
-        <Subheader>{this.renderCategoryChip()}</Subheader>
-        {
-          this.props.questions.map(question => {
-            return (
-              <QuestionListItem
-                key={question.id}
-                question={question}
-                selectQuestion={this.selectQuestion}
-                deselectQuestion={this.deselectQuestion}
-              />
-            );
-          })
-        }
+        <List>
+          <Subheader style={styles.subheading}>{this.renderCategoryChip()}</Subheader>
+          {
+            this.props.questions.map(question => {
+              return (
+                <QuestionListItem
+                  key={question.id}
+                  question={question}
+                  selectQuestion={this.selectQuestion}
+                  deselectQuestion={this.deselectQuestion}
+                />
+              );
+            })
+          }
 
-      </List>
+        </List>
+
     );
   }
 }

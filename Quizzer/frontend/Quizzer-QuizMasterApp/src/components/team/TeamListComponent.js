@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Flex from 'react-uikit-flex';
+
 import TeamWidgetComponent from './TeamWidgetComponent';
 
 class TeamListComponent extends Component {
@@ -15,13 +17,13 @@ class TeamListComponent extends Component {
 
   render() {
     return (
-      <div>
+      <Flex center row="wrap" margin="top" textAlign="center">
         {
           this.props.teams.map(team => (
             <TeamWidgetComponent key={team.name} team={team} onApproveclick={this.handleApproveClick} />
           ))
         }
-      </div>
+      </Flex>
     );
   }
 }

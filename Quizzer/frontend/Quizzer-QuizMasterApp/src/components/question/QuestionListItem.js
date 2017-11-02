@@ -7,7 +7,7 @@ const styles = {
     backgroundColor: '#ccffcc'
   },
   notSelected: {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#ccc'
   }
 };
 

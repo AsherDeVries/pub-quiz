@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Flex from 'react-uikit-flex';
+
 
 import TeamAnswerWidgetComponent from './TeamAnswerWidgetComponent';
 
@@ -10,7 +12,7 @@ class TeamAnswerListComponent extends Component {
 
   render() {
     return (
-      <div>
+      <Flex center row="wrap" margin="top" textAlign="center">
         {
           this.props.answers && this.props.answers.map(answer => (
             <TeamAnswerWidgetComponent
@@ -21,7 +23,7 @@ class TeamAnswerListComponent extends Component {
             />
           ))
         }
-      </div>
+      </Flex>
     );
   }
 }

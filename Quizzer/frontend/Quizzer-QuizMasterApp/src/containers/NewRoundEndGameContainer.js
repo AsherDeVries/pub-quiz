@@ -3,36 +3,31 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
+import Flex from 'react-uikit-flex';
+import Panel from 'react-uikit-panel';
+import Grid from 'react-uikit-grid';
+import Button from 'react-uikit-button';
+
 import { startRound, endGame } from '../actions/gameActions';
 
 class NewRoundEndGameContainer extends Component {
   handleStartRound() {
     this.props.startRound();
   }
-  
+
   handleEndGame() {
     this.props.endGame();
   }
-  
+
   render() {
     return (
-      <div>
-        <h1>Do you want to start a new round or end the game?</h1>
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="New round"
-          labelPosition="before"
-          primary={true}
-          onClick={() => this.handleStartRound()}
-        />
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="End game"
-          labelPosition="before"
-          primary={true}
-          onClick={() => this.handleEndGame()}
-        />
-      </div>
+      <Flex center middle viewport row="wrap" direction="column">
+          <h1>Do you want to start a new round or end the game?</h1>
+          <Grid>
+            <Button body="New Round" margin="left" context="primary" onClick={() => this.handleStartRound()}/>
+            <Button body="End Game" margin="left" context="primary"  onClick={() => this.handleEndGame()}/>
+          </Grid>
+      </Flex>
     );
   }
 }

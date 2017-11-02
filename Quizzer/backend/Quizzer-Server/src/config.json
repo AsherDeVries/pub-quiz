@@ -1,4 +1,9 @@
 {
+	"db_name" : "Quizzer",
 	"port": 8080,
-	"bodyLimit": "100kb"
+	"bodyLimit": "100kb",
+	"quizmaster_credentials": {
+		"username": "roberttenbrink",
+		"password": "lwm"
+	} 
 }

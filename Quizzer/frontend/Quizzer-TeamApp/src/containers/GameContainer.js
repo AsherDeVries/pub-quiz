@@ -8,7 +8,7 @@ class GameContainer extends Component {
   render() {
     return (
       <div>
-        <WithLoading loadingState="">
+        <WithLoading loadingState={this.props.loadingState} message={this.props.message}>
           <h1>Welcome {this.props.teamName}</h1>
         </WithLoading>
       </div>
@@ -19,14 +19,15 @@ class GameContainer extends Component {
 function mapStateToProps(state) {
   return {
     teamName: state.sessionReducer.teamName,
-    loadingState: "IDLE",
-    loadingMessage: ""
-
+    loadingState: state.quizReducer.questionWebsocketState,
+    message: state.quizReducer.questionWebsocketMessage
   };
 }
 
 GameContainer.propTypes = {
-  teamName: PropTypes.string.isRequired
+  teamName: PropTypes.string.isRequired,
+  loadingState: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps)(GameContainer);

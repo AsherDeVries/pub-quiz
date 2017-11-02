@@ -1,9 +1,15 @@
-import http from 'http';
-import app from "./app";
+import app from './app';
+import { createWebsocketServer } from './websockets/server';
 import config from './config.json';
+import http from 'http';
+import enableWebsockets from './websockets';
 
-app.server = http.createServer(app);
+app.httpServer = http.createServer(app);
+app.webSocketServer = createWebsocketServer();
 
-app.server.listen(process.env.PORT || config.port, () => {
-	console.log(`Started on port ${app.server.address().port}`);
+enableWebsockets(config, app.httpServer);
+
+// Listen for http requests
+app.httpServer.listen(process.env.PORT || config.port, () => {
+	console.log(`Started on port ${app.httpServer.address().port}`);
 });

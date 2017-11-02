@@ -49,3 +49,14 @@ export function startRound() {
     });
   };
 }
+
+export function endGame() {
+  return (dispatch) => {
+    dispatch({
+      type: GAME_ACTION_TYPES.SET_GAME_STATE,
+      gameState: GAME_STATE.END
+    });
+
+    // to do: disconnect websocket
+  }
+}

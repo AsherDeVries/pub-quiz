@@ -51,12 +51,14 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   renderStartRoundButtonIfCorrectAmountOfQuestionAreSelected(correctAmount) {
+    const amountOfQuestions = this.state.selectedQuestions.length;
+    
     if (correctAmount < MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND 
       || correctAmount > MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND) {
       throw new Error('2 < amount of questions < 13');
     }
 
-    if ((this.state.selectedQuestions.length >= correctAmount) && this.allCategoriesArePresent()) {
+    if ((amountOfQuestions >= correctAmount && amountOfQuestions <= MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND) && this.allCategoriesArePresent()) {
       return (
         <FlatButton
           backgroundColor="#f2f2f2"

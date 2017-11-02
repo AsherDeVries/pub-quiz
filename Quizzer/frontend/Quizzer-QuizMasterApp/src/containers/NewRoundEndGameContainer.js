@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
-import { startRound } from '../actions/gameActions';
+import { startRound, endGame } from '../actions/gameActions';
 
 class NewRoundEndGameContainer extends Component {
   handleStartRound() {
     this.props.startRound();
+  }
+  
+  handleEndGame() {
+    this.props.endGame();
   }
   
   render() {
@@ -26,6 +30,7 @@ class NewRoundEndGameContainer extends Component {
           label="End game"
           labelPosition="before"
           primary={true}
+          onClick={() => this.handleEndGame()}
         />
       </div>
     );
@@ -33,7 +38,8 @@ class NewRoundEndGameContainer extends Component {
 }
 
 NewRoundEndGameContainer.propTypes = {
-  startRound: PropTypes.func
+  startRound: PropTypes.func,
+  endGame: PropTypes.func
 };
 
-export default connect(null, {startRound})(NewRoundEndGameContainer);
+export default connect(null, {startRound, endGame})(NewRoundEndGameContainer);

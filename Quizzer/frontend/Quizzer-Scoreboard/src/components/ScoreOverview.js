@@ -20,7 +20,7 @@ import TeamProgress from './TeamProgress';
       </Panel>
     </Grid>
 
-    <Flex center row="wrap between" textAlign="center" margin="left right">
+    <Flex center row="wrap" textAlign="center">
       {props.teams.map(team => <TeamProgress key ={team.name} team={team}/>)}
     </Flex>
   </div>

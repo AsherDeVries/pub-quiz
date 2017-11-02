@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-
 import Flex from 'react-uikit-flex';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';

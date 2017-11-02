@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Flex from 'react-uikit-flex';
 
 import * as GAME_STATE from '../constants/gameState';
 import * as REQUEST from '../constants/request';
@@ -11,8 +12,7 @@ import ReviewAnswerContainer from './ReviewAnswerContainer';
 import NewRoundEndGameContainer from './NewRoundEndGameContainer';
 import WithLoading from '../components/shared/WithLoading';
 
-import Flex from 'react-uikit-flex';
-import Panel from 'react-uikit-panel';
+
 
 class GameContainer extends Component {
   renderPageBasedOnGameState() {

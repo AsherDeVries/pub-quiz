@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import Flex from 'react-uikit-flex';
+import Button from 'react-uikit-button';
 
 import CategoryFilterComponent from '../components/category/CategoryFilterComponent';
 import QuestionListComponent from '../components/question/QuestionListComponent';
 import { startRound } from '../actions/quiznightActions';
 import { fetchCategories, fetchQuestions } from '../actions/questionActions';
 
-import Flex from 'react-uikit-flex';
-import Panel from 'react-uikit-panel';
-import Button from 'react-uikit-button';
+
 
 const MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND = 3;
 const MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND = 12;
@@ -67,7 +66,7 @@ class CategoryQuestionOverviewContainer extends Component {
         <Button center body="Start round!!" context="primary" col="1-3" size="large" onClick={() => this.handleRoundStart()}/>
       );
     } else {
-      return <Button center body="Start round!!" col="1-3" size="large" disabled />
+      return <Button center body="Start round!!" col="1-3" size="large" disabled />;
     }
   }
 
@@ -153,8 +152,4 @@ CategoryQuestionOverviewContainer.propTypes = {
   fetchQuestions: PropTypes.func
 };
 
-<<<<<<< HEAD
 export default connect(mapStateToProps, {startRound, fetchCategories, fetchQuestions})(CategoryQuestionOverviewContainer);
-=======
-export default connect(mapStateToProps, {startRound})(CategoryQuestionOverviewContainer);
->>>>>>> 7e48c13b9c903615c48c1922af33cb96be7fa8c8

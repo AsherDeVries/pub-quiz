@@ -4,7 +4,6 @@ import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Chip from 'material-ui/Chip';
 import { blue300 } from 'material-ui/styles/colors';
-
 import Panel from 'react-uikit-panel';
 
 import QuestionListItem from './QuestionListItem';

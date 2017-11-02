@@ -13,6 +13,6 @@ var _config = require('../config.json');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
-	_mongoose2.default.connect('mongodb://localhost/' + _config.db_name);
+	_mongoose2.default.connect('mongodb://localhost:' + _config.db_port);
 };
 //# sourceMappingURL=db.js.map

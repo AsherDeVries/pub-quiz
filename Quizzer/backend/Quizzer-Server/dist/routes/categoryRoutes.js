@@ -9,13 +9,13 @@ var _package = require('../../package.json');
 var _express = require('express');
 
 exports.default = function () {
-	var api = (0, _express.Router)();
+	var category = (0, _express.Router)();
 
 	// perhaps expose some API metadata at the root
-	api.get('/', function (req, res) {
+	api.get('/categories', function (req, res) {
 		res.send({ api_version: _package.version });
 	});
 
-	return api;
+	return category;
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=categoryRoutes.js.map

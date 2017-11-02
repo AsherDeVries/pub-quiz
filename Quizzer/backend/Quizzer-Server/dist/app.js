@@ -42,7 +42,7 @@ app.use(_bodyParser2.default.json({
 app.use((0, _middleware2.default)({ config: _config2.default }));
 
 // api router
-app.use('/', (0, _routes2.default)({ config: _config2.default }));
+app.use('/', (0, _routes2.default)());
 
 exports.default = app;
 //# sourceMappingURL=app.js.map

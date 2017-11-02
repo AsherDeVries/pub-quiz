@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+
+import Button from 'react-uikit-button';
+import Panel from 'react-uikit-panel';
+import Grid from 'react-uikit-grid';
+import Flex from 'react-uikit-flex';
 
 import initialQuiznightState from '../reducers/quiznight/initial-quiznight-state';
 import TeamListComponent from '../components/team/TeamListComponent';
@@ -21,13 +25,7 @@ class AcceptTeamContainer extends Component {
   renderStartGameButton() {
     if (this.thereAreAtLeastTwoTeamsAndAllTeamsAreAccepted()) {
       return (
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="Start first round"
-          labelPosition="before"
-          primary={true}
-          onClick={() => this.handleStartRound()}
-        />
+        <Button body="Start first round" context="primary" size="large" onClick={() => this.handleStartRound()}/>
       );
     }
   }
@@ -41,10 +39,16 @@ class AcceptTeamContainer extends Component {
     const handleApprove = this.handleApprove.bind(this);
     return (
       <div>
-        <h1>Hi quizmaster!</h1>
-        <h2>Share this code: {this.props.quiznight.id} </h2>
-        <TeamListComponent teams={this.props.quiznight.teams} onApproveClick={handleApprove} />
-        {this.renderStartGameButton()}
+        <Panel textAlign="center">
+          <h1>Hi quizmaster!</h1>
+          <h2>Share this code: {this.props.quiznight.id} </h2>
+        </Panel>
+        <Grid>
+          <TeamListComponent teams={this.props.quiznight.teams} onApproveClick={handleApprove} />
+        </Grid>
+        <Flex center margin="top">
+          {this.renderStartGameButton()}
+        </Flex>
       </div>
     );
   }

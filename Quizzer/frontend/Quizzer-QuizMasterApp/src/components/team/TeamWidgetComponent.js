@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Done from 'material-ui/svg-icons/action/done';
+import Panel from 'react-uikit-panel';
 
 const iconStyles = {
   color: 'green',
-  marigin: 'auto'
+  margin: 'auto'
+
 };
 
 class TeamWidgetComponent extends Component {
@@ -35,12 +37,15 @@ class TeamWidgetComponent extends Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader
-          title={this.props.team.name}
-        />
-        {this.renderCardActionsOrApproval()}
-      </Card>
+      <Panel margin="left">
+        <Card>
+          <CardHeader
+            title={this.props.team.name}
+            textStyle={{"padding-right": 0}}
+          />
+          {this.renderCardActionsOrApproval()}
+        </Card>
+      </Panel>
     );
   }
 }

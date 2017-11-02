@@ -3,8 +3,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 
+import Flex from 'react-uikit-flex';
+import Panel from 'react-uikit-panel';
+import Grid from 'react-uikit-grid';
+import Button from 'react-uikit-button';
+
 import TeamAnswerListComponent from '../components/team/TeamAnswerListComponent';
 import { closeQuestion, submitAnswerReview } from '../actions/quiznightActions';
+
+
 
 class ReviewAnswerContainer extends Component {
   constructor(props){
@@ -42,30 +49,23 @@ class ReviewAnswerContainer extends Component {
   render() {
     return (
       <div>
-        <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
-        <p>Correct answer: <i>{this.props.currentQuestion.answer} </i></p>
-        <TeamAnswerListComponent
-          answers={this.props.currentSubmittedAnswers}
-          handleApproveClick={this.handleApproveClick}
-          closed={this.state.closed}
-        />  
-        <br />    
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="Close question"
-          labelPosition="before"
-          primary={true}
-          disabled={this.state.closed}
-          onClick={this.handleClose}
-        />
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="Submit grades"
-          labelPosition="before"
-          disabled={!this.state.closed}
-          primary={true}
-          onClick={() => this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers)}
-        />
+        <Panel textAlign="center">
+          <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
+          <p>Correct answer: <i>{this.props.currentQuestion.questionAnswer} </i></p>
+        </Panel>
+        <Grid>
+          <TeamAnswerListComponent
+            answers={this.props.currentSubmittedAnswers}
+            handleApproveClick={this.handleApproveClick}
+            closed={this.state.closed}
+          />
+        </Grid>
+
+        <br />
+        <Flex center row="wrap">
+          <Button body="Close Question" context="primary" size="large" margin="left" disabled={this.state.closed} onClick={this.handleClose} />
+          <Button body="Submit Grades" context="primary" size="large" margin="left" disabled={!this.state.closed} onClick={() => this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers)}/>
+        </Flex>
       </div>
     );
   }

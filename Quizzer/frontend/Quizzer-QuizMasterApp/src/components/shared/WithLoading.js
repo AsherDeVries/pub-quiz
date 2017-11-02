@@ -23,16 +23,16 @@ class WithLoading extends Component {
     switch (this.props.loadingState) {
       case REQUEST_STATE.PENDING:
         return (
-          <div style={refreshStyle.container}>
-            <RefreshIndicator
-              size={200}
-              left={10}
-              top={0}
-              status="loading"
-              style={refreshStyle.refresh}
-            />
-            <h2>{this.props.message}</h2>
-        </div>
+            <div style={refreshStyle.container}>
+              <RefreshIndicator
+                size={200}
+                left={10}
+                top={0}
+                status="loading"
+                style={refreshStyle.refresh}
+              />
+              <h2>{this.props.message}</h2>
+            </div>
         );
       case REQUEST_STATE.ERROR:
         return <h1> ERROR! </h1>;

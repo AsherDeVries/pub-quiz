@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'react-uikit-button';
+
+import Flex from 'react-uikit-flex';
+import Panel from 'react-uikit-panel';
 
 import WithLoading from '../components/shared/WithLoading';
 import { startGame } from '../actions/gameActions';
@@ -14,18 +17,16 @@ class StartGameContainer extends Component {
 
   render() {
     return (
-      <div>
-        <WithLoading loadingState={this.props.startGameRequestState} message="Starting game.." >
-          <h1>Welcome to quizzer!!</h1>
-          <FlatButton
-            backgroundColor="#f2f2f2"
-            label="Start quizzer"
-            labelPosition="before"
-            primary={true}
-            onClick={() => this.handleGameStart()}
-          />
-        </WithLoading >
-      </div>
+      <Flex center middle viewport>
+        <Panel>
+          <WithLoading loadingState={this.props.startGameRequestState} message="Starting game.." >
+            <h1>Welcome to quizzer!!</h1>
+            <Flex center>
+              <Button body="Start Quizzer" context="primary" onClick={() => this.handleGameStart()}/>
+            </Flex>
+          </WithLoading>
+        </Panel>
+      </Flex>
     );
   }
 }

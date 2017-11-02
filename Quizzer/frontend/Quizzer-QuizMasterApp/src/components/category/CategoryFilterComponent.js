@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import Flex from 'react-uikit-flex';
+import Panel from 'react-uikit-panel';
+import Button from 'react-uikit-button';
+
 class CategoryFilterComponent extends Component {
   constructor(props) {
     super(props);
@@ -39,17 +43,19 @@ class CategoryFilterComponent extends Component {
   render() {
     const { selectedCategories } = this.state;
     return (
-      <div>
+      <Flex center direction="column" textAlign="center" margin="top">
         <h2>Select 3 categories:</h2>
-        <SelectField
-          multiple={true}
-          hintText="Select 3 categories"
-          value={selectedCategories}
-          onChange={this.handleChange}
-        >
-          {this.menuItems(selectedCategories)}
-        </SelectField>
-      </div>
+        <Panel>
+          <SelectField
+            multiple={true}
+            hintText="Select 3 categories"
+            value={selectedCategories}
+            onChange={this.handleChange}
+          >
+            {this.menuItems(selectedCategories)}
+          </SelectField>
+        </Panel>
+      </Flex>
     );
   }
 }

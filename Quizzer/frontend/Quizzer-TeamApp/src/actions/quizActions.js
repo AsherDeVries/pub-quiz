@@ -12,3 +12,12 @@ export function fetchQuestions() {
   };
 }
 
+export function submitAnswer(answer) {
+  return function (dispatch) {
+    return dispatch({
+      type: types.SUBMIT_ANSWER,
+      hasAnswered: true,
+      answer
+    });
+  }
+}

@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ListItem } from 'material-ui/List';
+import Panel from 'react-uikit-panel';
 
 const styles = {
   selected: {
     backgroundColor: '#ccffcc'
   },
   notSelected: {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#ccc'
+  },
+  breakWord: {
+    wordwrap: "break-word"
   }
 };
 
@@ -33,11 +37,13 @@ class QuestionListItem extends Component {
 
   render() {
     return (
-      <ListItem
-        primaryText={this.props.question._id}
-        onClick={this.updateCheck}
-        style={this.state.selected ? styles.selected : styles.notSelected}
-      />
+        <Panel margin="top">
+          <ListItem
+            primaryText={this.props.question._id}
+            onClick={this.updateCheck}
+            style={this.state.selected ? styles.selected : styles.notSelected, styles.breakWord}
+          />
+        </Panel>
     );
   }
 }

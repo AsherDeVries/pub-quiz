@@ -8,12 +8,9 @@ import QuestionListComponent from '../components/question/QuestionListComponent'
 import { startRound } from '../actions/quiznightActions';
 import { fetchCategories, fetchQuestions } from '../actions/questionActions';
 
-const styles = {
-  wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  }
-};
+import Flex from 'react-uikit-flex';
+import Panel from 'react-uikit-panel';
+import Button from 'react-uikit-button';
 
 const MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND = 3;
 const MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND = 12;
@@ -59,22 +56,18 @@ class CategoryQuestionOverviewContainer extends Component {
 
   renderStartRoundButtonIfCorrectAmountOfQuestionAreSelected(correctAmount) {
     const amountOfQuestions = this.state.selectedQuestions.length;
-    
-    if (correctAmount < MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND 
+
+    if (correctAmount < MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND
       || correctAmount > MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND) {
       throw new Error('2 < amount of questions < 13');
     }
 
     if ((amountOfQuestions >= correctAmount && amountOfQuestions <= MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND) && this.allCategoriesArePresent()) {
       return (
-        <FlatButton
-          backgroundColor="#f2f2f2"
-          label="Start round!!"
-          labelPosition="before"
-          primary={true}
-          onClick={() => this.handleRoundStart()}
-        />
+        <Button center body="Start round!!" context="primary" col="1-3" size="large" onClick={() => this.handleRoundStart()}/>
       );
+    } else {
+      return <Button center body="Start round!!" col="1-3" size="large" disabled />
     }
   }
 
@@ -106,25 +99,25 @@ class CategoryQuestionOverviewContainer extends Component {
   renderQuestionLists() {
     if (this.state.selectedCategories.length > 0) {
       return (
-        <div>
+        <Flex center direction="column" textAlign="center" margin="top">
           <h2>Choose between {MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND} and {MAXIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND} questions:</h2>
           <h3>(Each category must be present)</h3>
           <br />
-          <div style={styles.wrapper}>
-            {
-              this.state.selectedCategories.map(category => (
-                <QuestionListComponent
-                  key={category._id}
-                  category={category}
-                  questions={this.getQuestionsOfCategory(category)}
-                  selectQuestion={this.selectQuestion}
-                  deselectQuestion={this.deselectQuestion}
-                />
-              ))
-            }
-          </div>
+          <Flex center>
+              {
+                this.state.selectedCategories.map(category => (
+                  <QuestionListComponent
+                    key={category._id}
+                    category={category}
+                    questions={this.getQuestionsOfCategory(category)}
+                    selectQuestion={this.selectQuestion}
+                    deselectQuestion={this.deselectQuestion}
+                  />
+                ))
+              }
+          </Flex>
           {this.renderStartRoundButtonIfCorrectAmountOfQuestionAreSelected(MINIMUM_AMOUNT_OF_QUESTIONS_PER_ROUND)}
-        </div>
+        </Flex>
       );
     }
   }
@@ -160,4 +153,8 @@ CategoryQuestionOverviewContainer.propTypes = {
   fetchQuestions: PropTypes.func
 };
 
+<<<<<<< HEAD
 export default connect(mapStateToProps, {startRound, fetchCategories, fetchQuestions})(CategoryQuestionOverviewContainer);
+=======
+export default connect(mapStateToProps, {startRound})(CategoryQuestionOverviewContainer);
+>>>>>>> 7e48c13b9c903615c48c1922af33cb96be7fa8c8

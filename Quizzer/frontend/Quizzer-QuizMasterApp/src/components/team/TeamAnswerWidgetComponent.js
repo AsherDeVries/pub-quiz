@@ -4,6 +4,7 @@ import { Card, CardText, CardHeader } from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
 import Done from 'material-ui/svg-icons/action/done';
 import HighlightOff from 'material-ui/svg-icons/action/highlight-off';
+import Panel from 'react-uikit-panel';
 
 const styles = {
   thumbOff: {
@@ -71,12 +72,15 @@ class TeamWidgetComponent extends Component {
 
   render() {
     return (
-      <Card onClick={this.handleToggle}>
-        <CardHeader
-          title={this.props.answer.team}
-        />
-        {this.renderCardActions()}
-      </Card>
+      <Panel margin="left">
+        <Card onClick={this.handleToggle}>
+          <CardHeader
+            title={this.props.answer.team}
+            textStyle={{"padding-right": 0}}
+          />
+          {this.renderCardActions()}
+        </Card>
+      </Panel>
     );
   }
 }

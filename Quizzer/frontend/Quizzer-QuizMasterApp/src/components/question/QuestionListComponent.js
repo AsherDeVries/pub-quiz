@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
+import { blue300 } from 'material-ui/styles/colors';
+
+import Panel from 'react-uikit-panel';
 
 import QuestionListItem from './QuestionListItem';
 
 const styles = {
   chip: {
-    margin: 4
+    margin: "0 auto",
+  },
+  subheading: {
+    padding: 0
   }
 };
 
@@ -37,9 +41,6 @@ class QuestionListComponent extends Component {
         backgroundColor={blue300}
         style={styles.chip}
       >
-        <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-          {this.props.category._id.substring(0, 1)}
-        </Avatar>
         {this.props.category._id}
       </Chip>
     );
@@ -47,22 +48,23 @@ class QuestionListComponent extends Component {
 
   render() {
     return (
-      <List>
-        <Subheader>{this.renderCategoryChip()}</Subheader>
-        {
-          this.props.questions.map(question => {
-            return (
-              <QuestionListItem
-                key={question._id}
-                question={question}
-                selectQuestion={this.selectQuestion}
-                deselectQuestion={this.deselectQuestion}
-              />
-            );
-          })
-        }
-
-      </List>
+      <Panel margin="left">
+        <List>
+          <Subheader style={styles.subheading}>{this.renderCategoryChip()}</Subheader>
+          {
+            this.props.questions.map(question => {
+              return (
+                <QuestionListItem
+                  key={question._id}
+                  question={question}
+                  selectQuestion={this.selectQuestion}
+                  deselectQuestion={this.deselectQuestion}
+                />
+              );
+            })
+          }
+        </List>
+      </Panel>
     );
   }
 }

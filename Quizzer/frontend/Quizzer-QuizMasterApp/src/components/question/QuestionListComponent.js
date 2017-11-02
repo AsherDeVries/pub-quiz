@@ -38,9 +38,9 @@ class QuestionListComponent extends Component {
         style={styles.chip}
       >
         <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-          {this.props.category.substring(0, 1)}
+          {this.props.category._id.substring(0, 1)}
         </Avatar>
-        {this.props.category}
+        {this.props.category._id}
       </Chip>
     );
   }
@@ -53,7 +53,7 @@ class QuestionListComponent extends Component {
           this.props.questions.map(question => {
             return (
               <QuestionListItem
-                key={question.id}
+                key={question._id}
                 question={question}
                 selectQuestion={this.selectQuestion}
                 deselectQuestion={this.deselectQuestion}
@@ -68,7 +68,7 @@ class QuestionListComponent extends Component {
 }
 
 QuestionListComponent.propTypes = {
-  category: PropTypes.string,
+  category: PropTypes.object,
   questions: PropTypes.array,
   selectQuestion: PropTypes.func,
   deselectQuestion: PropTypes.func

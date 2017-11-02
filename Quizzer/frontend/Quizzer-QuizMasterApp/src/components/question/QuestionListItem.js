@@ -34,7 +34,7 @@ class QuestionListItem extends Component {
   render() {
     return (
       <ListItem
-        primaryText={this.props.question.id}
+        primaryText={this.props.question._id}
         onClick={this.updateCheck}
         style={this.state.selected ? styles.selected : styles.notSelected}
       />

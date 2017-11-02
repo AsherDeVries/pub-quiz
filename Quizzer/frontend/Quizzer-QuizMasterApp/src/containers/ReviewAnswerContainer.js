@@ -42,8 +42,8 @@ class ReviewAnswerContainer extends Component {
   render() {
     return (
       <div>
-        <h1>{this.props.currentQuestion.id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
-        <p>Correct answer: <i>{this.props.currentQuestion.questionAnswer} </i></p>
+        <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
+        <p>Correct answer: <i>{this.props.currentQuestion.answer} </i></p>
         <TeamAnswerListComponent
           answers={this.props.currentSubmittedAnswers}
           handleApproveClick={this.handleApproveClick}

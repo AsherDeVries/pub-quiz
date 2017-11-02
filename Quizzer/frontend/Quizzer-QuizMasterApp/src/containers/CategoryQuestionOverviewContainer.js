@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import CategoryFilterComponent from '../components/category/CategoryFilterComponent';
 import QuestionListComponent from '../components/question/QuestionListComponent';
 import { startRound } from '../actions/quiznightActions';
+import { fetchCategories, fetchQuestions } from '../actions/questionActions';
 
 const styles = {
   wrapper: {
@@ -31,6 +32,10 @@ class CategoryQuestionOverviewContainer extends Component {
     this.deselectQuestion = this.deselectQuestion.bind(this);
   }
 
+  componentDidMount() {
+    this.props.fetchCategories();
+  }
+
   selectQuestion(selectedQuestion) {
     this.setState({
       selectedQuestions: [...this.state.selectedQuestions, selectedQuestion]
@@ -47,6 +52,8 @@ class CategoryQuestionOverviewContainer extends Component {
   onCategoriesSelect(selectedCategories) {
     this.setState({
       selectedCategories
+    }, () => {
+      this.props.fetchQuestions(selectedCategories);
     });
   }
 
@@ -74,7 +81,7 @@ class CategoryQuestionOverviewContainer extends Component {
   allCategoriesArePresent() {
     let allPresent = [];
     this.state.selectedCategories.forEach(category => {
-      if (this.state.selectedQuestions.filter(question => (question.category === category)).length === 0) {
+      if (this.state.selectedQuestions.filter(question => (question.category === category._id)).length === 0) {
         allPresent.push(false);
       }
     });
@@ -107,7 +114,7 @@ class CategoryQuestionOverviewContainer extends Component {
             {
               this.state.selectedCategories.map(category => (
                 <QuestionListComponent
-                  key={category}
+                  key={category._id}
                   category={category}
                   questions={this.getQuestionsOfCategory(category)}
                   selectQuestion={this.selectQuestion}
@@ -123,7 +130,7 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   getQuestionsOfCategory(category) {
-    return this.props.availableQuestions.filter(question => (question.category === category));
+    return this.props.availableQuestions.filter(question => (question.category === category._id));
   }
 
   render() {
@@ -148,7 +155,9 @@ CategoryQuestionOverviewContainer.propTypes = {
   availableQuestions: PropTypes.array,
   selectedCategories: PropTypes.array,
   selectedQuestions: PropTypes.array,
-  startRound: PropTypes.func
+  startRound: PropTypes.func,
+  fetchCategories: PropTypes.func,
+  fetchQuestions: PropTypes.func
 };
 
-export default connect(mapStateToProps, {startRound})(CategoryQuestionOverviewContainer);
+export default connect(mapStateToProps, {startRound, fetchCategories, fetchQuestions})(CategoryQuestionOverviewContainer);

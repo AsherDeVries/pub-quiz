@@ -21,10 +21,10 @@ export default () => {
 const middlewareForQueryPresent = function (req, res, next) {
   if (req.query.category) {
     if (req.query.random) {
-      let limitrecords = 10;
+      let limitrecords = (req.query.limit) ? parseInt(req.query.limit) : 50 
       QuestionModel.count({ 'category': req.query.category }, function (err, count) {
         var skipRecords = getRandom(1, count - limitrecords);
-        QuestionModel.find({ 'category': req.query.category }).skip(skipRecords).limit(10)
+        QuestionModel.find({ 'category': req.query.category }).skip(skipRecords).limit(limitrecords)
         .then(data => {
           return res.send(data);
         });

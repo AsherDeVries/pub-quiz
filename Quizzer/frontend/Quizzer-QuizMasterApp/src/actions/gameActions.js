@@ -58,5 +58,5 @@ export function endGame() {
     });
 
     // to do: disconnect websocket
-  }
+  };
 }

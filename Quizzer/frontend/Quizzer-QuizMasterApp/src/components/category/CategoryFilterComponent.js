@@ -27,11 +27,11 @@ class CategoryFilterComponent extends Component {
   menuItems(values) {
     return this.props.availableCategories.map((category) => (
       <MenuItem
-        key={category}
+        key={category._id}
         insetChildren={true}
         checked={values && values.indexOf(category) > -1}
         value={category}
-        primaryText={category}
+        primaryText={category._id}
       />
     ));
   }

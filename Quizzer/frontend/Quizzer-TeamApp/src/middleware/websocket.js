@@ -1,19 +1,17 @@
 import io from 'socket.io-client';
 
-import {CONNECT_TEAM, NEW_QUESTION, SHOW_MESSAGE, TEAM_ALLOWED} from '../constants/actionTypes';
-import {newQuestion} from '../actions/quizActions';
+import {CONNECT_TEAM, NEW_QUESTION, TEAM_ALLOWED, SUBMIT_ANSWER} from '../constants/actionTypes';
+import * as REQUEST_STATE from '../constants/request';
+import {newQuestion, teamAllowed, showMessage } from '../actions/quizActions';
 
 let socket;
 
 export function joinQuizNight(teamName, code) {
   socket = io(`http://localhost:8080/${code}`);
-
   socket.on('connect', () => {
     socket.emit(CONNECT_TEAM, {
-      socketId: socket.id,
       teamName: teamName
     });
-
   });
 
   hookUpEvents(socket);
@@ -36,13 +34,13 @@ function receiveQuestion(socket) {
 }
 
 function receiveMessage(socket) {
-  socket.on(SHOW_MESSAGE, (data) => {
+  socket.on(REQUEST_STATE.PENDING, (data) => {
     showMessage(data);
-  })
+  });
 }
 
 function teamAccepted(socket) {
   socket.on(TEAM_ALLOWED, (data) => {
-    acceptTeam(data);
-  })
+    teamAllowed(data.accepted);
+  });
 }

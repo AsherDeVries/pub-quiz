@@ -24,6 +24,10 @@ class AnswerQuestion extends React.Component {
     });
   }
 
+  handleAnswerSubmit() {
+    this.props.submitAnswer(this.state.answer);
+  }
+
   renderSubmitButtonBasedOnAnsweringStatus() {
     console.log(this.props.hasAnswered);
     if(!this.props.hasAnswered) {
@@ -31,10 +35,6 @@ class AnswerQuestion extends React.Component {
     } else {
       return <Button body="Resubmit" context="primary" size="large" onClick={this.handleAnswerSubmit()}/>
     }
-  }
-
-  handleAnswerSubmit() {
-    this.props.submitAnswer(this.state.answer);
   }
 
   render() {

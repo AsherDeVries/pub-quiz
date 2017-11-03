@@ -59,4 +59,8 @@ export function endGame() {
 
     // to do: disconnect websocket
   };
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fea381bb827444c2be3dfb2e9488bba18da5cce9

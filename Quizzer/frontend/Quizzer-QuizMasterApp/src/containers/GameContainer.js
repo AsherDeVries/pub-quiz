@@ -12,8 +12,6 @@ import ReviewAnswerContainer from './ReviewAnswerContainer';
 import NewRoundEndGameContainer from './NewRoundEndGameContainer';
 import WithLoading from '../components/shared/WithLoading';
 
-
-
 class GameContainer extends Component {
   renderPageBasedOnGameState() {
     switch (this.props.gameState) {

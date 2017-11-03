@@ -6,6 +6,7 @@ export default function questionReducer(state = initialState, action) {
   switch (action.type) {
     case(SUBMIT_ANSWER):
       return {...state,
+        hasAnswered: action.hasAnswered,
         answer: action.answer
       }
     default:

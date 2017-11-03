@@ -40,7 +40,8 @@ function mapStateToProps(state) {
     loadingState: state.quizReducer.questionWebsocketState,
     message: state.quizReducer.questionWebsocketMessage,
     currentQuestion: state.quizReducer.currentQuestion,
-    questionState: state.quizReducer.questionState
+    questionState: state.quizReducer.questionState,
+    isAllowed: state.quizReducer.isAllowed
   };
 }
 

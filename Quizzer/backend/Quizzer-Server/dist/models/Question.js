@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var questionSchema = new _mongoose2.default.Schema({
   _id: String,
-  correctAnswer: {
+  answer: {
     type: String,
     required: true
   },

@@ -4,18 +4,23 @@ import * as types from '../../constants/actionTypes';
 export default function quizReducer(state = initialState, action) {
 
   switch (action.type) {
-    case(types.ACCEPT_TEAM):
-      return {...state,
-        questionWebsocketState: action.questionWebsocketState
+    case(types.TEAM_ALLOWED):
+      return {
+        ...state,
+        questionWebsocketState: action.questionWebsocketState,
+        isAllowed: action.isAllowed,
+        questionState: action.questionState
       };
     case(types.NEW_QUESTION):
-      return {...state,
+      return {
+        ...state,
         currentQuestion: action.question,
         questionState: action.questionState,
         questionWebsocketState: action.questionWebsocketState
       };
-    case(types.CLOSE_QUESTION):
-      return {...state,
+    case(types.SHOW_MESSAGE):
+      return {
+        ...state,
         questionState: action.questionState,
         questionWebsocketState: action.questionWebsocketState,
         questionWebsocketMessage: action.questionWebsocketMessage,
@@ -25,7 +30,8 @@ export default function quizReducer(state = initialState, action) {
         }
       };
     case(types.SUBMIT_ANSWER):
-      return {...state,
+      return {
+        ...state,
         hasAnswered: action.hasAnswered,
         answer: action.answer
       };

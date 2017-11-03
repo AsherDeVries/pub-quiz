@@ -1,13 +1,33 @@
+import * as REQUEST_STATE from '../constants/request';
 import * as types from '../constants/actionTypes';
 
-// example of a thunk using the redux-thunk middleware
-export function fetchQuestions() {
+export function newQuestion(question) {
   return function (dispatch) {
-    // thunks allow for pre-processing actions, calling apis, and dispatching multiple actions
-    // in this case at this point we could call a service that would persist the fuel savings
     return dispatch({
-      type: types.FETCH_QUESTIONS,
-      questions: {Q: 'q', A: 'a'}
+      type: types.NEW_QUESTION,
+      question: question,
+      questionState: true,
+      questionWebsocketState: REQUEST_STATE.SUCCESS,
+    });
+  };
+}
+
+export function closeQuestion() {
+  return function (dispatch) {
+    return dispatch({
+      type: types.CLOSE_QUESTION,
+      questionState: false,
+      questionWebsocketState: REQUEST_STATE.PENDING,
+      questionWebsocketMessage: "Waiting for next question.."
+    });
+  };
+}
+
+export function acceptTeam() {
+  return function (dispatch) {
+    return dispatch({
+      type: types.ACCEPT_TEAM,
+      questionWebsocketState: REQUEST_STATE.SUCCESS
     });
   };
 }
@@ -16,8 +36,10 @@ export function submitAnswer(answer) {
   return function (dispatch) {
     return dispatch({
       type: types.SUBMIT_ANSWER,
-      hasAnswered: true,
-      answer
+      currentQuestion: {
+        hasAnswered: true,
+        answer
+      }
     });
   };
 }

@@ -3,10 +3,37 @@ import { Router } from 'express';
 
 import QuestionModel from '../models/Question';
 import Quiznight from '../models/Quiznight';
+import randomstring from 'randomstring';
+import createSocketIoNamespace from '../websockets/non-quizmaster';
 
 export default () => {
   let quiznightRoute = Router();
   
+  quiznightRoute.post('/', (req, res) => {
+
+     let quiznightCode = randomstring.generate({
+       length: 6,
+       charset: 'alphanumeric'
+     });
+
+     let qn = new Quiznight({
+       _id: quiznightCode,
+       teams: [],
+       rounds: []
+     });
+ 
+     createSocketIoNamespace(quiznightCode);
+     qn.save()
+      .then(() => {
+        return res.send({ code: quiznightCode })
+      });
+    // generate string
+    // create namespace
+    // on success:
+    //  save to db
+    // respond with code
+  });
+
   quiznightRoute.post('/:quiznightId/rounds', (req, res) => {
     if (req.params.quiznightId) {
       

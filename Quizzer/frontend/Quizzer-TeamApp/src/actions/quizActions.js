@@ -19,5 +19,5 @@ export function submitAnswer(answer) {
       hasAnswered: true,
       answer
     });
-  }
+  };
 }

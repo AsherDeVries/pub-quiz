@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-
 import Flex from 'react-uikit-flex';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
@@ -50,8 +48,8 @@ class ReviewAnswerContainer extends Component {
     return (
       <div>
         <Panel textAlign="center">
-          <h1>{this.props.currentQuestion.id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
-          <p>Correct answer: <i>{this.props.currentQuestion.questionAnswer} </i></p>
+          <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
+          <p>Correct answer: <i>{this.props.currentQuestion.answer} </i></p>
         </Panel>
         <Grid>
           <TeamAnswerListComponent

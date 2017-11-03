@@ -49,7 +49,7 @@ class ReviewAnswerContainer extends Component {
       <div>
         <Panel textAlign="center">
           <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
-          <p>Correct answer: <i>{this.props.currentQuestion.questionAnswer} </i></p>
+          <p>Correct answer: <i>{this.props.currentQuestion.answer} </i></p>
         </Panel>
         <Grid>
           <TeamAnswerListComponent

@@ -23,9 +23,8 @@ export default (socket) => {
         if(err) {
           socket.emit(MESSAGE_TYPES.PENDING, `A quiznight could not be created because of the following reason: ${quiznightCode}`);
         } else {
-          let nsp = createSocketIoNamespace(quiznightCode);
-          socket.join('QUIZMASTER_ROOM');
-          socket.emit(MESSAGE_TYPES.PENDING, `Welcome quizmaster!, a quiznight has been created with the code: ${quiznightCode}`);
+          createSocketIoNamespace(quiznightCode);
+          socket.emit(MESSAGE_TYPES.SIGN_UP_ERROR, { 'quiznightCode': quiznightCode });
         }
       });
     } else {

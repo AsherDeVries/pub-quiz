@@ -48,8 +48,12 @@ exports.default = function (socket) {
           socket.emit(_message_types2.default.PENDING, 'A quiznight could not be created because of the following reason: ' + quiznightCode);
         } else {
           var nsp = (0, _nonQuizmaster2.default)(quiznightCode);
+<<<<<<< Updated upstream
           socket.join('QUIZMASTER_ROOM');
           socket.emit(_message_types2.default.PENDING, 'Welcome quizmaster!, a quiznight has been created with the code: ' + quiznightCode);
+=======
+          socket.emit('PENDING', 'Welcome quizmaster!, a quiznight has been created with the code: ' + quiznightCode);
+>>>>>>> Stashed changes
         }
       });
     } else {

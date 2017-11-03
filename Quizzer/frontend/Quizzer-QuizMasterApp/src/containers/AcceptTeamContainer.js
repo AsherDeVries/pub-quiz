@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import Button from 'react-uikit-button';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';

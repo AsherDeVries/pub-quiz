@@ -1,5 +1,5 @@
 export default {
-  id: '',
+  _id: 'abcd1234',
   currentQuestion: {},
   currentSubmittedAnswers: [],
   questionSequenceNr: 0,

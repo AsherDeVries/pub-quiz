@@ -8,11 +8,11 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _categories = require('../database/schemas/categories');
-
-var _categories2 = _interopRequireDefault(_categories);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _mongoose2.default.model('Category', _categories2.default);
+var categoriesSchema = new _mongoose2.default.Schema({
+  _id: String
+});
+
+exports.default = _mongoose2.default.model('Category', categoriesSchema);
 //# sourceMappingURL=Category.js.map

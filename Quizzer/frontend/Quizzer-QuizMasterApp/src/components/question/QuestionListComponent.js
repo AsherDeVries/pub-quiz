@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
+import { blue300 } from 'material-ui/styles/colors';
+import Panel from 'react-uikit-panel';
 
 import QuestionListItem from './QuestionListItem';
 
@@ -40,20 +40,21 @@ class QuestionListComponent extends Component {
         backgroundColor={blue300}
         style={styles.chip}
       >
-        {this.props.category}
+        {this.props.category._id}
       </Chip>
     );
   }
 
   render() {
     return (
+      <Panel margin="left">
         <List>
           <Subheader style={styles.subheading}>{this.renderCategoryChip()}</Subheader>
           {
             this.props.questions.map(question => {
               return (
                 <QuestionListItem
-                  key={question.id}
+                  key={question._id}
                   question={question}
                   selectQuestion={this.selectQuestion}
                   deselectQuestion={this.deselectQuestion}
@@ -61,15 +62,14 @@ class QuestionListComponent extends Component {
               );
             })
           }
-
         </List>
-
+      </Panel>
     );
   }
 }
 
 QuestionListComponent.propTypes = {
-  category: PropTypes.string,
+  category: PropTypes.object,
   questions: PropTypes.array,
   selectQuestion: PropTypes.func,
   deselectQuestion: PropTypes.func

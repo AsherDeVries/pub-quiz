@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from 'react-uikit-button';
-
 import Flex from 'react-uikit-flex';
 import Panel from 'react-uikit-panel';
 

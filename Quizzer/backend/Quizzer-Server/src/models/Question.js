@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 let questionSchema = new mongoose.Schema({
   _id: String,
-  correctAnswer: {
+  answer: {
     type: String,
     required: true
   },

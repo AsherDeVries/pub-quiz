@@ -8,11 +8,20 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
-var _questions = require('../database/schemas/questions');
-
-var _questions2 = _interopRequireDefault(_questions);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _mongoose2.default.model('Question', _questions2.default);
+var questionSchema = new _mongoose2.default.Schema({
+  _id: String,
+  correctAnswer: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true,
+    ref: 'Category'
+  }
+});
+
+exports.default = _mongoose2.default.model('Question', questionSchema);
 //# sourceMappingURL=Question.js.map

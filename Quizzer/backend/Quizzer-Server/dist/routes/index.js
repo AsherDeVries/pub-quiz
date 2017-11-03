@@ -11,7 +11,6 @@ var _express = require('express');
 exports.default = function () {
 	var api = (0, _express.Router)();
 
-	// perhaps expose some API metadata at the root
 	api.get('/', function (req, res) {
 		res.send({ api_version: _package.version });
 	});

@@ -31,19 +31,21 @@ Now that we have our models, let's look at which events occur during a Quiz Nigh
 
 Event | Message type
 ------------- | -------------
-Team signed up | ```{messageType: "CONNECT_TEAM", password: "", name: ""} ```
-Submit answer | ```{messageType: "SUBMIT_ANSWER", questionId: "", answer: "" } ```
+Team signed up | ```{messageType: "CONNECT_TEAM", teamName: String} ```
+Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, question: String, answer: String } ```
 
 
 **Messages from QuizmasterApp to server:**
 
 Event | Message type
 ------------- | -------------
-Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER", password: "", name: ""} ```
-Accept team | ```{messageType: "ACCEPT_TEAM", teamName:"", accepted: boolean} ```
-Start round | ```{messageType: "START_ROUND", categories:[{}], questions:[{}]} ```
-Close Question | ```{messageType: "CLOSE_QUESTION", round:"", question_id:''}```
-Review answer | ```{messageType: "UPDATE_SCORE", round: "", score:"", teamName:""} ```
+Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, accepted: Boolean} ```
+Start round | ```{messageType: "START_ROUND"} ```
+Next Question | ```{messageType: "NEXT_QUESTION", question: String}```
+Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
+Submit answers review | ```{messageType: "UPDATE_SCORE", question: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
+End round | ```{messageType: "END_ROUND"}```
 End quiz night | ```{messageType: "END_GAME"} ```
 
 
@@ -51,7 +53,7 @@ End quiz night | ```{messageType: "END_GAME"} ```
 
 Event | Message type
 ------------- | -------------
-Scoreboard Signup | ```{messageType: "CONNECT_SCOREBOARD", password: ""} ```
+Scoreboard Signup | ```{messageType: "CONNECT_SCOREBOARD"} ```
 
 
 **Messages from server to QuizzerApp:**
@@ -59,9 +61,10 @@ Scoreboard Signup | ```{messageType: "CONNECT_SCOREBOARD", password: ""} ```
 Event | Message type
 ------------- | -------------
 Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
-Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", message""} ```
-Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", isCorrect""} ```
-New Question Starts | ```{messageType: "New Question", question:""} ```
+Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", String} ```
+Allowed to join quiznight | ```{messageType: "TEAM_ALLOWED", accepted: Boolean} ```
+Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", isCorrect: Boolean} ```
+New Question Starts | ```{messageType: "New Question", question: String} ```
 End quiz night | ```{messageType: "END_GAME"}```
 
 
@@ -70,16 +73,21 @@ End quiz night | ```{messageType: "END_GAME"}```
 Event | Message type
 ------------- | -------------
 Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
+Pending for anything | ```{messageType: "PENDING", String} ```
 New Round Started | ```{messageType: "NEW_ROUND_STARTED, round:{} ```
-New Question Received for current round | ```{messageType: "NEW_QUESITON", question:{} }```
-Answer Submitted | ```{messageType: "ANSWER_SUBMITTED", answer:"", teamName:""} ```
-Answer Re-submitted | ```{messageType: "ANSWER_SUBMITTED", answer:"", teamName:""} ``` 
-Answer submitted by team | ```{messageType: "ANSWER_SUBMITTED"} teamName:  ```
+Team joined | ```{ teamName: String, socketId: String }```
+New Question Received for current round | ```{messageType: "NEW_QUESTION", question:String }```
+Answer Submitted | ```{messageType: "ANSWER_SUBMITTED", question: String, answer: String} ```
 
 
 **Messages from server to Scoreboard**
-Current round
-Score update
+
+Event | Message type
+------------- | -------------
+Score overview | ```{messageType: "SHOW_SCORES", teams: [{name: String, roundPoints: Number, score: {round: Number, questionsCorrect: Number}}]} ```
+Question answer overview | ```{messageType: "SHOW_QUESTION_RESULTS", question: {question: String, category: String}, teams: [{teamName: String, givenAnswer: String}]} ```
+New question overview | ```{messageType: "NEW_QUESTION", question: {question: String, category: String}, teams: [{teamName: String, givenAnswer: String, hasAnswered: false}]} ```
+Answer submitted | ```{messageType: "ANSWER_SUBMITTED", teamName: String, hasAnswered: Boolean}```
 
 
 ## API Specifications

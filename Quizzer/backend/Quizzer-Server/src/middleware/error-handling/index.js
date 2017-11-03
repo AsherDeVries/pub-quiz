@@ -1,9 +1,5 @@
-import { Router } from 'express';
+const errorHandler = (err, req, res, next) => {
+  res.status(500).send(err.message);
+};
 
-export default ({ config, db }) => {
-	let routes = Router();
-
-	// add middleware here
-
-	return routes;
-}
+export default errorHandler;

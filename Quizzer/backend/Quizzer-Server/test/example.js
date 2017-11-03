@@ -1,5 +1,5 @@
 import api from '../src/app';
-import { db_name } from '../src/config.json';
+import { db_name, db_port} from '../src/config.json';
 import { expect } from 'chai';
 import express from 'express';
 import mocha from 'mocha';
@@ -15,7 +15,7 @@ const app = express();
 
 describe('Test example saving quiznight', () => {
   before('Before test example', () => {
-    mongoose.connect('mongodb://localhost/' + db_name);
+    mongoose.connect(`mongodb://localhost:${db_port}/${db_name}`);
 
     let qn = new Quiznight({
 			_id: "abcd1234",
@@ -23,20 +23,22 @@ describe('Test example saving quiznight', () => {
 				_id: "Nano peasants",
 				roundPoints: 0
 			}],
-			rounds: [{
-				_id: 1,
-				teamStatistics: [{
-					team: "Nano peasants",
-					givenAnswers: [{
-						value: "got no idea :("
-					}],
-					correctAnswersAmount: 0
-				}],
-				chosenQuestions: [{
-					_id: "How does one leave Vim?",
-					hasBeenReviewed: false
-				}]
-			}]
+			rounds: [
+        {
+          _id: 1,
+          teamStatistics: [{
+            team: "Nano peasants",
+            givenAnswers: [{
+              value: "got no idea :("
+            }],
+            correctAnswersAmount: 0
+          }],
+          chosenQuestions: [{
+            _id: "How does one leave Vim?",
+            hasBeenReviewed: false
+          }]
+        }
+      ]
 		});
 
 		qn.save();
@@ -60,7 +62,7 @@ describe('Test example saving quiznight', () => {
 
 describe('Test example saving question', () => {
   before('Before test example', () => {
-    mongoose.connect('mongodb://localhost/' + db_name);
+    mongoose.connect(`mongodb://localhost:${db_port}/${db_name}`);;
 
     let question = new Question({
 			_id: "How does one leave Vim?",
@@ -89,7 +91,7 @@ describe('Test example saving question', () => {
 
 describe('Test example saving category', () => {
   before('Before test example', () => {
-    mongoose.connect('mongodb://localhost/' + db_name);
+    mongoose.connect(`mongodb://localhost:${db_port}/${db_name}`);
 
     let category = new Category({
       _id: "Battle of Editors"

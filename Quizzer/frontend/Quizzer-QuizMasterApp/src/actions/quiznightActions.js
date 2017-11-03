@@ -1,5 +1,7 @@
-import { QUIZNIGHT_ACTION_TYPES, GAME_ACTION_TYPES } from '../constants/actionTypes';
+import { QUIZNIGHT_ACTION_TYPES, GAME_ACTION_TYPES, QUESTION_ACTION_TYPES } from '../constants/actionTypes';
 import * as GAME_STATE from '../constants/gameState';
+
+import axios from 'axios';
 
 export function acceptTeam(team, isAccepted) {
   return (dispatch) => {
@@ -23,11 +25,21 @@ export function acceptTeam(team, isAccepted) {
 
 export function startRound(questions) {
   return (dispatch, getState) => {
-    const questionSequenceNr = getState().quiznightReducer.questionSequenceNr;
+    const state = getState();
+    const {questionSequenceNr, _id} = state.quiznightReducer;
 
     dispatch({
       type: GAME_ACTION_TYPES.SET_GAME_STATE,
       gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
+    });
+
+    axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
+      return {_id: question._id};
+    }) ).then(() => {
+      dispatch({
+        type: QUESTION_ACTION_TYPES.FETCH_QUESTIONS,
+        questions: questions
+      });
     });
 
     setTimeout(() => {
@@ -46,7 +58,7 @@ export function startRound(questions) {
       });
 
       simulateAnswerReviewed(dispatch);
-    });
+    }, 2000);
   };
 }
 

@@ -4,7 +4,6 @@ import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Chip from 'material-ui/Chip';
 import { blue300 } from 'material-ui/styles/colors';
-
 import Panel from 'react-uikit-panel';
 
 import QuestionListItem from './QuestionListItem';
@@ -41,7 +40,7 @@ class QuestionListComponent extends Component {
         backgroundColor={blue300}
         style={styles.chip}
       >
-        {this.props.category}
+        {this.props.category._id}
       </Chip>
     );
   }
@@ -55,7 +54,7 @@ class QuestionListComponent extends Component {
             this.props.questions.map(question => {
               return (
                 <QuestionListItem
-                  key={question.id}
+                  key={question._id}
                   question={question}
                   selectQuestion={this.selectQuestion}
                   deselectQuestion={this.deselectQuestion}
@@ -70,7 +69,7 @@ class QuestionListComponent extends Component {
 }
 
 QuestionListComponent.propTypes = {
-  category: PropTypes.string,
+  category: PropTypes.object,
   questions: PropTypes.array,
   selectQuestion: PropTypes.func,
   deselectQuestion: PropTypes.func

@@ -31,6 +31,7 @@ class WithLoading extends Component {
               status="loading"
               style={refreshStyle.refresh}
             />
+            <h2>{this.props.message}</h2>
         </div>
         );
       case REQUEST_STATE.ERROR:
@@ -47,7 +48,15 @@ class WithLoading extends Component {
 
 WithLoading.propTypes = {
   loadingState: PropTypes.string.isRequired,
-  children: PropTypes.array
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  message: PropTypes.string
+};
+
+WithLoading.defaultProps = {
+  children: <div />
 };
 
 export default WithLoading;

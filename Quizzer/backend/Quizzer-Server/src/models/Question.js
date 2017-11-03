@@ -1,5 +1,16 @@
 import mongoose from 'mongoose';
 
-import questionSchema from '../database/schemas/questions';
+let questionSchema = new mongoose.Schema({
+  _id: String,
+  correctAnswer: {
+    type: String,
+    required: true
+  },
+  category: {
+      type: String,
+      required: true,
+      ref: 'Category'
+  }
+});
 
 export default mongoose.model('Question', questionSchema);

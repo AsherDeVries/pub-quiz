@@ -27,7 +27,7 @@ The model below is is an overview of all the domain concepts mentioned in the Qu
 ## The Websocket Interface
 Now that we have our models, let's look at which events occur during a Quiz Night and which messages are sent between clients and servers over the websocket protocol.
 
-**Messages from QuizzerApp to server:**
+**Messages from TeamApp to server:**
 
 Event | Message type
 ------------- | -------------
@@ -40,7 +40,7 @@ Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, round: Numbe
 Event | Message type
 ------------- | -------------
 Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
-Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, accepted: Boolean} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, isAccepted: Boolean} ```
 Start round | ```{messageType: "START_ROUND"} ```
 Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
@@ -56,7 +56,7 @@ Event | Message type
 Scoreboard Signup | ```{messageType: "CONNECT_SCOREBOARD"} ```
 
 
-**Messages from server to QuizzerApp:**
+**Messages from server to TeamApp:**
 
 Event | Message type
 ------------- | -------------

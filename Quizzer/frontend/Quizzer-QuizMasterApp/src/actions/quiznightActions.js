@@ -34,11 +34,6 @@ export function startRound(questions) {
     const state = getState();
     const { questionSequenceNr, _id } = state.quiznightReducer;
 
-    dispatch({
-      type: GAME_ACTION_TYPES.SET_GAME_STATE,
-      gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
-    });
-
     axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
       return { _id: question._id };
     })).then(() => {

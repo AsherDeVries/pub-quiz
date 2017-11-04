@@ -19,7 +19,6 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
     let messageToTeam = { isAccepted: message.isAccepted };
-    console.log(message)
     if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       DatabaseCacheHandler
@@ -41,7 +40,7 @@ export default (socket, quiznightNamespace) => {
         TeamMessageSender
           .toNamespace(quiznightNamespace)
           .usingSocket(socket)
-          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for next question.')
+          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for the quizmaster to submit questions')
       });
   });
 
@@ -49,7 +48,7 @@ export default (socket, quiznightNamespace) => {
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
-      .sendMessageToAllTeams(MESSAGE_TYPES.NEW_QUESTION, { question: message.question });
+      .sendMessageToAllTeams(MESSAGE_TYPES.NEW_QUESTION, { question: message });
   });
 
   socket.on(MESSAGE_TYPES.CLOSE_QUESTION, (message) => {

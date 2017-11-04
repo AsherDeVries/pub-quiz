@@ -96,7 +96,6 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   renderQuestionLists() {
-    console.log(this.state.selectedQuestions)
     if (this.state.selectedCategories.length > 0) {
       return (
         <Flex center direction="column" textAlign="center" margin="top">

@@ -39,7 +39,7 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   deselectQuestion(deselectedQuestion) {
-    const newState = this.state.selectedQuestions.filter(question => (question.id !== deselectedQuestion.id));
+    const newState = this.state.selectedQuestions.filter(question => (question._id !== deselectedQuestion._id));
     this.setState({
       selectedQuestions: newState
     });
@@ -96,6 +96,7 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   renderQuestionLists() {
+    console.log(this.state.selectedQuestions)
     if (this.state.selectedCategories.length > 0) {
       return (
         <Flex center direction="column" textAlign="center" margin="top">

@@ -29,6 +29,7 @@ describe('Test example saving quiznight', () => {
           teamStatistics: [{
             team: "Nano peasants",
             givenAnswers: [{
+              question: "How does one leave Vim?",
               value: "got no idea :("
             }],
             correctAnswersAmount: 0

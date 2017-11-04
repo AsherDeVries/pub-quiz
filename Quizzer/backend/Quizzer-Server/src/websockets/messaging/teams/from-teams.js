@@ -7,10 +7,6 @@ import ROOM_NAMES from '../../constants/rooms';
 import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
 
 export default (socket, quiznightNamespace) => {
-  socket.on(MESSAGE_TYPES.CONNECT_SCOREBOARD, (message) => {
-    socket.join(ROOM_NAMES.SCOREBOARD);
-  });
-
   socket.on(MESSAGE_TYPES.CONNECT_TEAM, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
     DatabaseCacheHandler

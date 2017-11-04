@@ -40,7 +40,7 @@ Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, round: Numbe
 Event | Message type
 ------------- | -------------
 Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
-Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, isAccepted: Boolean} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, accepted: Boolean} ```
 Start round | ```{messageType: "START_ROUND"} ```
 Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
@@ -62,7 +62,7 @@ Event | Message type
 ------------- | -------------
 Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
 Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", String} ```
-Allowed to join quiznight | ```{messageType: "TEAM_ALLOWED", accepted: Boolean} ```
+Allowed to join quiznight | ```{messageType: "TEAM_ALLOWED", isAccepted: Boolean} ```
 Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", isCorrect: Boolean} ```
 New Question Starts | ```{messageType: "New Question", question: String} ```
 End quiz night | ```{messageType: "END_GAME"}```

@@ -40,7 +40,7 @@ Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, round: Numbe
 Event | Message type
 ------------- | -------------
 Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
-Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, accepted: Boolean} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", team:{teamName: String, socketId: string, isAccepted: boolean} ```
 Start round | ```{messageType: "START_ROUND"} ```
 Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```

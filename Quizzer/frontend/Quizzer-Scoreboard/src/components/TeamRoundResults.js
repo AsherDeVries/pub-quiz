@@ -1,16 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Panel from 'react-uikit-panel';
-import Grid from 'react-uikit-grid';
 
 const TeamRoundResults = (props) => {
   return (
-    <Panel box col='1-3'>
+    <Panel box col="1-3">
       <span>Round {props.results.round}</span>
       <br/>
       <span>{props.results.questionsCorrect}/12</span>
     </Panel>
   );
-}
+};
+
+TeamRoundResults.propTypes = {
+  results: PropTypes.object.isRequired
+};
 
 export default TeamRoundResults;

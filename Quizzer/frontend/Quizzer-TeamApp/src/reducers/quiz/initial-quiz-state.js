@@ -11,5 +11,5 @@ export default {
     message: "Waiting for question..",
     hasAnswered: false,
     answer: ""
-  }
+  },
 };

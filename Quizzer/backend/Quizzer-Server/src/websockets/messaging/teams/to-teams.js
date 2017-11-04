@@ -16,7 +16,7 @@ const TeamMessageSender = {
     this.namespace.to(ROOM_NAMES.TEAMS).emit(messageType, message);
   },
   disconnectSocket: function(socketId) {
-    quiznightNamespace.to(socketId).leave(ROOM_NAMES.TEAMS)
+    this.namespace.to(socketId).leave(ROOM_NAMES.TEAMS)
   }
 };
 

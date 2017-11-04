@@ -1,5 +1,9 @@
 import io from 'socket.io-client';
-import { GAME_ACTION_TYPES, QUIZNIGHT_ACTION_TYPES } from '../constants/actionTypes';
+import { 
+  GAME_ACTION_TYPES,
+  QUIZNIGHT_ACTION_TYPES,
+  WEBSOCKET_ACTION_TYPES
+} from '../constants/actionTypes';
 import * as REQUEST_STATE from '../constants/request';
 import * as GAME_STATE from '../constants/gameState';
 
@@ -8,7 +12,7 @@ const socketMiddleware = (function () {
 
   return store => next => action => {
     switch (action.type) {
-      case QUIZNIGHT_ACTION_TYPES.CONNECT_QUIZMASTER:
+      case WEBSOCKET_ACTION_TYPES.CONNECT_QUIZMASTER:
         if (socket != null) {
           socket.close();
         }
@@ -21,18 +25,30 @@ const socketMiddleware = (function () {
           waitForTeams(store);
         });
 
-        socket.on('TEAM_JOINED', (data) => {
+        socket.on(WEBSOCKET_ACTION_TYPES.TEAM_JOINED, (data) => {
           newTeam(store, data);
         });
         break;
-      case QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM:
-        socket.emit('ACCEPT_TEAM', action.team);
+      case WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM:
+        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
         acceptTeam(store, action.team);
         break;   
-      case QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM:
-        socket.emit('ACCEPT_TEAM', action.team);
+      case WEBSOCKET_ACTION_TYPES.DECLINE_TEAM:
+        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
         declineTeam(store, action.team);
-        break;   
+        break;
+      case WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND:
+        socket.emit(WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND);
+        break;  
+      case WEBSOCKET_ACTION_TYPES.NEXT_QUESTION:
+        socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, action.question);
+        break;
+      case WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION:
+        socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION);
+        break;
+      case WEBSOCKET_ACTION_TYPES.UPDATE_SCORE:
+        console.log('UPDATE SCORE ACTION: ',action);
+        break;
       default:
         return next(action);
     }

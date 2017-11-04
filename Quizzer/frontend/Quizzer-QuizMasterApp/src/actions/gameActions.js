@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import * as GAME_STATE from '../constants/gameState';
-import { GAME_ACTION_TYPES, QUIZNIGHT_ACTION_TYPES } from '../constants/actionTypes';
+import { GAME_ACTION_TYPES, WEBSOCKET_ACTION_TYPES } from '../constants/actionTypes';
 import * as REQUEST_STATE from '../constants/request';
 
 export function startGame() {
@@ -14,7 +14,7 @@ export function startGame() {
     );
     axios.post(`http://localhost:8080/quiznights`).then((result) => {
       dispatch({
-        type: QUIZNIGHT_ACTION_TYPES.CONNECT_QUIZMASTER,
+        type: WEBSOCKET_ACTION_TYPES.CONNECT_QUIZMASTER,
         code: result.data.code
       });
     });
@@ -26,6 +26,9 @@ export function createNewRound() {
     dispatch({
       type: GAME_ACTION_TYPES.SET_GAME_STATE,
       gameState: GAME_STATE.CREATING_NEW_ROUND
+    });
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND
     });
   };
 }

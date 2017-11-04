@@ -1,13 +1,18 @@
 import axios from 'axios';
 
-import { QUIZNIGHT_ACTION_TYPES, GAME_ACTION_TYPES, QUESTION_ACTION_TYPES } from '../constants/actionTypes';
+import { 
+  QUIZNIGHT_ACTION_TYPES,
+  GAME_ACTION_TYPES,
+  QUESTION_ACTION_TYPES,
+  WEBSOCKET_ACTION_TYPES
+} from '../constants/actionTypes';
 import * as GAME_STATE from '../constants/gameState';
 
 export function acceptTeam(team, isAccepted) {
   return (dispatch) => {
     if (isAccepted) {
       dispatch({
-        type: QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM,
+        type: WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM,
         team: {
           teamName: team.teamName,
           socketId: team.socketId,
@@ -17,7 +22,7 @@ export function acceptTeam(team, isAccepted) {
     }
     else {
       dispatch({
-        type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
+        type: WEBSOCKET_ACTION_TYPES.DECLINE_TEAM,
         team: team
       });
     }
@@ -54,22 +59,36 @@ export function startRound(questions) {
         type: GAME_ACTION_TYPES.SET_GAME_STATE,
         gameState: GAME_STATE.CHECKING_ANSWERS
       });
+      dispatch({
+        type: WEBSOCKET_ACTION_TYPES.NEXT_QUESTION,
+        question: {
+          _id: questions[questionSequenceNr]._id,
+          category: questions[questionSequenceNr].category
+        } 
+      });
     });
   };
 }
 
-export function closeQuestion(question) {
-  console.log(question);
+export function closeQuestion() {
+  return (dispatch) => {
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION
+    });
+  };
 }
 
 export function submitAnswerReview(question, correctAnswerTeam) {
-  console.log(correctAnswerTeam);
   return (dispatch, getState) => {
     const state = getState();
     const { questionSequenceNr, questionsPerRound } = state.quiznightReducer;
     const questionIsLastQuestionOfRound = (questionSequenceNr === questionsPerRound);
 
-    //tell websocket 
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.UPDATE_SCORE,
+      question: question._id,
+      givenAnswers: correctAnswerTeam
+    });
 
     if (questionIsLastQuestionOfRound) {
       createNewRoundAndEmptyState(dispatch);

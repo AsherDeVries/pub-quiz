@@ -40,11 +40,11 @@ Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, round: Numbe
 Event | Message type
 ------------- | -------------
 Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
-Accept team | ```{messageType: "ACCEPT_TEAM", team:{teamName: String, socketId: string, isAccepted: boolean} ```
+Accept team | ```{messageType: "ACCEPT_TEAM", team: {teamName: String, socketId: string, isAccepted: boolean} ```
 Start round | ```{messageType: "START_ROUND"} ```
 Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
-Submit answers review | ```{messageType: "UPDATE_SCORE", question: String, correctAnswer: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
+Submit answers review | ```{messageType: "UPDATE_SCORE", round: Number, question: String, correctAnswer: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
 End round | ```{messageType: "END_ROUND"}```
 End quiz night | ```{messageType: "END_GAME"} ```
 
@@ -64,7 +64,7 @@ Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
 Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", String} ```
 Allowed to join quiznight | ```{messageType: "TEAM_ALLOWED", isAccepted: Boolean} ```
 Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", correctAnswer: String, isCorrect: Boolean} ```
-New Question Starts | ```{messageType: "New Question", question: String} ```
+New Question Starts | ```{messageType: "NEW_QUESTION", question: String, category: String} ```
 End quiz night | ```{messageType: "END_GAME"}```
 
 

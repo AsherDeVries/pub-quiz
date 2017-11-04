@@ -63,7 +63,7 @@ Event | Message type
 Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
 Pending for anything (such as waiting for new rounds) | ```{messageType: "PENDING", String} ```
 Allowed to join quiznight | ```{messageType: "TEAM_ALLOWED", isAccepted: Boolean} ```
-Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", isCorrect: Boolean} ```
+Answer to question has been reviewed | ```{messageType: "ANSWER_REVIEWED", correctAnswer: String, isCorrect: Boolean} ```
 New Question Starts | ```{messageType: "New Question", question: String} ```
 End quiz night | ```{messageType: "END_GAME"}```
 

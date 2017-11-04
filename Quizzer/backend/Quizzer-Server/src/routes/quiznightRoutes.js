@@ -4,7 +4,7 @@ import { Router } from 'express';
 import QuestionModel from '../models/Question';
 import Quiznight from '../models/Quiznight';
 import randomstring from 'randomstring';
-import createSocketIoNamespace from '../websockets/non-quizmaster';
+import { createWebsocketNamespaceForQuiznight } from '../websockets';
 
 export default () => {
   let quiznightRoute = Router();
@@ -22,16 +22,11 @@ export default () => {
        rounds: []
      });
  
-     createSocketIoNamespace(quiznightCode);
+     createWebsocketNamespaceForQuiznight(quiznightCode);
      qn.save()
       .then(() => {
         return res.send({ code: quiznightCode })
       });
-    // generate string
-    // create namespace
-    // on success:
-    //  save to db
-    // respond with code
   });
 
   quiznightRoute.post('/:quiznightId/rounds', (req, res) => {

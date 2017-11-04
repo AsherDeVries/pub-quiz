@@ -1,6 +1,8 @@
-import * as REQUEST_STATE from '../constants/request';
+import axios from 'axios';
+
 import * as GAME_STATE from '../constants/gameState';
 import { GAME_ACTION_TYPES, QUIZNIGHT_ACTION_TYPES } from '../constants/actionTypes';
+import * as REQUEST_STATE from '../constants/request';
 
 export function startGame() {
   return (dispatch) => {
@@ -10,38 +12,29 @@ export function startGame() {
         startGameRequestState: REQUEST_STATE.PENDING
       }
     );
+    axios.post(`http://localhost:8080/quiznights`).then((result) => {
+      dispatch({
+        type: QUIZNIGHT_ACTION_TYPES.CONNECT_QUIZMASTER,
+        code: result.data.code
+      });
 
-    //Simulate login successful
-    setTimeout(() => {
-      dispatch(
-        {
-          type: GAME_ACTION_TYPES.SET_GAME_START_REQUEST_STATE,
-          startGameRequestState: REQUEST_STATE.SUCCESS
+      setTimeout(() => {
+        const team = {
+          teamName: 'NAME',
+          socketId:'someid',
+          isAccepted: false
         }
-      );
-      dispatch(
-        {
-          type: GAME_ACTION_TYPES.SET_GAME_STATE,
-          gameState: GAME_STATE.WAITING_FOR_APPLICANTS
-        }
-      );
-      dispatch(
-        {
-          type: QUIZNIGHT_ACTION_TYPES.SET_QUIZNIGHT,
-          quiznight: {
-            id: '4QzF',
-            rounds: [
-            ],
-            teams: [
-            ]
-          }
-        }
-      );
-    }, 1000);
+
+        dispatch({
+          type: QUIZNIGHT_ACTION_TYPES.NEW_TEAM,
+          team: team
+        }); 
+      }, 6000)
+    });
   };
 }
 
-export function startRound() {
+export function createNewRound() {
   return (dispatch) => {
     dispatch({
       type: GAME_ACTION_TYPES.SET_GAME_STATE,

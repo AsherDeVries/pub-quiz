@@ -1,7 +1,7 @@
+import axios from 'axios';
+
 import { QUIZNIGHT_ACTION_TYPES, GAME_ACTION_TYPES, QUESTION_ACTION_TYPES } from '../constants/actionTypes';
 import * as GAME_STATE from '../constants/gameState';
-
-import axios from 'axios';
 
 export function acceptTeam(team, isAccepted) {
   return (dispatch) => {
@@ -9,15 +9,16 @@ export function acceptTeam(team, isAccepted) {
       dispatch({
         type: QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM,
         team: {
-          name: team,
-          isAccepted
+          teamName: team.teamName,
+          socketId: team.socketId,
+          isAccepted: isAccepted
         }
       });
     }
     else {
       dispatch({
         type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
-        teamName: team
+        team: team
       });
     }
   };
@@ -26,7 +27,7 @@ export function acceptTeam(team, isAccepted) {
 export function startRound(questions) {
   return (dispatch, getState) => {
     const state = getState();
-    const {questionSequenceNr, _id} = state.quiznightReducer;
+    const { questionSequenceNr, _id } = state.quiznightReducer;
 
     dispatch({
       type: GAME_ACTION_TYPES.SET_GAME_STATE,
@@ -34,15 +35,12 @@ export function startRound(questions) {
     });
 
     axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
-      return {_id: question._id};
-    }) ).then(() => {
+      return { _id: question._id };
+    })).then(() => {
       dispatch({
         type: QUESTION_ACTION_TYPES.FETCH_QUESTIONS,
         questions: questions
       });
-    });
-
-    setTimeout(() => {
       dispatch({
         type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
         question: questions[questionSequenceNr],
@@ -56,9 +54,7 @@ export function startRound(questions) {
         type: GAME_ACTION_TYPES.SET_GAME_STATE,
         gameState: GAME_STATE.CHECKING_ANSWERS
       });
-
-      simulateAnswerReviewed(dispatch);
-    }, 2000);
+    });
   };
 }
 
@@ -73,26 +69,13 @@ export function submitAnswerReview(question, correctAnswerTeam) {
     const { questionSequenceNr, questionsPerRound } = state.quiznightReducer;
     const questionIsLastQuestionOfRound = (questionSequenceNr === questionsPerRound);
 
+    //tell websocket 
+
     if (questionIsLastQuestionOfRound) {
       createNewRoundAndEmptyState(dispatch);
     }
     else {
       emptyLastQuestionAndWaitForNextQuestion(dispatch);
-
-      //simulate new question from websocket, remove this code when websockets are implemented
-      const { availableQuestions } = state.questionReducer;
-      setTimeout(() => {
-        dispatch({
-          type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
-          question: availableQuestions[questionSequenceNr],
-          questionSequenceNr: questionSequenceNr + 1
-        });
-        dispatch({
-          type: GAME_ACTION_TYPES.SET_GAME_STATE,
-          gameState: GAME_STATE.CHECKING_ANSWERS
-        });
-        simulateAnswerReviewed(dispatch);
-      }, 2000);
     }
   };
 }
@@ -121,24 +104,4 @@ function emptyLastQuestionAndWaitForNextQuestion(dispatch) {
     type: GAME_ACTION_TYPES.SET_GAME_STATE,
     gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
   });
-}
-
-// remove this function when websockets are implemented
-function simulateAnswerReviewed(dispatch) {
-  setTimeout(() => {
-    dispatch(
-      {
-        type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
-        answer: { team: 'Team 1', text: 'Nelson Mandela' }
-      }
-    );
-    setTimeout(() => {
-      dispatch(
-        {
-          type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
-          answer: { team: 'Team 2', text: 'William Nelson' }
-        }
-      );
-    }, 1000);
-  }, 2000);
 }

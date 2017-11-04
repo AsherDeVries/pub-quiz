@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 
 import {CONNECT_TEAM, NEW_QUESTION, TEAM_ALLOWED, SUBMIT_ANSWER} from '../constants/actionTypes';
 import * as REQUEST_STATE from '../constants/request';
-import {newQuestion, showScoreOverview, showAnswers} from '../actions/scoreboardActions';
+import {newQuestion, showScoreOverview, showAnswers, showAnswerSubmission} from '../actions/scoreboardActions';
 
 let socket;
 
@@ -24,8 +24,8 @@ function hookUpEvents(socket) {
 
 function receiveSubmittedAnswer(socket) {
   socket.on(ANSWER_SUBMITTED, (data) => {
-    
-  })
+    showAnswerSubmission(data);
+  });
 }
 
 function receiveQuestion(socket) {

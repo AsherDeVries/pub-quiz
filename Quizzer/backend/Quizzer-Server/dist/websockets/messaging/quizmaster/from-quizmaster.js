@@ -45,13 +45,14 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.ACCEPT_TEAM, function (message) {
-    var messageToTeam = { accepted: message.isAccepted };
-    if (!message.isAccepted) {
-      var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
-      _database2.default.removeTeamInQuiznightFromCache(qnCode, message.teamName).then(_toTeams2.default.disconnectSocket(message.socketId));
-    }
+    var messageToTeam = { accepted: message.team.isAccepted };
 
-    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(message.socketId, _message_types2.default.TEAM_ALLOWED, messageToTeam);
+    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(message.team.socketId, _message_types2.default.TEAM_ALLOWED, messageToTeam);
+
+    if (!messageToTeam.isAccepted) {
+      var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
+      _database2.default.removeTeamInQuiznightFromCache(qnCode, message.team.teamName).then(_toTeams2.default.disconnectSocket(message.team.socketId));
+    }
   });
 
   socket.on(_message_types2.default.START_ROUND, function (message) {
@@ -62,26 +63,14 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.NEXT_QUESTION, function (message) {
-    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.NEW_QUESTION, { question: message.question });
+    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.NEW_QUESTION, { question: message.question._id, category: message.question.category });
   });
 
   socket.on(_message_types2.default.CLOSE_QUESTION, function (message) {
     _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.PENDING, 'Quizmaster is currently reviewing answers.');
-    //quiznightNamespace.to(ROOM_NAMES.TEAMS).emit(MESSAGE_TYPES.QUESTION_CLOSED, { question: message.question, givenAnswers: db.givenAnswers })    
-    // WANNEER MOET SCOREBOARD GEINFORMEERD WORDEN OVER ANTWOORDEN VAN TEAMS??
   });
 
   socket.on(_message_types2.default.UPDATE_SCORE, function (message) {
-    // message.question
-    // message.givenAnswers: [
-    // teamName: String,
-    // answer: String
-    // isCorrect: Boolean
-    //]
-    // Loop door lijst met teams
-    // 1. Informeer over antwoord review
-    // 2. Zet aantal goede antwoorden per team in db.
-    // 3. Zet question op gereviewed in db
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
     var _iteratorNormalCompletion = true;
@@ -94,9 +83,12 @@ exports.default = function (socket, quiznightNamespace) {
 
         var socketId = _connections2.default.getSocketIdFromTeam(qnCode, givenAnswer.teamName);
 
+        console.log(givenAnswer);
+        if (givenAnswer.isCorrect) {
+          console.log('INCREMENT SCORE');
+          _database2.default.incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+        }
         _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
-
-        _database2.default.saveAnswerOfTeamInRoundToCache(qnCode, message.round, givenAnswer.teamName, message.question, givenAnswer.answer);
       }
     } catch (err) {
       _didIteratorError = true;

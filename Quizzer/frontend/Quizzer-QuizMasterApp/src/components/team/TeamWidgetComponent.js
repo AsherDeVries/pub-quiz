@@ -8,7 +8,6 @@ import Panel from 'react-uikit-panel';
 const iconStyles = {
   color: 'green',
   margin: 'auto'
-
 };
 
 class TeamWidgetComponent extends Component {
@@ -32,7 +31,7 @@ class TeamWidgetComponent extends Component {
   }
 
   onButtonClick(isAccepted) {
-    this.props.onApproveclick(this.props.team.name, isAccepted);
+    this.props.onApproveclick(this.props.team, isAccepted);
   }
 
   render() {
@@ -40,7 +39,7 @@ class TeamWidgetComponent extends Component {
       <Panel margin="left">
         <Card>
           <CardHeader
-            title={this.props.team.name}
+            title={this.props.team.teamName}
             textStyle={{"padding-right": 0}}
           />
           {this.renderCardActionsOrApproval()}

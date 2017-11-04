@@ -6,18 +6,23 @@ export default function quiznightReducer(state = initialState, action) {
     case QUIZNIGHT_ACTION_TYPES.SET_QUIZNIGHT:
       return {
         ...state,
-        id: action.quiznight.id
+        _id: action.quiznight._id
       };
-    case QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM:
+    case QUIZNIGHT_ACTION_TYPES.NEW_TEAM:
+      return {
+        ...state,
+        teams: [...state.teams, action.team]
+      };
+    case QUIZNIGHT_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM:
      return {
        ...state,
-       teams: state.teams.filter(team => (team.name !== action.teamName))
+       teams: state.teams.filter(team => (team.teamName !== action.team.teamName))
      };
-    case QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM:
+    case QUIZNIGHT_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM:
       return {
         ...state,
         teams: state.teams.map(team => {
-          if  (team.name == action.team.name) {
+          if  (team.teamName == action.team.teamName) {
             return action.team;
           }
           return team;

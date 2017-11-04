@@ -20,17 +20,18 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
     let messageToTeam = { accepted: message.team.isAccepted };
+
+    TeamMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendMessageToSocketViaId(message.team.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
+
     if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       DatabaseCacheHandler
         .removeTeamInQuiznightFromCache(qnCode, message.team.teamName)
       .then(TeamMessageSender.disconnectSocket(message.team.socketId));
     }
-
-    TeamMessageSender
-      .toNamespace(quiznightNamespace)
-      .usingSocket(socket)
-      .sendMessageToSocketViaId(message.team.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
   });
 
   socket.on(MESSAGE_TYPES.START_ROUND, (message) => {

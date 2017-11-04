@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/models/Answer.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,QAAf,oB","file":"Answer.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport answersSchema from '../database/schemas/quiznights/quizrounds/answers';\n\nexport default mongoose.model('Answer', answersSchema);"]}

@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/models/Quizround.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,WAAf,uB","file":"Quizround.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport quizroundsSchema from '../database/schemas/quiznights/quizrounds';\n\nexport default mongoose.model('Quizround', quizroundsSchema);"]}

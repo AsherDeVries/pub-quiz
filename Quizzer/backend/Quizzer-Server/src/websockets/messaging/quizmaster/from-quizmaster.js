@@ -67,9 +67,7 @@ export default (socket, quiznightNamespace) => {
       let socketId = TeamWebsocketConnectionsCacheHandler
         .getSocketIdFromTeam(qnCode, givenAnswer.teamName);
 
-        console.log(givenAnswer);
       if(givenAnswer.isCorrect) {
-        console.log('INCREMENT SCORE');
         DatabaseCacheHandler
           .incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
       }

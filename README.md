@@ -44,7 +44,7 @@ Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String,
 Start round | ```{messageType: "START_ROUND"} ```
 Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
-Submit answers review | ```{messageType: "UPDATE_SCORE", question: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
+Submit answers review | ```{messageType: "UPDATE_SCORE", question: String, correctAnswer: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
 End round | ```{messageType: "END_ROUND"}```
 End quiz night | ```{messageType: "END_GAME"} ```
 

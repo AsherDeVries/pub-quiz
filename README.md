@@ -42,7 +42,7 @@ Event | Message type
 Quizmaster signup | ```{messageType: "CONNECT_QUIZMASTER"} ```
 Accept team | ```{messageType: "ACCEPT_TEAM", teamName:String, socketId: String, accepted: Boolean} ```
 Start round | ```{messageType: "START_ROUND"} ```
-Next Question | ```{messageType: "NEXT_QUESTION", question: String}```
+Next Question | ```{messageType: "NEXT_QUESTION", question: {_id: String, category: String}```
 Close Question | ```{messageType: "CLOSE_QUESTION", question:String}```
 Submit answers review | ```{messageType: "UPDATE_SCORE", question: String, givenAnswers: [{teamName: String, answer: String, isCorrect: Boolean}] }```
 End round | ```{messageType: "END_ROUND"}```

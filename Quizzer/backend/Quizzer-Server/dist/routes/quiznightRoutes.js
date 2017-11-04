@@ -16,10 +16,35 @@ var _Quiznight = require('../models/Quiznight');
 
 var _Quiznight2 = _interopRequireDefault(_Quiznight);
 
+var _randomstring = require('randomstring');
+
+var _randomstring2 = _interopRequireDefault(_randomstring);
+
+var _websockets = require('../websockets');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
   var quiznightRoute = (0, _express.Router)();
+
+  quiznightRoute.post('/', function (req, res) {
+
+    var quiznightCode = _randomstring2.default.generate({
+      length: 6,
+      charset: 'alphanumeric'
+    });
+
+    var qn = new _Quiznight2.default({
+      _id: quiznightCode,
+      teams: [],
+      rounds: []
+    });
+
+    (0, _websockets.createWebsocketNamespaceForQuiznight)(quiznightCode);
+    qn.save().then(function () {
+      return res.send({ code: quiznightCode });
+    });
+  });
 
   quiznightRoute.post('/:quiznightId/rounds', function (req, res) {
     if (req.params.quiznightId) {

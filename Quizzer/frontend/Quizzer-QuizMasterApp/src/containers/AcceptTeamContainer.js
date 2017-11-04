@@ -9,7 +9,7 @@ import Flex from 'react-uikit-flex';
 import initialQuiznightState from '../reducers/quiznight/initial-quiznight-state';
 import TeamListComponent from '../components/team/TeamListComponent';
 import { acceptTeam } from '../actions/quiznightActions';
-import { startRound } from '../actions/gameActions';
+import { createNewRound } from '../actions/gameActions';
 
 class AcceptTeamContainer extends Component {
 
@@ -17,14 +17,14 @@ class AcceptTeamContainer extends Component {
     this.props.acceptTeam(team, isAccepted);
   }
 
-  handleStartRound() {
-    this.props.startRound();
+  handlecreateNewRound() {
+    this.props.createNewRound();
   }
 
   renderStartGameButton() {
     if (this.thereAreAtLeastTwoTeamsAndAllTeamsAreAccepted()) {
       return (
-        <Button body="Start first round" context="primary" size="large" onClick={() => this.handleStartRound()}/>
+        <Button body="Start first round" context="primary" size="large" onClick={() => this.handlecreateNewRound()}/>
       );
     }
   }
@@ -40,7 +40,7 @@ class AcceptTeamContainer extends Component {
       <div>
         <Panel textAlign="center">
           <h1>Hi quizmaster!</h1>
-          <h2>Share this code: {this.props.quiznight.id} </h2>
+          <h2>Share this code: {this.props.quiznight._id} </h2>
         </Panel>
         <Grid>
           <TeamListComponent teams={this.props.quiznight.teams} onApproveClick={handleApprove} />
@@ -62,11 +62,11 @@ function mapStateToProps(state) {
 AcceptTeamContainer.propTypes = {
   quiznight: PropTypes.object,
   acceptTeam: PropTypes.func,
-  startRound: PropTypes.func
+  createNewRound: PropTypes.func
 };
 
 AcceptTeamContainer.defaultProps = {
   quiznight: initialQuiznightState
 };
 
-export default connect(mapStateToProps, { acceptTeam, startRound })(AcceptTeamContainer);
+export default connect(mapStateToProps, { acceptTeam, createNewRound })(AcceptTeamContainer);

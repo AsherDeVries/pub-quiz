@@ -1,23 +1,29 @@
-import { QUIZNIGHT_ACTION_TYPES, GAME_ACTION_TYPES, QUESTION_ACTION_TYPES } from '../constants/actionTypes';
-import * as GAME_STATE from '../constants/gameState';
-
 import axios from 'axios';
+
+import { 
+  QUIZNIGHT_ACTION_TYPES,
+  GAME_ACTION_TYPES,
+  QUESTION_ACTION_TYPES,
+  WEBSOCKET_ACTION_TYPES
+} from '../constants/actionTypes';
+import * as GAME_STATE from '../constants/gameState';
 
 export function acceptTeam(team, isAccepted) {
   return (dispatch) => {
     if (isAccepted) {
       dispatch({
-        type: QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM,
+        type: WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM,
         team: {
-          name: team,
-          isAccepted
+          teamName: team.teamName,
+          socketId: team.socketId,
+          isAccepted: isAccepted
         }
       });
     }
     else {
       dispatch({
-        type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
-        teamName: team
+        type: WEBSOCKET_ACTION_TYPES.DECLINE_TEAM,
+        team: team
       });
     }
   };
@@ -26,7 +32,7 @@ export function acceptTeam(team, isAccepted) {
 export function startRound(questions) {
   return (dispatch, getState) => {
     const state = getState();
-    const {questionSequenceNr, _id} = state.quiznightReducer;
+    const { questionSequenceNr, _id } = state.quiznightReducer;
 
     dispatch({
       type: GAME_ACTION_TYPES.SET_GAME_STATE,
@@ -34,15 +40,12 @@ export function startRound(questions) {
     });
 
     axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
-      return {_id: question._id};
-    }) ).then(() => {
+      return { _id: question._id };
+    })).then(() => {
       dispatch({
         type: QUESTION_ACTION_TYPES.FETCH_QUESTIONS,
         questions: questions
       });
-    });
-
-    setTimeout(() => {
       dispatch({
         type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
         question: questions[questionSequenceNr],
@@ -56,43 +59,42 @@ export function startRound(questions) {
         type: GAME_ACTION_TYPES.SET_GAME_STATE,
         gameState: GAME_STATE.CHECKING_ANSWERS
       });
-
-      simulateAnswerReviewed(dispatch);
-    }, 2000);
+      dispatch({
+        type: WEBSOCKET_ACTION_TYPES.NEXT_QUESTION,
+        question: {
+          _id: questions[questionSequenceNr]._id,
+          category: questions[questionSequenceNr].category
+        } 
+      });
+    });
   };
 }
 
-export function closeQuestion(question) {
-  console.log(question);
+export function closeQuestion() {
+  return (dispatch) => {
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION
+    });
+  };
 }
 
 export function submitAnswerReview(question, correctAnswerTeam) {
-  console.log(correctAnswerTeam);
   return (dispatch, getState) => {
     const state = getState();
     const { questionSequenceNr, questionsPerRound } = state.quiznightReducer;
     const questionIsLastQuestionOfRound = (questionSequenceNr === questionsPerRound);
+
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.UPDATE_SCORE,
+      question: question._id,
+      givenAnswers: correctAnswerTeam
+    });
 
     if (questionIsLastQuestionOfRound) {
       createNewRoundAndEmptyState(dispatch);
     }
     else {
       emptyLastQuestionAndWaitForNextQuestion(dispatch);
-
-      //simulate new question from websocket, remove this code when websockets are implemented
-      const { availableQuestions } = state.questionReducer;
-      setTimeout(() => {
-        dispatch({
-          type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
-          question: availableQuestions[questionSequenceNr],
-          questionSequenceNr: questionSequenceNr + 1
-        });
-        dispatch({
-          type: GAME_ACTION_TYPES.SET_GAME_STATE,
-          gameState: GAME_STATE.CHECKING_ANSWERS
-        });
-        simulateAnswerReviewed(dispatch);
-      }, 2000);
     }
   };
 }
@@ -121,24 +123,4 @@ function emptyLastQuestionAndWaitForNextQuestion(dispatch) {
     type: GAME_ACTION_TYPES.SET_GAME_STATE,
     gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
   });
-}
-
-// remove this function when websockets are implemented
-function simulateAnswerReviewed(dispatch) {
-  setTimeout(() => {
-    dispatch(
-      {
-        type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
-        answer: { team: 'Team 1', text: 'Nelson Mandela' }
-      }
-    );
-    setTimeout(() => {
-      dispatch(
-        {
-          type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
-          answer: { team: 'Team 2', text: 'William Nelson' }
-        }
-      );
-    }, 1000);
-  }, 2000);
 }

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import Flex from 'react-uikit-flex';
+import Button from 'react-uikit-button';
 
 import WithLoading from '../components/shared/WithLoading';
 import { login } from '../actions/loginActions';
@@ -35,7 +36,7 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <div>
+      <Flex center middle viewport row="wrap" direction="column">
         <WithLoading loadingState={this.props.session.loginState.requestStatus} >
           <TextField
             id="text-field-controlled"
@@ -47,19 +48,19 @@ class LoginContainer extends Component {
           <TextField
             id="text-field-controlled"
             value={this.state.password}
-            type="password"
-            floatingLabelText="Password"
+            floatingLabelText="Quiz code"
             onChange={(event) => this.handlePasswordChange(event.target.value)}
           />
           <br />
-          <FlatButton
-            label="Login"
-            labelPosition="before"
-            primary={true}
+          <Button
+            size="large"
+            body="Login"
+            context="primary"
+            margin="bottom"
             onClick={() => this.handleLogin()}
           />
-          </WithLoading >
-      </div>
+        </WithLoading>
+      </Flex>
     );
   }
 }
@@ -74,5 +75,4 @@ LoginContainer.propTypes = {
   session: PropTypes.object,
   login: PropTypes.func
 };
-
 export default connect(mapStateToProps, {login})(LoginContainer);

@@ -74,8 +74,7 @@ Event | Message type
 ------------- | -------------
 Can not sign up | ```{messageType: "SIGN_UP_ERROR"} ```
 Pending for anything | ```{messageType: "PENDING", String} ```
-New Round Started | ```{messageType: "NEW_ROUND_STARTED, round:{} ```
-Team joined | ```{ teamName: String, socketId: String }```
+Team joined | ```{ messageType: "TEAM_JOINED", teamName: String, socketId: String }```
 New Question Received for current round | ```{messageType: "NEW_QUESTION", question:String }```
 Answer Submitted | ```{messageType: "ANSWER_SUBMITTED", question: String, answer: String} ```
 

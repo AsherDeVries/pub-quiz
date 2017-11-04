@@ -32,7 +32,7 @@ Now that we have our models, let's look at which events occur during a Quiz Nigh
 Event | Message type
 ------------- | -------------
 Team signed up | ```{messageType: "CONNECT_TEAM", teamName: String} ```
-Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, question: String, answer: String } ```
+Submit answer | ```{messageType: "SUBMIT_ANSWER", teamName: String, round: Number, question: String, answer: String } ```
 
 
 **Messages from QuizmasterApp to server:**

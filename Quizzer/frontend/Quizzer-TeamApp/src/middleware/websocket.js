@@ -41,6 +41,6 @@ function receiveMessage(socket) {
 
 function teamAccepted(socket) {
   socket.on(TEAM_ALLOWED, (data) => {
-    teamAllowed(data.accepted);
+    teamAllowed(data.isAccepted);
   });
 }

@@ -18,18 +18,18 @@ export default (socket, quiznightNamespace) => {
   });
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
-    let messageToTeam = { accepted: message.accepted };
-    if(!message.accepted) {
+    let messageToTeam = { isAccepted: message.isAccepted };
+    if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       DatabaseCacheHandler
         .removeTeamInQuiznightFromCache(qnCode, message.teamName)
       .then(TeamMessageSender.disconnectSocket(message.socketId));
+    } else {
+      TeamMessageSender
+        .toNamespace(quiznightNamespace)
+        .usingSocket(socket)
+        .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
     }
-
-    TeamMessageSender
-      .toNamespace(quiznightNamespace)
-      .usingSocket(socket)
-      .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
   });
 
   socket.on(MESSAGE_TYPES.START_ROUND, (message) => {

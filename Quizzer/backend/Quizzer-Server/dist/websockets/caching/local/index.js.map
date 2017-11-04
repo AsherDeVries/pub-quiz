@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../src/websockets/caching/local/index.js"],"names":["LocalCacheHandler","quizNights"],"mappings":";;;;;AAAA,IAAMA,oBAAoB;AACxBC,cAAY;AADY,CAA1B;;kBAIeD,iB","file":"index.js","sourcesContent":["const LocalCacheHandler = {\n  quizNights: []\n};\n\nexport default LocalCacheHandler;"]}

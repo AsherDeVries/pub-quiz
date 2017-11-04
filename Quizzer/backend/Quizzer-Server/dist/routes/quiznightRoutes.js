@@ -20,9 +20,7 @@ var _randomstring = require('randomstring');
 
 var _randomstring2 = _interopRequireDefault(_randomstring);
 
-var _nonQuizmaster = require('../websockets/non-quizmaster');
-
-var _nonQuizmaster2 = _interopRequireDefault(_nonQuizmaster);
+var _websockets = require('../websockets');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42,15 +40,10 @@ exports.default = function () {
       rounds: []
     });
 
-    (0, _nonQuizmaster2.default)(quiznightCode);
+    (0, _websockets.createWebsocketNamespaceForQuiznight)(quiznightCode);
     qn.save().then(function () {
       return res.send({ code: quiznightCode });
     });
-    // generate string
-    // create namespace
-    // on success:
-    //  save to db
-    // respond with code
   });
 
   quiznightRoute.post('/:quiznightId/rounds', function (req, res) {

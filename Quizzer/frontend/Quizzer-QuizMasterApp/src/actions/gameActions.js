@@ -17,19 +17,6 @@ export function startGame() {
         type: QUIZNIGHT_ACTION_TYPES.CONNECT_QUIZMASTER,
         code: result.data.code
       });
-
-      setTimeout(() => {
-        const team = {
-          teamName: 'NAME',
-          socketId:'someid',
-          isAccepted: false
-        }
-
-        dispatch({
-          type: QUIZNIGHT_ACTION_TYPES.NEW_TEAM,
-          team: team
-        }); 
-      }, 6000)
     });
   };
 }

@@ -72,7 +72,10 @@ export default (socket, quiznightNamespace) => {
     // 1. Informeer over antwoord review
     // 2. Zet aantal goede antwoorden per team in db.
     // 3. Zet question op gereviewed in db
-    quiznightNamespace.to(message.socket_id).emit(MESSAGE_TYPES.ANSWER_REVIEWED, { isCorrect: message.answer })
+    TeamMessageSender
+      .toNamespace(quiznightNamespace)
+      .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.ANSWER_REVIEWED, { isCorrect: message.answer });
+      
     quiznightNamespace.to(ROOM_NAMES.QUIZMASTER).emit(MESSAGE_TYPES.ANSWER_REVIEWED, { question: message.question, answer: message.answer })
   });
 

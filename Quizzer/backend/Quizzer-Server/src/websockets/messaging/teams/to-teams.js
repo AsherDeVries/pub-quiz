@@ -1,21 +1,22 @@
 import ROOM_NAMES from '../../constants/rooms';
+import { getQuiznightCodeFromSocket } from '../../utils';
 
 const TeamMessageSender = {
-  toNamespace: function(namespace) {
+  toNamespace(namespace) {
     this.namespace = namespace;
     return this;
   },
-  usingSocket: function (socket) {
+  usingSocket(socket) {
     this.socket = socket;
     return this;
   },
-  sendMessageToSocketViaId: function(toSocketId, messageType, message) {
-    this.namespace.to(message.socketId).emit(messageType, message);
+  sendMessageToSocketViaId(socketId, messageType, message) {
+    this.namespace.to(socketId).emit(messageType, message);
   },
-  sendMessageToAllTeams: function(messageType, message) {
+  sendMessageToAllTeams(messageType, message) {
     this.namespace.to(ROOM_NAMES.TEAMS).emit(messageType, message);
   },
-  disconnectSocket: function(socketId) {
+  disconnectSocket(socketId) {
     this.namespace.to(socketId).leave(ROOM_NAMES.TEAMS);
   }
 };

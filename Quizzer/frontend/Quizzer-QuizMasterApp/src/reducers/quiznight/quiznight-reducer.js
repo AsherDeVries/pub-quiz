@@ -13,12 +13,12 @@ export default function quiznightReducer(state = initialState, action) {
         ...state,
         teams: [...state.teams, action.team]
       };
-    case QUIZNIGHT_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM:
+    case QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM:
      return {
        ...state,
        teams: state.teams.filter(team => (team.teamName !== action.team.teamName))
      };
-    case QUIZNIGHT_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM:
+    case QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM:
       return {
         ...state,
         teams: state.teams.map(team => {

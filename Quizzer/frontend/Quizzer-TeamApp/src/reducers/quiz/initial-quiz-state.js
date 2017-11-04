@@ -5,10 +5,10 @@ export default {
   questionWebsocketMessage: "Waiting for the quizmaster to approve your team..",
   questionState: false,
   currentQuestion: {
-    question: "ertheth",
-    category: "ertherth",
+    question: "",
+    category: "",
     status: REQUEST_STATE.PENDING,
-    message: "Waiting for question..",
+    message: "",
     hasAnswered: false,
     answer: ""
   },

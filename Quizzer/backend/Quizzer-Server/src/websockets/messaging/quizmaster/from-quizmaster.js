@@ -19,6 +19,7 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
     let messageToTeam = { isAccepted: message.isAccepted };
+    console.log(message)
     if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       DatabaseCacheHandler

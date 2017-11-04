@@ -1,6 +1,5 @@
 import * as REQUEST_STATE from '../constants/request';
 import * as types from '../constants/actionTypes';
-import {sendAnswer} from '../middleware/websocket';
 
 export function teamAllowed(isAllowed) {
   return(dispatch) => {
@@ -22,7 +21,6 @@ export function showMessage(msg) {
 
 export function submitAnswer(answer) {
   return(dispatch) => {
-    sendAnswer(answer);
     dispatch({
       type: types.SUBMIT_ANSWER,
       currentQuestion: {

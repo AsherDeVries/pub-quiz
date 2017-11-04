@@ -90,14 +90,14 @@ function newTeam(store, team) {
 
 function acceptTeam(store, team) {
   store.dispatch({
-    type: QUIZNIGHT_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM,
+    type: QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM,
     team: team
   });
 }
 
 function declineTeam(store, team) {
   store.dispatch({
-    type: QUIZNIGHT_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM,
+    type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
     team: team
   });
 }

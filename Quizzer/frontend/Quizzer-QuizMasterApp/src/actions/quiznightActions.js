@@ -66,9 +66,12 @@ export function startRound(questions) {
 }
 
 export function closeQuestion() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const question = getState().quiznightReducer.currentQuestion;
+    
     dispatch({
-      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION
+      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION,
+      question: question
     });
   };
 }

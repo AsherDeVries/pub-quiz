@@ -40,14 +40,21 @@ export default () => {
         element.hasBeenReviewed = false;
       });
 
-      Quiznight.update(
-        { _id: req.params.quiznightId },
-        {
-          $set: {
-            'rounds.0.chosenQuestions': req.body
+      Quiznight.findOne({ _id: req.params.quiznightId }).then(data => {
+        const rounds = [...data.rounds];
+        rounds[req.params.roundId].chosenQuestions = req.body;
+
+        Quiznight.update(
+          { _id: req.params.quiznightId},
+          {
+            $set: {
+              'rounds': rounds
+            }
           }
-        }
-      ).then(data => res.send("saved"))
+        ).then(data => res.send("saved"));
+      });
+
+      res.send("saved");
     }
   });
 

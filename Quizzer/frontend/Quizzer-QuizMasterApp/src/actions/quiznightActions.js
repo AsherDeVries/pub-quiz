@@ -32,9 +32,9 @@ export function acceptTeam(team, isAccepted) {
 export function startRound(questions) {
   return (dispatch, getState) => {
     const state = getState();
-    const { questionSequenceNr, _id } = state.quiznightReducer;
+    const { questionSequenceNr, _id, currentRound } = state.quiznightReducer;
 
-    axios.post(`http://localhost:8080/quiznights/${_id}/rounds/0`, questions.map(question => {
+    axios.post(`http://localhost:8080/quiznights/${_id}/rounds/${currentRound}`, questions.map(question => {
       return { _id: question._id };
     })).then(() => {
       dispatch({

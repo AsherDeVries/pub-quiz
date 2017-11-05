@@ -4,6 +4,7 @@ import MESSAGE_TYPES from '../../constants/message_types';
 import QuizmasterMessageSender from '../quizmaster/to-quizmaster';
 import Quiznight from '../../../models/Quiznight';
 import ROOM_NAMES from '../../constants/rooms';
+import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
 import TeamMessageSender from '../teams/to-teams';
 import LocalDataStoreHandler from '../../data-stores/local';
 
@@ -58,6 +59,12 @@ export default (socket, quiznightNamespace) => {
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.NEW_QUESTION, { question: message.question._id, category: message.question.category });
+
+    let qnCode = getQuiznightCodeFromSocket(socket);
+    ScoreboardMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendNewQuestionMessage(qnCode, message.question._id, message.question.category);
   });
 
   socket.on(MESSAGE_TYPES.CLOSE_QUESTION, (message) => {
@@ -91,6 +98,15 @@ export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.END_ROUND, (message) => {
     // Loop door lijst met teams
     // 1. update roundpoints in database
+    let qnCode = getQuiznightCodeFromSocket(socket);
+
+    LocalDataStoreHandler
+      .updateRoundPointsOfAllTeams(qnCode);
+
+    TeamMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has ended');
   });
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {

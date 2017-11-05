@@ -28,6 +28,10 @@ const LocalDataStoreRetriever = {
     return LocalDataStore.data.quizNights.find((quiznight) => {
       return quiznight.quiznightCode == quiznightCode;
     });
+  },
+  getTeamsOfQuiznight(quiznightCode) {
+    let quiznight = this.getQuiznightByCode(quiznightCode);
+    return quiznight.state.teams;
   }
 }
 

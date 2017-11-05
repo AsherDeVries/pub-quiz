@@ -46,6 +46,8 @@ export function endGame() {
       gameState: GAME_STATE.END
     });
 
-    // to do: disconnect websocket
+    dispatch({
+      type: WEBSOCKET_ACTION_TYPES.END_GAME
+    });
   };
 }

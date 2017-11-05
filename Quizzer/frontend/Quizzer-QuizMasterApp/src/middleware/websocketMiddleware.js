@@ -57,6 +57,9 @@ const socketMiddleware = (function () {
       case WEBSOCKET_ACTION_TYPES.END_ROUND:
         socket.emit(WEBSOCKET_ACTION_TYPES.END_ROUND);  
         break;
+      case WEBSOCKET_ACTION_TYPES.END_GAME:
+        socket.emit(WEBSOCKET_ACTION_TYPES.END_GAME);
+        break;
       default:
         return next(action);
     }

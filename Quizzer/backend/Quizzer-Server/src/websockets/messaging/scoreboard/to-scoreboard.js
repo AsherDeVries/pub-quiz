@@ -1,18 +1,18 @@
 import ROOM_NAMES from '../../constants/rooms';
 
 const ScoreboardMessageSender = {
-  toNamespace: function(namespace) {
+  toNamespace(namespace) {
     this.namespace = namespace;
     return this;
   },
-  usingSocket: function (socket) {
+  usingSocket(socket) {
     this.socket = socket;
     return this;
   },
-  sendMessage: function(messageType, message) {
+  sendMessage(messageType, message) {
     this.socket.emit(messageType, message);
   },
-  sendMessageToAllScoreboards: function(messageType, message) {
+  sendMessageToAllScoreboards(messageType, message) {
     this.namespace.to(ROOM_NAMES.SCOREBOARD).emit(messageType, message);
   }
 };

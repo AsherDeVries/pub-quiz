@@ -35,7 +35,7 @@ const socketMiddleware = (function () {
 
         break;
       case WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM:
-        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
+        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, {team: action.team});
         acceptTeam(store, action.team);
         break;   
       case WEBSOCKET_ACTION_TYPES.DECLINE_TEAM:
@@ -46,13 +46,16 @@ const socketMiddleware = (function () {
         socket.emit(WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND);
         break;  
       case WEBSOCKET_ACTION_TYPES.NEXT_QUESTION:
-        socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, action.question);
+        socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, {question: action.question});
         break;
       case WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION:
         socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION);
         break;
       case WEBSOCKET_ACTION_TYPES.UPDATE_SCORE:
         socket.emit(WEBSOCKET_ACTION_TYPES.UPDATE_SCORE, {question: action.question, givenAnswers: action.givenAnswers});
+        break;
+      case WEBSOCKET_ACTION_TYPES.END_ROUND:
+        socket.emit(WEBSOCKET_ACTION_TYPES.END_ROUND);  
         break;
       default:
         return next(action);

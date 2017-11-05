@@ -5,25 +5,25 @@ import QuestionModel from '../models/Question';
 import Quiznight from '../models/Quiznight';
 import randomstring from 'randomstring';
 import { createWebsocketNamespaceForQuiznight } from '../websockets';
-import TeamWebsocketConnectionsCacheHandler from '../websockets/caching/connections';
+import LocalDataStoreHandler from '../websockets/data-stores/local';
 
 export default () => {
   let quiznightRoute = Router();
 
   quiznightRoute.post('/', (req, res) => {
 
-    let quiznightCode = randomstring.generate({
-      length: 6,
-      charset: 'alphanumeric'
-    });
+     let quiznightCode = randomstring.generate({
+       length: 6,
+       charset: 'alphanumeric'
+     });
 
-    let qn = new Quiznight({
-      _id: quiznightCode,
-      teams: [],
-      rounds: []
-    });
-
-    TeamWebsocketConnectionsCacheHandler
+     let qn = new Quiznight({
+       _id: quiznightCode,
+       teams: [],
+       rounds: []
+     });
+ 
+     LocalDataStoreHandler
       .addQuiznightToCache(quiznightCode);
 
     createWebsocketNamespaceForQuiznight(quiznightCode);

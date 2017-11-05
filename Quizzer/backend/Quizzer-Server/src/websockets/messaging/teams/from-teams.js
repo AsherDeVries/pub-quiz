@@ -1,18 +1,22 @@
-import DatabaseCacheHandler from '../../caching/database';
+import DatabaseCacheHandler from '../../data-stores/database';
 import { getQuiznightCodeFromSocket } from '../../utils';
 import MESSAGE_TYPES from '../../constants/message_types';
 import QuizmasterMessageSender from '../quizmaster/to-quizmaster';
 import Quiznight from '../../../models/Quiznight';
 import ROOM_NAMES from '../../constants/rooms';
 import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
-import TeamWebsocketConnectionsCacheHandler from '../../caching/connections';
+import LocalDataStoreHandler from '../../data-stores/local';
 
 export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.CONNECT_TEAM, (message) => {
     let quiznightCode = getQuiznightCodeFromSocket(socket);
-    TeamWebsocketConnectionsCacheHandler
-      .addTeamToCache(quiznightCode, message.teamName, socket);
-      
+
+    LocalDataStoreHandler
+      .addTeamConnectionToCache(quiznightCode, message.teamName, socket);
+    
+    LocalDataStoreHandler
+      .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
+
     DatabaseCacheHandler
       .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
       .then(() => {
@@ -29,6 +33,9 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.SUBMIT_ANSWER, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
+    LocalDataStoreHandler
+      .saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer)
+
     DatabaseCacheHandler
       .saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
       .then(() => {

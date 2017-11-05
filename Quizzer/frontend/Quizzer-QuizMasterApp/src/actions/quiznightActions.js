@@ -107,6 +107,9 @@ function createNewRoundAndEmptyState(dispatch) {
     questionSequenceNr: 0,
     questionsPerRound: 0
   });
+  dispatch({
+    type: WEBSOCKET_ACTION_TYPES.END_ROUND
+  });
 }
 
 function setNextQuestion(dispatch, questions, questionSequenceNr) {

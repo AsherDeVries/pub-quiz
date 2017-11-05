@@ -62,7 +62,6 @@ export default function quiznightReducer(state = initialState, action) {
     case QUIZNIGHT_ACTION_TYPES.EMPTY_CURRENT_QUESTION:
       return {
         ...state,
-        currentQuestion: action.currentQuesiton,
         currentSubmittedAnswers: action.currentSubmittedAnswers
       };
     case QUIZNIGHT_ACTION_TYPES.EMPTY_STATE:

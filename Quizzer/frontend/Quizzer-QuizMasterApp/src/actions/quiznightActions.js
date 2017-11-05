@@ -77,6 +77,7 @@ export function submitAnswerReview(question, correctAnswerTeam) {
   return (dispatch, getState) => {
     const state = getState();
     const { questionSequenceNr, questionsPerRound } = state.quiznightReducer;
+    const { availableQuestions } = state.questionReducer;
     const questionIsLastQuestionOfRound = (questionSequenceNr === questionsPerRound);
 
     dispatch({
@@ -89,7 +90,7 @@ export function submitAnswerReview(question, correctAnswerTeam) {
       createNewRoundAndEmptyState(dispatch);
     }
     else {
-      emptyLastQuestionAndWaitForNextQuestion(dispatch);
+      setNextQuestion(dispatch, availableQuestions, questionSequenceNr);
     }
   };
 }
@@ -108,14 +109,21 @@ function createNewRoundAndEmptyState(dispatch) {
   });
 }
 
-function emptyLastQuestionAndWaitForNextQuestion(dispatch) {
+function setNextQuestion(dispatch, questions, questionSequenceNr) {
   dispatch({
     type: QUIZNIGHT_ACTION_TYPES.EMPTY_CURRENT_QUESTION,
-    currentQuestion: {},
     currentSubmittedAnswers: []
   });
   dispatch({
-    type: GAME_ACTION_TYPES.SET_GAME_STATE,
-    gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
+    type: WEBSOCKET_ACTION_TYPES.NEXT_QUESTION,
+    question: {
+      _id: questions[questionSequenceNr]._id,
+      category: questions[questionSequenceNr].category
+    } 
+  });
+  dispatch({
+    type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
+    question: questions[questionSequenceNr],
+    questionSequenceNr: questionSequenceNr + 1
   });
 }

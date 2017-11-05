@@ -20,6 +20,7 @@ class ReviewAnswerContainer extends Component {
     };
     this.handleApproveClick = this.handleApproveClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClose() {
@@ -44,6 +45,13 @@ class ReviewAnswerContainer extends Component {
     }
   }
 
+  handleSubmit(){
+    this.setState({
+      closed: false
+    });
+    this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers);
+  }
+
   render() {
     return (
       <div>
@@ -62,7 +70,13 @@ class ReviewAnswerContainer extends Component {
         <br />
         <Flex center row="wrap">
           <Button body="Close Question" context="primary" size="large" margin="left" disabled={this.state.closed} onClick={this.handleClose} />
-          <Button body="Submit Grades" context="primary" size="large" margin="left" disabled={!this.state.closed} onClick={() => this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers)}/>
+          <Button
+            body="Submit Grades"
+            context="primary"
+            size="large"
+            margin="left"
+            disabled={!this.state.closed}
+            onClick={this.handleSubmit}/>
         </Flex>
       </div>
     );

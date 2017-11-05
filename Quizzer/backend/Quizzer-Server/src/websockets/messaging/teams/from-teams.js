@@ -30,7 +30,7 @@ export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.SUBMIT_ANSWER, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
     DatabaseCacheHandler
-      .saveAnswerOfTeamInRoundToCache(qnCode, 0, message.teamName, message.question, message.answer) // replace 0 with current round
+      .saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
       .then(() => {
         QuizmasterMessageSender
           .toNamespace(quiznightNamespace)

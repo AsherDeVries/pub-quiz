@@ -41,20 +41,19 @@ export default () => {
       });
 
       Quiznight.findOne({ _id: req.params.quiznightId }).then(data => {
-        const rounds = [...data.rounds];
-        rounds[req.params.roundId-1].chosenQuestions = req.body;
+       
+        const newRounds = [...data.rounds];
+        newRounds[parseInt(req.params.roundId) -1].chosenQuestions = req.body
 
         Quiznight.update(
           { _id: req.params.quiznightId},
           {
             $set: {
-              'rounds': rounds
+              rounds: newRounds
             }
           }
-        ).then(data => res.send("saved"));
+        ).then(data => res.send("saved")).catch(err => {throw new Error('Can not save questions')})
       });
-
-      res.send("saved");
     }
   });
 

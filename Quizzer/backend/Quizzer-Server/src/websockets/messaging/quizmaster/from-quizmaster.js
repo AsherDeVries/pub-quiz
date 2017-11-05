@@ -61,7 +61,7 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
-
+    console.log(message);
     for(let givenAnswer of message.givenAnswers) {
       let socketId = TeamWebsocketConnectionsCacheHandler
         .getSocketIdFromTeam(qnCode, givenAnswer.teamName);

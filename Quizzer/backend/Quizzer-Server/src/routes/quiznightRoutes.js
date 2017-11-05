@@ -42,7 +42,7 @@ export default () => {
 
       Quiznight.findOne({ _id: req.params.quiznightId }).then(data => {
         const rounds = [...data.rounds];
-        rounds[req.params.roundId].chosenQuestions = req.body;
+        rounds[req.params.roundId-1].chosenQuestions = req.body;
 
         Quiznight.update(
           { _id: req.params.quiznightId},

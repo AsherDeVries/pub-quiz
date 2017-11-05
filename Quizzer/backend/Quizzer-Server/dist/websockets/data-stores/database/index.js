@@ -86,6 +86,11 @@ var DatabaseCacheHandler = {
         return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $push: { "rounds.0.teamStatistics.0.givenAnswers": { question: question, value: answer } } });
       }
     });
+  },
+  removeQuiznight: function removeQuiznight(quiznightCode) {
+    return _Quiznight2.default.remove({
+      _id: quiznightCode
+    });
   }
 };
 

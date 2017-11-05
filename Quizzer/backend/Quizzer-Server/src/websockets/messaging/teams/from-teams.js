@@ -28,10 +28,12 @@ export default (socket, quiznightNamespace) => {
             teamName: message.teamName,
             socketId: socket.id
           });
+
         TeamMessageSender
           .toNamespace(quiznightNamespace)
           .usingSocket(socket)
-          .sendMessage(MESSAGE_TYPES.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..')
+          .sendMessageToSocketViaId(socket.id, MESSAGE_TYPES.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
         socket.join(ROOM_NAMES.TEAMS);
       });
   });

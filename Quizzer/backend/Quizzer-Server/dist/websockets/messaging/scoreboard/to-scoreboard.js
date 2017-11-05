@@ -36,7 +36,8 @@ var ScoreboardMessageSender = {
     this.namespace.to(_rooms2.default.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage: function sendNewQuestionMessage(quiznightCode, question, category) {
-    var answersPerTeam = _extends({}, _retriever2.default.getGivenAnswersOfQuestionPerTeam(quiznightCode, question));
+    var data = _retriever2.default.getGivenAnswersOfQuestionPerTeam(quiznightCode, question);
+    var answersPerTeam = Object.create(data);
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;

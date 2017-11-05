@@ -69,6 +69,9 @@ var LocalDataStoreRetriever = {
       return team.teamName == teamName;
     });
   },
+  getAllQuiznights: function getAllQuiznights() {
+    return _store2.default.data.quizNights;
+  },
   getQuiznightByCode: function getQuiznightByCode(quiznightCode) {
     return _store2.default.data.quizNights.find(function (quiznight) {
       return quiznight.quiznightCode == quiznightCode;

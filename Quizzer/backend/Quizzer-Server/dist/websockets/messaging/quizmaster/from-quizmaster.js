@@ -137,6 +137,13 @@ exports.default = function (socket, quiznightNamespace) {
   socket.on(_message_types2.default.END_GAME, function (message) {
     // Loop door lijst met teams
     // 1. haal quiznight uit database
+    var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
+
+    _local2.default.removeQuiznightByCode(qnCode);
+
+    _database2.default.removeQuiznight(qnCode).then(function () {
+      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.PENDING, 'Game has ended');
+    });
   });
 };
 //# sourceMappingURL=from-quizmaster.js.map

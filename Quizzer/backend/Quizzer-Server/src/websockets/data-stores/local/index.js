@@ -51,11 +51,13 @@ const LocalDataStoreHandler = {
 
     var index = quiznight.state.teams.indexOf(team);
     let teamConnections = quiznight.connections.teams;
+    // remove connection
     for(let i = 0; i < teamConnections.length; i++) {
       if(teamConnections[i].teamName == teamName) {
         teamConnections.splice(i, 1);
       }
     }
+    // remove team data
     quiznight.state.teams.splice(index, 1);
     console.log('-- IN removeTeamInQuiznightFromCache --');
     console.log(JSON.stringify(LocalDataStore.data.quizNights));
@@ -119,6 +121,14 @@ const LocalDataStoreHandler = {
         team.roundPoints = 1;
       } else {
         team.roundPoints = 0.1;
+      }
+    }
+  },
+  removeQuiznightByCode(quiznightCode) {
+    let quiznights = LocalDataStoreRetriever.getAllQuiznights(quiznightCode);
+    for(let i = 0; i < quiznights.length; i++) {
+      if(quiznights[i].quiznight == quiznightCode) {
+        quiznights.splice(i, 1);
       }
     }
   }

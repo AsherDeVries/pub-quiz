@@ -37,6 +37,9 @@ const LocalDataStoreRetriever = {
       return team.teamName == teamName;
     });
   },
+  getAllQuiznights() {
+    return LocalDataStore.data.quizNights;
+  },
   getQuiznightByCode(quiznightCode) {
     return LocalDataStore.data.quizNights.find((quiznight) => {
       return quiznight.quiznightCode == quiznightCode;

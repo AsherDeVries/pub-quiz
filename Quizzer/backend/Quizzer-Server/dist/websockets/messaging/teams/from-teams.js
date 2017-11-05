@@ -53,7 +53,9 @@ exports.default = function (socket, quiznightNamespace) {
         teamName: message.teamName,
         socketId: socket.id
       });
-      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessage(_message_types2.default.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
+      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(socket.id, _message_types2.default.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
       socket.join(_rooms2.default.TEAMS);
     });
   });

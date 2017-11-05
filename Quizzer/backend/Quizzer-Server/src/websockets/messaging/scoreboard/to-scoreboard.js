@@ -18,7 +18,8 @@ const ScoreboardMessageSender = {
     this.namespace.to(ROOM_NAMES.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage(quiznightCode, question, category) {
-    let answersPerTeam = {...LocalDataStoreRetriever.getGivenAnswersOfQuestionPerTeam(quiznightCode, question)};
+    let data = LocalDataStoreRetriever.getGivenAnswersOfQuestionPerTeam(quiznightCode, question);
+    let answersPerTeam = Object.create(data);
     for(let answerOfTeam of answersPerTeam) {
       answerOfTeam.hasAnswered = false;
     }

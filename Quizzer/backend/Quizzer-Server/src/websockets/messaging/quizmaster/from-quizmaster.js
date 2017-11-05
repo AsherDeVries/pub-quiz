@@ -124,5 +124,18 @@ export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {
     // Loop door lijst met teams
     // 1. haal quiznight uit database
+    let qnCode = getQuiznightCodeFromSocket(socket);
+
+    LocalDataStoreHandler
+      .removeQuiznightByCode(qnCode);
+
+    DatabaseCacheHandler
+      .removeQuiznight(qnCode)
+      .then(() => {
+        TeamMessageSender
+          .toNamespace(quiznightNamespace)
+          .usingSocket(socket)
+          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Game has ended');
+      });
   });
 }

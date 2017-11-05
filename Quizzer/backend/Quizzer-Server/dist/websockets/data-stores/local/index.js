@@ -85,11 +85,13 @@ var LocalDataStoreHandler = {
 
     var index = quiznight.state.teams.indexOf(team);
     var teamConnections = quiznight.connections.teams;
+    // remove connection
     for (var i = 0; i < teamConnections.length; i++) {
       if (teamConnections[i].teamName == teamName) {
         teamConnections.splice(i, 1);
       }
     }
+    // remove team data
     quiznight.state.teams.splice(index, 1);
     console.log('-- IN removeTeamInQuiznightFromCache --');
     console.log(JSON.stringify(_store2.default.data.quizNights));
@@ -151,6 +153,14 @@ var LocalDataStoreHandler = {
         team.roundPoints = 1;
       } else {
         team.roundPoints = 0.1;
+      }
+    }
+  },
+  removeQuiznightByCode: function removeQuiznightByCode(quiznightCode) {
+    var quiznights = _retriever2.default.getAllQuiznights(quiznightCode);
+    for (var i = 0; i < quiznights.length; i++) {
+      if (quiznights[i].quiznight == quiznightCode) {
+        quiznights.splice(i, 1);
       }
     }
   }

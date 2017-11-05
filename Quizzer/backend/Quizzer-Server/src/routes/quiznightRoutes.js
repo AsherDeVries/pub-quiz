@@ -9,7 +9,7 @@ import TeamWebsocketConnectionsCacheHandler from '../websockets/caching/connecti
 
 export default () => {
   let quiznightRoute = Router();
-  
+
   quiznightRoute.post('/', (req, res) => {
 
      let quiznightCode = randomstring.generate({
@@ -22,7 +22,7 @@ export default () => {
        teams: [],
        rounds: []
      });
- 
+
      TeamWebsocketConnectionsCacheHandler
       .addQuiznightToCache(quiznightCode);
 
@@ -35,21 +35,21 @@ export default () => {
 
   quiznightRoute.post('/:quiznightId/rounds', (req, res) => {
     if (req.params.quiznightId) {
-      
+
       req.body.forEach(element => {
         element.hasBeenReviewed = false;
       });
 
       Quiznight.update(
         { _id: req.params.quiznightId },
-        { 
+        {
           $push: {
             rounds: {
               chosenQuestions: req.body,
             }
           }
-        } 
-      ).then(data => res.send("saved"))
+        }
+      ).then(data => res.send(data))
     }
   });
 

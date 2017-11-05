@@ -83,9 +83,7 @@ exports.default = function (socket, quiznightNamespace) {
 
         var socketId = _connections2.default.getSocketIdFromTeam(qnCode, givenAnswer.teamName);
 
-        console.log(givenAnswer);
         if (givenAnswer.isCorrect) {
-          console.log('INCREMENT SCORE');
           _database2.default.incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
         }
         _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });

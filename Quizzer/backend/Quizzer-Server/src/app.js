@@ -33,3 +33,5 @@ app.use('/quiznights', quiznightRoute())
 app.use(errorHandler);
 
 export default app;
+
+module.exports = app;

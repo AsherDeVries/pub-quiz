@@ -42,12 +42,12 @@ export default (socket, quiznightNamespace) => {
       .saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer)
 
     DatabaseCacheHandler
-      .saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer)
+      .saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
       .then(() => {
         QuizmasterMessageSender
           .toNamespace(quiznightNamespace)
           .usingSocket(socket)
-          .sendMessageToQuizmaster(MESSAGE_TYPES.ANSWER_SUBMITTED, { question: message.question, answer: message.answer });
+          .sendMessageToQuizmaster(MESSAGE_TYPES.ANSWER_RECEIVED, { teamName: message.teamName, answer: message.answer, reSubmit: message.reSubmit });
 
         ScoreboardMessageSender
           .sendMessageToAllScoreboards(MESSAGE_TYPES.ANSWER_SUBMITTED, { teamName: message.teamName, hasAnswered: true });

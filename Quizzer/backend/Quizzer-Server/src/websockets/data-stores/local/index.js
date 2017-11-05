@@ -48,7 +48,15 @@ const LocalDataStoreHandler = {
   removeTeamInQuiznightFromCache(quiznightCode, teamName) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
     let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, teamName);
-    quiznight.state.teams.remove(team);
+
+    var index = quiznight.state.teams.indexOf(team);
+    let teamConnections = quiznight.connections.teams;
+    for(let i = 0; i < teamConnections.length; i++) {
+      if(teamConnections[i].teamName == teamName) {
+        teamConnections.splice(i, 1);
+      }
+    }
+    quiznight.state.teams.splice(index, 1);
     console.log('-- IN removeTeamInQuiznightFromCache --');
     console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },

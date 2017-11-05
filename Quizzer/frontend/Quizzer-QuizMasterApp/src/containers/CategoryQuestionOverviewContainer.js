@@ -39,7 +39,7 @@ class CategoryQuestionOverviewContainer extends Component {
   }
 
   deselectQuestion(deselectedQuestion) {
-    const newState = this.state.selectedQuestions.filter(question => (question.id !== deselectedQuestion.id));
+    const newState = this.state.selectedQuestions.filter(question => (question._id !== deselectedQuestion._id));
     this.setState({
       selectedQuestions: newState
     });

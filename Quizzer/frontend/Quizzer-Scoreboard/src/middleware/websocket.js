@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
-import {CONNECT_TEAM, NEW_QUESTION, TEAM_ALLOWED, SUBMIT_ANSWER} from '../constants/actionTypes';
-import * as REQUEST_STATE from '../constants/request';
+import {CONNECT_SCOREBOARD, NEW_QUESTION, ANSWER_SUBMITTED, SHOW_QUESTION_RESULTS, END_OF_ROUND} from '../constants/actionTypes';
+// import * as REQUEST_STATE from '../constants/request';
 import {newQuestion, showScoreOverview, showAnswers, showAnswerSubmission} from '../actions/scoreboardActions';
 
 let socket;

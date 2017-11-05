@@ -18,14 +18,14 @@ export default function scoreboardReducer(state = initialState, action) {
         category: action.question.category,
         teams: action.teams,
         scoreboardState: action.scoreboardState
-      }
+      };
     case(types.SHOW_SCORES):
       return{
         ...state,
         scoreboardState: action.scoreboardState,
         teasms: action.teams,
         round: action.roundNumber
-      }
+      };
     default:
       return state;
   }

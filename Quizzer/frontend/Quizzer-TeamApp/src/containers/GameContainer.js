@@ -20,7 +20,7 @@ class GameContainer extends Component {
         <WithLoading loadingState={this.props.loadingState} message={this.props.message}>
           <AnswerQuestion
             question={this.props.currentQuestion}
-            submitAnswer={submitAnswer.bind(this)}
+            submitAnswer={this.submitAnswer.bind(this)}
           />
         </WithLoading>
       </Flex>

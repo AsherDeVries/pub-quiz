@@ -1,5 +1,4 @@
 import ROOM_NAMES from '../../constants/rooms';
-import { getQuiznightCodeFromSocket } from '../../utils';
 
 const TeamMessageSender = {
   toNamespace(namespace) {

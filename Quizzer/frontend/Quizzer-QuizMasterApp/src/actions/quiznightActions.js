@@ -34,7 +34,7 @@ export function startRound(questions) {
     const state = getState();
     const { questionSequenceNr, _id } = state.quiznightReducer;
 
-    axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
+    axios.post(`http://localhost:8080/quiznights/${_id}/rounds/0`, questions.map(question => {
       return { _id: question._id };
     })).then(() => {
       dispatch({

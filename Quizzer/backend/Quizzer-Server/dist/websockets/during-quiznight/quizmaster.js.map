@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/websockets/during-quiznight/quizmaster.js"],"names":["socket"],"mappings":";;;;;;kBAAe,UAACA,MAAD,EAAY,CAE1B,C","file":"quizmaster.js","sourcesContent":["export default (socket) => {\n\n}"]}

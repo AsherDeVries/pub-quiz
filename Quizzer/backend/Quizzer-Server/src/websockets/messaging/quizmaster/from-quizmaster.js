@@ -5,6 +5,7 @@ import QuizmasterMessageSender from '../quizmaster/to-quizmaster';
 import Quiznight from '../../../models/Quiznight';
 import ROOM_NAMES from '../../constants/rooms';
 import TeamMessageSender from '../teams/to-teams';
+import TeamWebsocketConnectionsCacheHandler from '../../caching/connections';
 
 export default (socket, quiznightNamespace) => {
 
@@ -19,16 +20,16 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
     let messageToTeam = { isAccepted: message.isAccepted };
+    TeamMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
+
     if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       DatabaseCacheHandler
         .removeTeamInQuiznightFromCache(qnCode, message.teamName)
       .then(TeamMessageSender.disconnectSocket(message.socketId));
-    } else {
-      TeamMessageSender
-        .toNamespace(quiznightNamespace)
-        .usingSocket(socket)
-        .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
     }
   });
 
@@ -56,26 +57,22 @@ export default (socket, quiznightNamespace) => {
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Quizmaster is currently reviewing answers.');
-    //quiznightNamespace.to(ROOM_NAMES.TEAMS).emit(MESSAGE_TYPES.QUESTION_CLOSED, { question: message.question, givenAnswers: db.givenAnswers })    
-    // WANNEER MOET SCOREBOARD GEINFORMEERD WORDEN OVER ANTWOORDEN VAN TEAMS??
   });
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
-    // message.question
-    // message.givenAnswers: [
-    // teamName: String,
-    // answer: String
-    // isCorrect: Boolean
-    //]
-    // Loop door lijst met teams
-    // 1. Informeer over antwoord review
-    // 2. Zet aantal goede antwoorden per team in db.
-    // 3. Zet question op gereviewed in db
-    TeamMessageSender
-      .toNamespace(quiznightNamespace)
-      .sendMessageToSocketViaId(message.socketId, MESSAGE_TYPES.ANSWER_REVIEWED, { isCorrect: message.answer });
-      
-    quiznightNamespace.to(ROOM_NAMES.QUIZMASTER).emit(MESSAGE_TYPES.ANSWER_REVIEWED, { question: message.question, answer: message.answer })
+    let qnCode = getQuiznightCodeFromSocket(socket);
+
+    for(let givenAnswer of message.givenAnswers) {
+      let socketId = TeamWebsocketConnectionsCacheHandler
+        .getSocketIdFromTeam(qnCode, givenAnswer.teamName);
+
+      DatabaseCacheHandler
+        .incrementCorrectAnswersOfTeam(qnCode, 0, givenAnswer.teamName); // replace 0 with current round
+
+    }
+
+    // to do: broad cast result to all teams
+    // to do: broadcast score to scoreboard
   });
 
   socket.on(MESSAGE_TYPES.END_ROUND, (message) => {
@@ -85,6 +82,6 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {
     // Loop door lijst met teams
-    // 1. update roundpoints in database
+    // 1. haal quiznight uit database
   });
 }

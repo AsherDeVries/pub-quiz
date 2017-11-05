@@ -5,46 +5,48 @@ import QuestionModel from '../models/Question';
 import Quiznight from '../models/Quiznight';
 import randomstring from 'randomstring';
 import { createWebsocketNamespaceForQuiznight } from '../websockets';
+import TeamWebsocketConnectionsCacheHandler from '../websockets/caching/connections';
 
 export default () => {
   let quiznightRoute = Router();
-  
+
   quiznightRoute.post('/', (req, res) => {
 
-     let quiznightCode = randomstring.generate({
-       length: 6,
-       charset: 'alphanumeric'
-     });
+    let quiznightCode = randomstring.generate({
+      length: 6,
+      charset: 'alphanumeric'
+    });
 
-     let qn = new Quiznight({
-       _id: quiznightCode,
-       teams: [],
-       rounds: []
-     });
- 
-     createWebsocketNamespaceForQuiznight(quiznightCode);
-     qn.save()
+    let qn = new Quiznight({
+      _id: quiznightCode,
+      teams: [],
+      rounds: []
+    });
+
+    TeamWebsocketConnectionsCacheHandler
+      .addQuiznightToCache(quiznightCode);
+
+    createWebsocketNamespaceForQuiznight(quiznightCode);
+    qn.save()
       .then(() => {
         return res.send({ code: quiznightCode })
       });
   });
 
-  quiznightRoute.post('/:quiznightId/rounds', (req, res) => {
-    if (req.params.quiznightId) {
-      
+  quiznightRoute.post('/:quiznightId/rounds/:roundId', (req, res) => {
+    if (req.params.quiznightId && req.params.roundId) {
+
       req.body.forEach(element => {
         element.hasBeenReviewed = false;
       });
 
       Quiznight.update(
         { _id: req.params.quiznightId },
-        { 
-          $push: {
-            rounds: {
-              chosenQuestions: req.body,
-            }
+        {
+          $set: {
+            'rounds.0.chosenQuestions': req.body
           }
-        } 
+        }
       ).then(data => res.send("saved"))
     }
   });

@@ -26,7 +26,7 @@ class ReviewAnswerContainer extends Component {
     this.setState({
       closed: true
     }, () => {
-      closeQuestion(this.props.currentQuestion);
+      this.props.closeQuestion(this.props.currentQuestion);
     });
   }
 

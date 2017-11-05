@@ -30,12 +30,18 @@ var _toScoreboard = require('../scoreboard/to-scoreboard');
 
 var _toScoreboard2 = _interopRequireDefault(_toScoreboard);
 
+var _connections = require('../../caching/connections');
+
+var _connections2 = _interopRequireDefault(_connections);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (socket, quiznightNamespace) {
   socket.on(_message_types2.default.CONNECT_TEAM, function (message) {
-    var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
-    _database2.default.saveNewTeamInQuiznightToCache(qnCode, message.teamName).then(function () {
+    var quiznightCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
+    _connections2.default.addTeamToCache(quiznightCode, message.teamName, socket);
+
+    _database2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName).then(function () {
       _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.TEAM_JOINED, {
         teamName: message.teamName,
         socketId: socket.id

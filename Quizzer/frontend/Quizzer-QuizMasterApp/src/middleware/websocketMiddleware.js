@@ -28,6 +28,11 @@ const socketMiddleware = (function () {
         socket.on(WEBSOCKET_ACTION_TYPES.TEAM_JOINED, (data) => {
           newTeam(store, data);
         });
+
+        socket.on(QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED, data => {
+          addAnswer(store, data);
+        });
+
         break;
       case WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM:
         socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
@@ -44,6 +49,7 @@ const socketMiddleware = (function () {
         socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, action.question);
         break;
       case WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION:
+      console.log('close')
         socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION);
         break;
       case WEBSOCKET_ACTION_TYPES.UPDATE_SCORE:
@@ -100,6 +106,27 @@ function declineTeam(store, team) {
     type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
     team: team
   });
+}
+
+function addAnswer(store, data) {
+  if(!data.reSubmit) {
+    store.dispatch({
+      type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
+      answer: {
+        text: data.answer,
+        teamName: data.teamName
+      }
+    });
+  }
+  else {
+    store.dispatch({
+      type: QUIZNIGHT_ACTION_TYPES.ANSWER_RESUBMITTED,
+      answer: {
+        text: data.answer,
+        teamName: data.teamName
+      }
+    });
+  }
 }
 
 export default socketMiddleware;

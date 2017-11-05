@@ -57,8 +57,35 @@ var DatabaseCacheHandler = {
   saveNewTeamInQuiznightToCache: function saveNewTeamInQuiznightToCache(quiznightCode, teamName) {
     return _Quiznight2.default.update({ _id: quiznightCode }, { $push: { teams: { _id: teamName, roundPoints: 0 } } });
   },
+  incrementCorrectAnswersOfTeam: function incrementCorrectAnswersOfTeam(quiznightCode, round, teamName) {
+    return _Quiznight2.default.findOne({
+      _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } }
+    }).then(function (quiznight) {
+      var correctAnswersAmount = quiznight.rounds[0].teamStatistics[0].correctAnswersAmount;
+      correctAnswersAmount++;
+
+      return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $set: { "rounds.0.teamStatistics.0.correctAnswersAmount": correctAnswersAmount } });
+    });
+  },
   saveAnswerOfTeamInRoundToCache: function saveAnswerOfTeamInRoundToCache(quiznightCode, round, teamName, question, answer) {
-    return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $set: { "rounds.0.teamStatistics.0.givenAnswers.$.value": answer } });
+    return _Quiznight2.default.findOne({
+      _id: quiznightCode, rounds: { $elemMatch: { _id: round } },
+      "rounds.teamStatistics": { $elemMatch: { team: teamName } }
+    }).then(function (quiznight) {
+      var givenAnswersInRound = quiznight.rounds[0].teamStatistics[0].givenAnswers;
+
+      // The Marius rule: "If it works... It works"
+      if (givenAnswersInRound.length > 0) {
+        for (var i = 0; i < givenAnswersInRound.length; i++) {
+          if (givenAnswersInRound[i].question == question) {
+            givenAnswersInRound[i].value = answer;
+            return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $set: { "rounds.0.teamStatistics.0.givenAnswers": givenAnswersInRound } });
+          }
+        }
+      } else {
+        return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $push: { "rounds.0.teamStatistics.0.givenAnswers": { question: question, value: answer } } });
+      }
+    });
   }
 };
 

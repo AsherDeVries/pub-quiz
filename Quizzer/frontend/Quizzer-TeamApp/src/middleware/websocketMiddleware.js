@@ -42,7 +42,12 @@ const socketMiddleware = (function () {
         });
         break;
       case SUBMIT_ANSWER:
-        socket.emit(SUBMIT_ANSWER, action.teamName, action.question, action.answer);
+        socket.emit(SUBMIT_ANSWER, {
+          teamName: action.teamName,
+          question: action.question,
+          answer: action.answer,
+          reSubmit: action.reSubmit
+        });
         break;
       default:
         return next(action);

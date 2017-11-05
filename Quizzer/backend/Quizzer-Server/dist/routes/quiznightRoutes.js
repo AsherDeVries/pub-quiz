@@ -22,6 +22,10 @@ var _randomstring2 = _interopRequireDefault(_randomstring);
 
 var _websockets = require('../websockets');
 
+var _connections = require('../websockets/caching/connections');
+
+var _connections2 = _interopRequireDefault(_connections);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
@@ -39,6 +43,8 @@ exports.default = function () {
       teams: [],
       rounds: []
     });
+
+    _connections2.default.addQuiznightToCache(quiznightCode);
 
     (0, _websockets.createWebsocketNamespaceForQuiznight)(quiznightCode);
     qn.save().then(function () {

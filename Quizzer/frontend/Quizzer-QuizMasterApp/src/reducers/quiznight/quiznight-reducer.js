@@ -39,6 +39,16 @@ export default function quiznightReducer(state = initialState, action) {
         ...state,
         currentSubmittedAnswers: [...state.currentSubmittedAnswers, action.answer]
       };
+    case QUIZNIGHT_ACTION_TYPES.ANSWER_RESUBMITTED:
+      return {
+        ...state,
+        currentSubmittedAnswers: state.currentSubmittedAnswers.map(answer => {
+          if(answer.teamName === action.answer.teamName) {
+            return action.answer;
+          }
+          return answer;
+        })
+      };
     case QUIZNIGHT_ACTION_TYPES.SET_AMOUNT_QUESTIONS_PER_ROUND:
       return {
         ...state,

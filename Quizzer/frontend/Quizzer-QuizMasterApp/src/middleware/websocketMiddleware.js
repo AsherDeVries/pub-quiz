@@ -49,7 +49,7 @@ const socketMiddleware = (function () {
         socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, {question: action.question});
         break;
       case WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION:
-        socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION);
+        socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION, {question: action.question});
         break;
       case WEBSOCKET_ACTION_TYPES.UPDATE_SCORE:
         socket.emit(WEBSOCKET_ACTION_TYPES.UPDATE_SCORE, {question: action.question, givenAnswers: action.givenAnswers});

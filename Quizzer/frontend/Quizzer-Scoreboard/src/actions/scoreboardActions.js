@@ -1,11 +1,9 @@
-import * as REQUEST_STATE from '../constants/request';
 import * as types from '../constants/actionTypes';
-import SCOREBOARD_STATE from '../../constants/scoreboardState'
-import {sendAnswer} from '../middleware/websocket';
+import {SCOREBOARD_STATE} from '../constants/scoreboardState';
 
 export function newQuestion(message) {
   return(dispatch) => {
-    dispatch({type: types.NEW_QUESTION, question: message.question, teams: message.teams scoreboardState: SCOREBOARD_STATE.SHOW_QUESTION});
+    dispatch({type: types.NEW_QUESTION, question: message.question, teams: message.teams, scoreboardState: SCOREBOARD_STATE.SHOW_QUESTION});
   };
 }
 
@@ -17,7 +15,7 @@ export function showAnswers(message) {
       teams: message.teams,
       scoreboardState: SCOREBOARD_STATE.SHOW_ANSWERS
     });
-  }
+  };
 }
 
 export function showScoreOverview(message) {
@@ -28,7 +26,7 @@ export function showScoreOverview(message) {
       teams: message.teams,
       roundNumber: message.round
     });
-  }
+  };
 }
 
 export function showAnswerSubmission(message) {
@@ -38,5 +36,5 @@ export function showAnswerSubmission(message) {
       scoreboardState: SCOREBOARD_STATE.SHOW_QUESTION,
       teams: message.teams
     });
-  }
+  };
 }

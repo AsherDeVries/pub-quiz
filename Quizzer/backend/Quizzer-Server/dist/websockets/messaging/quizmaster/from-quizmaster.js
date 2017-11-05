@@ -30,6 +30,10 @@ var _toTeams = require('../teams/to-teams');
 
 var _toTeams2 = _interopRequireDefault(_toTeams);
 
+var _connections = require('../../caching/connections');
+
+var _connections2 = _interopRequireDefault(_connections);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (socket, quiznightNamespace) {
@@ -41,13 +45,13 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.ACCEPT_TEAM, function (message) {
-    var messageToTeam = { isAccepted: message.isAccepted };
+    var messageToTeam = { accepted: message.team.isAccepted };
+
+    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(message.team.socketId, _message_types2.default.TEAM_ALLOWED, messageToTeam);
+
     if (!messageToTeam.isAccepted) {
       var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
-      _database2.default.removeTeamInQuiznightFromCache(qnCode, message.teamName).then(_toTeams2.default.disconnectSocket(message.socketId));
-    } else {
-      console.log(messageToTeam);
-      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(message.socketId, _message_types2.default.TEAM_ALLOWED, messageToTeam);
+      _database2.default.removeTeamInQuiznightFromCache(qnCode, message.team.teamName).then(_toTeams2.default.disconnectSocket(message.team.socketId));
     }
   });
 
@@ -59,28 +63,47 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.NEXT_QUESTION, function (message) {
-    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.NEW_QUESTION, { question: message.question });
+    _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.NEW_QUESTION, { question: message.question._id, category: message.question.category });
   });
 
   socket.on(_message_types2.default.CLOSE_QUESTION, function (message) {
     _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.PENDING, 'Quizmaster is currently reviewing answers.');
-    //quiznightNamespace.to(ROOM_NAMES.TEAMS).emit(MESSAGE_TYPES.QUESTION_CLOSED, { question: message.question, givenAnswers: db.givenAnswers })    
-    // WANNEER MOET SCOREBOARD GEINFORMEERD WORDEN OVER ANTWOORDEN VAN TEAMS??
   });
 
   socket.on(_message_types2.default.UPDATE_SCORE, function (message) {
-    // message.question
-    // message.givenAnswers: [
-    // teamName: String,
-    // answer: String
-    // isCorrect: Boolean
-    //]
-    // Loop door lijst met teams
-    // 1. Informeer over antwoord review
-    // 2. Zet aantal goede antwoorden per team in db.
-    // 3. Zet question op gereviewed in db
-    quiznightNamespace.to(message.socket_id).emit(_message_types2.default.ANSWER_REVIEWED, { isCorrect: message.answer });
-    quiznightNamespace.to(_rooms2.default.QUIZMASTER).emit(_message_types2.default.ANSWER_REVIEWED, { question: message.question, answer: message.answer });
+    var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = message.givenAnswers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var givenAnswer = _step.value;
+
+        var socketId = _connections2.default.getSocketIdFromTeam(qnCode, givenAnswer.teamName);
+
+        console.log(givenAnswer);
+        if (givenAnswer.isCorrect) {
+          console.log('INCREMENT SCORE');
+          _database2.default.incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+        }
+        _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
   });
 
   socket.on(_message_types2.default.END_ROUND, function (message) {
@@ -90,7 +113,7 @@ exports.default = function (socket, quiznightNamespace) {
 
   socket.on(_message_types2.default.END_GAME, function (message) {
     // Loop door lijst met teams
-    // 1. update roundpoints in database
+    // 1. haal quiznight uit database
   });
 };
 //# sourceMappingURL=from-quizmaster.js.map

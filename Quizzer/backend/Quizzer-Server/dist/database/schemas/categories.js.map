@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/database/schemas/categories.js"],"names":["categoriesSchema","_id","String"],"mappings":";;;;;;AAAA;;AAEA,IAAIA,mBAAmB,qBAAW;AAChCC,OAAKC;AAD2B,CAAX,CAAvB;;kBAIeF,gB","file":"categories.js","sourcesContent":["import { Schema } from 'mongoose';\n\nlet categoriesSchema = new Schema({\n  _id: String\n});\n\nexport default categoriesSchema;"]}

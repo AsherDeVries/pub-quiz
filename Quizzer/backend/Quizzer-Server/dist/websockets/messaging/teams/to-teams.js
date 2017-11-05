@@ -19,8 +19,8 @@ var TeamMessageSender = {
     this.socket = socket;
     return this;
   },
-  sendMessageToSocketViaId: function sendMessageToSocketViaId(toSocketId, messageType, message) {
-    this.namespace.to(message.socketId).emit(messageType, message);
+  sendMessageToSocketViaId: function sendMessageToSocketViaId(socketId, messageType, message) {
+    this.namespace.to(socketId).emit(messageType, message);
   },
   sendMessageToAllTeams: function sendMessageToAllTeams(messageType, message) {
     this.namespace.to(_rooms2.default.TEAMS).emit(messageType, message);

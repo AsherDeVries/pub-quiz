@@ -5,12 +5,16 @@ import QuizmasterMessageSender from '../quizmaster/to-quizmaster';
 import Quiznight from '../../../models/Quiznight';
 import ROOM_NAMES from '../../constants/rooms';
 import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
+import TeamWebsocketConnectionsCacheHandler from '../../caching/connections';
 
 export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.CONNECT_TEAM, (message) => {
-    let qnCode = getQuiznightCodeFromSocket(socket);
+    let quiznightCode = getQuiznightCodeFromSocket(socket);
+    TeamWebsocketConnectionsCacheHandler
+      .addTeamToCache(quiznightCode, message.teamName, socket);
+      
     DatabaseCacheHandler
-      .saveNewTeamInQuiznightToCache(qnCode, message.teamName)
+      .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
       .then(() => {
         QuizmasterMessageSender
           .toNamespace(quiznightNamespace)

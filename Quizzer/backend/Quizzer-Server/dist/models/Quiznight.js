@@ -19,14 +19,24 @@ var quiznightSchema = new _mongoose2.default.Schema({
   rounds: [{
     _id: Number,
     teamStatistics: [{
+      _id: {
+        auto: false
+      },
       team: {
         type: String,
         required: true
       },
       givenAnswers: [{
+        _id: {
+          auto: false
+        },
+        question: {
+          type: String,
+          required: true
+        },
         value: {
           type: String,
-          minlength: 1
+          required: true
         }
       }],
       correctAnswersAmount: Number

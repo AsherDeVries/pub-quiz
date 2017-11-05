@@ -5,6 +5,7 @@ import QuestionModel from '../models/Question';
 import Quiznight from '../models/Quiznight';
 import randomstring from 'randomstring';
 import { createWebsocketNamespaceForQuiznight } from '../websockets';
+import TeamWebsocketConnectionsCacheHandler from '../websockets/caching/connections';
 
 export default () => {
   let quiznightRoute = Router();
@@ -22,6 +23,9 @@ export default () => {
        rounds: []
      });
  
+     TeamWebsocketConnectionsCacheHandler
+      .addQuiznightToCache(quiznightCode);
+
      createWebsocketNamespaceForQuiznight(quiznightCode);
      qn.save()
       .then(() => {

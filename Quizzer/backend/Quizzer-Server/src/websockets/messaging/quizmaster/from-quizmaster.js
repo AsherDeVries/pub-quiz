@@ -20,14 +20,13 @@ export default (socket, quiznightNamespace) => {
   });
 
   socket.on(MESSAGE_TYPES.ACCEPT_TEAM, (message) => {
-    let messageToTeam = { accepted: message.team.isAccepted };
-
+    let messageToTeam = { isAccepted: message.team.isAccepted };
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
-      .sendMessageToSocketViaId(message.team.socketId, MESSAGE_TYPES.TEAM_ALLOWED, messageToTeam);
+      .sendMessageToSocketViaId(message.team.socketId, MESSAGE_TYPES.TEAM_ALLOWED, "Accepted, waiting for other teams..");
 
-    if(!messageToTeam.accepted) {
+    if(!messageToTeam.isAccepted) {
       let qnCode = getQuiznightCodeFromSocket(socket);
       LocalDataStoreHandler
         .removeTeamInQuiznightFromCache(qnCode, message.team.teamName);
@@ -50,7 +49,7 @@ export default (socket, quiznightNamespace) => {
         TeamMessageSender
           .toNamespace(quiznightNamespace)
           .usingSocket(socket)
-          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for next question.')
+          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for the quizmaster to submit questions')
       });
   });
 
@@ -58,7 +57,7 @@ export default (socket, quiznightNamespace) => {
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
-      .sendMessageToAllTeams(MESSAGE_TYPES.NEW_QUESTION, { question: message.question._id, category: message.question.category });
+      .sendMessageToAllTeams(MESSAGE_TYPES.NEW_QUESTION, { question: message.question });
 
     let qnCode = getQuiznightCodeFromSocket(socket);
     ScoreboardMessageSender
@@ -76,7 +75,6 @@ export default (socket, quiznightNamespace) => {
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
-
     for(let givenAnswer of message.givenAnswers) {
       let socketId = LocalDataStoreHandler
         .getSocketIdFromTeam(qnCode, givenAnswer.teamName);
@@ -100,13 +98,13 @@ export default (socket, quiznightNamespace) => {
     // 1. update roundpoints in database
     let qnCode = getQuiznightCodeFromSocket(socket);
 
-    LocalDataStoreHandler
-      .updateRoundPointsOfAllTeams(qnCode);
-
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has ended');
+
+    LocalDataStoreHandler
+    .updateRoundPointsOfAllTeams(qnCode);
   });
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {

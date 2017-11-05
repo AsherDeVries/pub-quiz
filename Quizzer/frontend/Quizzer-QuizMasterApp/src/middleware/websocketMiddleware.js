@@ -28,9 +28,14 @@ const socketMiddleware = (function () {
         socket.on(WEBSOCKET_ACTION_TYPES.TEAM_JOINED, (data) => {
           newTeam(store, data);
         });
+
+        socket.on(QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED, data => {
+          addAnswer(store, data);
+        });
+
         break;
       case WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM:
-        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
+        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, {team: action.team});
         acceptTeam(store, action.team);
         break;   
       case WEBSOCKET_ACTION_TYPES.DECLINE_TEAM:
@@ -41,13 +46,19 @@ const socketMiddleware = (function () {
         socket.emit(WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND);
         break;  
       case WEBSOCKET_ACTION_TYPES.NEXT_QUESTION:
-        socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, action.question);
+        socket.emit(WEBSOCKET_ACTION_TYPES.NEXT_QUESTION, {question: action.question});
         break;
       case WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION:
         socket.emit(WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION);
         break;
       case WEBSOCKET_ACTION_TYPES.UPDATE_SCORE:
-        console.log('UPDATE SCORE ACTION: ',action);
+        socket.emit(WEBSOCKET_ACTION_TYPES.UPDATE_SCORE, {question: action.question, givenAnswers: action.givenAnswers});
+        break;
+      case WEBSOCKET_ACTION_TYPES.END_ROUND:
+        socket.emit(WEBSOCKET_ACTION_TYPES.END_ROUND);  
+        break;
+      case WEBSOCKET_ACTION_TYPES.END_GAME:
+        socket.emit(WEBSOCKET_ACTION_TYPES.END_GAME);
         break;
       default:
         return next(action);
@@ -90,16 +101,37 @@ function newTeam(store, team) {
 
 function acceptTeam(store, team) {
   store.dispatch({
-    type: QUIZNIGHT_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM,
+    type: QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM,
     team: team
   });
 }
 
 function declineTeam(store, team) {
   store.dispatch({
-    type: QUIZNIGHT_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM,
+    type: QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM,
     team: team
   });
+}
+
+function addAnswer(store, data) {
+  if(!data.reSubmit) {
+    store.dispatch({
+      type: QUIZNIGHT_ACTION_TYPES.ANSWER_RECEIVED,
+      answer: {
+        text: data.answer,
+        teamName: data.teamName
+      }
+    });
+  }
+  else {
+    store.dispatch({
+      type: QUIZNIGHT_ACTION_TYPES.ANSWER_RESUBMITTED,
+      answer: {
+        text: data.answer,
+        teamName: data.teamName
+      }
+    });
+  }
 }
 
 export default socketMiddleware;

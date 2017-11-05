@@ -37,7 +37,7 @@ class LoginContainer extends Component {
   render() {
     return (
       <Flex center middle viewport row="wrap" direction="column">
-        <WithLoading loadingState={this.props.session.loginState.requestStatus} >
+        <WithLoading loadingState={this.props.session.loginState.requestStatus} message={this.props.session.loginState.message} >
           <TextField
             id="text-field-controlled"
             value={this.state.teamName}

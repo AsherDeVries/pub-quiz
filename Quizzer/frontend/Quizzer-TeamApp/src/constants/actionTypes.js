@@ -1,5 +1,5 @@
 export const NEW_QUESTION = 'NEW_QUESTION';
-export const SHOW_MESSAGE = 'SHOW_MESSAGE';
+export const SET_WEBSOCKET_STATE = 'SET_WEBSOCKET_STATE';
 export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
 export const TEAM_ALLOWED = 'TEAM_ALLOWED';
 export const CONNECT_TEAM = 'CONNECT_TEAM';

@@ -1,6 +1,6 @@
 {
   "db_name" : "Quizzer",
-  "db_port" : "3003",
+  "db_port" : "27017",
 	"port": 8080,
 	"bodyLimit": "100kb"
 }

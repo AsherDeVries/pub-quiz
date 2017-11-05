@@ -7,7 +7,7 @@ const DatabaseCacheHandler = {
 
     return Quiznight.findOne({ _id: quiznightCode }, { rounds: 1 })
       .then((result) => {
-        newRoundNumber = result.rounds.length;
+        newRoundNumber = result.rounds.length+1;
         return Quiznight
           .update(
             { _id: quiznightCode },

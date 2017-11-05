@@ -50,7 +50,7 @@ export default (socket, quiznightNamespace) => {
         TeamMessageSender
           .toNamespace(quiznightNamespace)
           .usingSocket(socket)
-          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for next question.')
+          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has started, waiting for next question.');
       });
   });
 
@@ -72,6 +72,12 @@ export default (socket, quiznightNamespace) => {
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Quizmaster is currently reviewing answers.');
+
+    let qnCode = getQuiznightCodeFromSocket(socket);
+    ScoreboardMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendShowQuestionResultsMessage(qnCode, message.question._id, message.question.category);
   });
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
@@ -102,6 +108,11 @@ export default (socket, quiznightNamespace) => {
 
     LocalDataStoreHandler
       .updateRoundPointsOfAllTeams(qnCode);
+
+    ScoreboardMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendShowScoresMessage();
 
     TeamMessageSender
       .toNamespace(quiznightNamespace)

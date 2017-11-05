@@ -93,6 +93,27 @@ const LocalDataStoreHandler = {
   teamHasGivenAnswerForQuestion(teamStatistics, question) {
     return LocalDataStoreRetriever.getGivenAnswerToQuestion(teamStatistics, question) != null;
   },
+  updateRoundPointsOfAllTeams(quiznightCode) {
+    let quiznightRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+    let topListTeams = quiznightRound.teamStatistics.sort((a, b) => {
+      return b.correctAnswersAmount - a.correctAnswersAmount;
+    })
+
+    for(let i = 0; i < topListTeams.length; i++) {
+      let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(topListTeams[i].team);
+      if(i == 0) {
+        team.roundPoints = 4;
+      }
+      else if(i == 1) {
+        team.roundPoints = 2;
+      }
+      else if(i == 2) {
+        team.roundPoints = 1;
+      } else {
+        team.roundPoints = 0.1;
+      }
+    }
+  }
 };
 
 export default LocalDataStoreHandler;

@@ -62,6 +62,7 @@ var DatabaseCacheHandler = {
       _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } }
     }).then(function (quiznight) {
       var correctAnswersAmount = quiznight.rounds[0].teamStatistics[0].correctAnswersAmount;
+      console.log(quiznight.rounds[0].teamStatistics[0]);
       correctAnswersAmount++;
 
       return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $set: { "rounds.0.teamStatistics.0.correctAnswersAmount": correctAnswersAmount } });
@@ -86,6 +87,9 @@ var DatabaseCacheHandler = {
         return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $push: { "rounds.0.teamStatistics.0.givenAnswers": { question: question, value: answer } } });
       }
     });
+  },
+  updateQuestionToReviewed: function updateQuestionToReviewed(quiznightCode, round, question) {
+    return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.chosenQuestions": { $elemMatch: { _id: question } } }, { $set: { "rounds.0.chosenQuestions.0.hasBeenReviewed": true } });
   },
   removeQuiznight: function removeQuiznight(quiznightCode) {
     return _Quiznight2.default.remove({

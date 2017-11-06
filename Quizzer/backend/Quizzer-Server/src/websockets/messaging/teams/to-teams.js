@@ -16,7 +16,7 @@ const TeamMessageSender = {
     this.namespace.to(ROOM_NAMES.TEAMS).emit(messageType, message);
   },
   disconnectSocket(socketId) {
-    this.socket.disconnect();
+    this.namespace.to(socketId).emit('disconnect');
   }
 };
 

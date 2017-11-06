@@ -29,6 +29,10 @@ var LocalDataStoreHandler = {
     console.log('-- IN addQuiznightToCache --');
     console.log(JSON.stringify(_store2.default.data.quizNights));
   },
+  addChosenQuestionsToRound: function addChosenQuestionsToRound(quiznightCode, chosenQuestions) {
+    var round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
+    round.chosenQuestions = chosenQuestions;
+  },
   addTeamConnectionToCache: function addTeamConnectionToCache(quiznightCode, teamName, socket) {
     var quiznight = _retriever2.default.getQuiznightByCode(quiznightCode);
     quiznight.connections.teams.push({
@@ -143,7 +147,6 @@ var LocalDataStoreHandler = {
       return b.correctAnswersAmount - a.correctAnswersAmount;
     });
 
-    console.log(topListTeams);
     for (var i = 0; i < topListTeams.length; i++) {
       var team = _retriever2.default.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
       console.log(team);
@@ -159,6 +162,14 @@ var LocalDataStoreHandler = {
     }
     console.log('-- IN updateRoundPointsOfAllTeams --');
     console.log(JSON.stringify(_store2.default.data.quizNights));
+  },
+  updateQuestionToReviewed: function updateQuestionToReviewed(quiznightCode, question) {
+    var round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
+    console.log(round);
+    var questionToUpdate = round.chosenQuestions.find(function (q) {
+      return q._id == question;
+    });
+    questionToUpdate.hasBeenReviewed = true;
   },
   removeQuiznightByCode: function removeQuiznightByCode(quiznightCode) {
     var quiznights = _retriever2.default.getAllQuiznights(quiznightCode);

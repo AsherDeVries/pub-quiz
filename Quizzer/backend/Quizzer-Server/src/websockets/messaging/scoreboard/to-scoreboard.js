@@ -18,7 +18,7 @@ const ScoreboardMessageSender = {
     this.namespace.to(ROOM_NAMES.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage(quiznightCode, question, category) {
-    let quiznightRound = Object.create(LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode));
+    let quiznightRound = {...LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode)};
     let teamsDataToSend = [];
     for(let teamStat of quiznightRound.teamStatistics) {
       let givenAnswerOfTeam = LocalDataStoreRetriever.getGivenAnswerToQuestion(teamStat, question);
@@ -47,7 +47,7 @@ const ScoreboardMessageSender = {
   sendShowScoresMessage(quiznightCode) {
     let data = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
 
-    let qn = Object.create(data);
+    let qn = {...data};
     let teams = qn.state.teams;
     let quizRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
 
@@ -59,6 +59,8 @@ const ScoreboardMessageSender = {
       }
     }
 
+    console.log("SHOW SCORES");
+    console.log(teams);
     this.sendMessageToAllScoreboards(MESSAGE_TYPES.SHOW_SCORES, {
       teams: teams
     });

@@ -16,7 +16,7 @@ class TeamAnswerListComponent extends Component {
         {
           this.props.answers && this.props.answers.map(answer => (
             <TeamAnswerWidgetComponent
-              key={answer.team}
+              key={answer.teamName}
               answer={answer}
               onApproveClick={this.props.handleApproveClick}
               closed={this.props.closed}

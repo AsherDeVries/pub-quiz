@@ -6,18 +6,23 @@ export default function quiznightReducer(state = initialState, action) {
     case QUIZNIGHT_ACTION_TYPES.SET_QUIZNIGHT:
       return {
         ...state,
-        id: action.quiznight.id
+        _id: action.quiznight._id
+      };
+    case QUIZNIGHT_ACTION_TYPES.NEW_TEAM:
+      return {
+        ...state,
+        teams: [...state.teams, action.team]
       };
     case QUIZNIGHT_ACTION_TYPES.DECLINE_TEAM:
      return {
        ...state,
-       teams: state.teams.filter(team => (team.name !== action.teamName))
+       teams: state.teams.filter(team => (team.teamName !== action.team.teamName))
      };
     case QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM:
       return {
         ...state,
         teams: state.teams.map(team => {
-          if  (team.name == action.team.name) {
+          if  (team.teamName == action.team.teamName) {
             return action.team;
           }
           return team;
@@ -34,15 +39,29 @@ export default function quiznightReducer(state = initialState, action) {
         ...state,
         currentSubmittedAnswers: [...state.currentSubmittedAnswers, action.answer]
       };
+    case QUIZNIGHT_ACTION_TYPES.ANSWER_RESUBMITTED:
+      return {
+        ...state,
+        currentSubmittedAnswers: state.currentSubmittedAnswers.map(answer => {
+          if(answer.teamName === action.answer.teamName) {
+            return action.answer;
+          }
+          return answer;
+        })
+      };
     case QUIZNIGHT_ACTION_TYPES.SET_AMOUNT_QUESTIONS_PER_ROUND:
       return {
         ...state,
         questionsPerRound: action.questionsPerRound
       };
+    case QUIZNIGHT_ACTION_TYPES.SET_ROUND_NR:
+      return {
+        ...state,
+        currentRound: action.currentRound
+      };
     case QUIZNIGHT_ACTION_TYPES.EMPTY_CURRENT_QUESTION:
       return {
         ...state,
-        currentQuestion: action.currentQuesiton,
         currentSubmittedAnswers: action.currentSubmittedAnswers
       };
     case QUIZNIGHT_ACTION_TYPES.EMPTY_STATE:

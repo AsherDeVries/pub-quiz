@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-
 import Flex from 'react-uikit-flex';
 import Panel from 'react-uikit-panel';
 import Grid from 'react-uikit-grid';
@@ -22,13 +20,14 @@ class ReviewAnswerContainer extends Component {
     };
     this.handleApproveClick = this.handleApproveClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClose() {
     this.setState({
       closed: true
     }, () => {
-      closeQuestion(this.props.currentQuestion);
+      this.props.closeQuestion(this.props.currentQuestion);
     });
   }
 
@@ -46,12 +45,19 @@ class ReviewAnswerContainer extends Component {
     }
   }
 
+  handleSubmit(){
+    this.setState({
+      closed: false
+    });
+    this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers);
+  }
+
   render() {
     return (
       <div>
         <Panel textAlign="center">
-          <h1>{this.props.currentQuestion.id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
-          <p>Correct answer: <i>{this.props.currentQuestion.questionAnswer} </i></p>
+          <h1>{this.props.currentQuestion._id} ({`${this.props.seqNr}/${this.props.total}`})</h1>
+          <p>Correct answer: <i>{this.props.currentQuestion.answer} </i></p>
         </Panel>
         <Grid>
           <TeamAnswerListComponent
@@ -64,7 +70,13 @@ class ReviewAnswerContainer extends Component {
         <br />
         <Flex center row="wrap">
           <Button body="Close Question" context="primary" size="large" margin="left" disabled={this.state.closed} onClick={this.handleClose} />
-          <Button body="Submit Grades" context="primary" size="large" margin="left" disabled={!this.state.closed} onClick={() => this.props.submitAnswerReview(this.props.currentQuestion, this.state.approvedAnswers)}/>
+          <Button
+            body="Submit Grades"
+            context="primary"
+            size="large"
+            margin="left"
+            disabled={!this.state.closed}
+            onClick={this.handleSubmit}/>
         </Flex>
       </div>
     );

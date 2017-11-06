@@ -43,6 +43,7 @@
     "react-uikit-panel": "^2.0.2",
     "redux": "3.6.0",
     "redux-thunk": "2.1.0",
+    "socket.io": "^2.0.4",
     "uikit": "^3.0.0-beta.32"
   },
   "devDependencies": {

@@ -1,19 +1,11 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
-
-var _express = require('express');
-
-exports.default = function (_ref) {
-	var config = _ref.config,
-	    db = _ref.db;
-
-	var routes = (0, _express.Router)();
-
-	// add middleware here
-
-	return routes;
+var errorHandler = function errorHandler(err, req, res, next) {
+  res.status(500).send(err.message);
 };
+
+exports.default = errorHandler;
 //# sourceMappingURL=index.js.map

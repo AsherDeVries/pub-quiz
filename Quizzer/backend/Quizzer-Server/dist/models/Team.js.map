@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/models/Team.js"],"names":["model"],"mappings":";;;;;;AAAA;;;;AAEA;;;;;;kBAEe,mBAASA,KAAT,CAAe,MAAf,kB","file":"Team.js","sourcesContent":["import mongoose from 'mongoose';\n\nimport teamsSchema from '../database/schemas/quiznights/teams';\n\nexport default mongoose.model('Team', teamsSchema);"]}

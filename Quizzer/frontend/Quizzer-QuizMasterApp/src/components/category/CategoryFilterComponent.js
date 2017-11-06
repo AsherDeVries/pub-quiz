@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-
 import Flex from 'react-uikit-flex';
 import Panel from 'react-uikit-panel';
-import Button from 'react-uikit-button';
 
 class CategoryFilterComponent extends Component {
   constructor(props) {
@@ -31,11 +29,11 @@ class CategoryFilterComponent extends Component {
   menuItems(values) {
     return this.props.availableCategories.map((category) => (
       <MenuItem
-        key={category}
+        key={category._id}
         insetChildren={true}
         checked={values && values.indexOf(category) > -1}
         value={category}
-        primaryText={category}
+        primaryText={category._id}
       />
     ));
   }

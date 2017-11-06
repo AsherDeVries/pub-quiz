@@ -1,41 +1,40 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Panel from 'react-uikit-panel';
-import Grid from 'react-uikit-grid';
-import {QUESTION_OPEN, SHOW_ANSWER} from '../constants/messageTypes';
 
+import {SCOREBOARD_STATE} from '../constants/scoreboardState';
 
 const TeamAnswer = (props) => {
-  let hasAnswered = false;
   let answerStatus;
-  let answer = 'Stephenie Meyer';
-  let QUESTION_STATUS = props.questionStatus;
+  if(!props.team.hasAnswered) {
+    answerStatus = 'Waiting for answer';
+  } else {
+    answerStatus = 'Submitted answer';
+  }
 
-  switch(QUESTION_STATUS) {
-    case QUESTION_OPEN:
-      if (hasAnswered) {
-        answerStatus = 'Submitted an answer'
-      } else {
-        answerStatus = 'Waiting for answer';
-      }
-
+  switch (props.scoreboardState) {
+    case SCOREBOARD_STATE.SHOW_QUESTION:
       return (
-        <Panel box col='1-4' margin='top bottom' textAlign='center'>
-          <span>{props.team.name}</span>
+        <Panel box col="1-4" margin="top bottom" textAlign="center">
+          <span>{props.team.teamName}</span>
           <br/>
           <span>{answerStatus}</span>
         </Panel>
       );
-      break;
-    case SHOW_ANSWER:
+    case SCOREBOARD_STATE.SHOW_ANSWERS:
       return(
-        <Panel box col='1-4' margin='top bottom' textAlign='center'>
-          <span>{props.team.name}</span>
+        <Panel box col="1-4" margin="top bottom" textAlign="center">
+          <span>{props.team.teamName}</span>
           <br/>
-          <span>{answer}</span>
+          {props.team.givenAnswer && <span>Answered: <b>{props.team.givenAnswer.value}</b></span>} 
         </Panel>
       );
   }
-}
+};
+TeamAnswer.propTypes = {
+  team: PropTypes.object.isRequired,
+  scoreboardState: PropTypes.string.isRequired
+};
 
 export default TeamAnswer;

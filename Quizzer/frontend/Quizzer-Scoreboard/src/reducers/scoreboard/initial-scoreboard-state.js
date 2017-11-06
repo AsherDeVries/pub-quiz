@@ -4,6 +4,6 @@ export default {
   roundNumber: 1,
   category: "",
   question: "",
-  scoreboardState: SCOREBOARD_STATE.SHOW_SCORES,
+  scoreboardState: SCOREBOARD_STATE.SHOW_ANSWERS,
   teams: [],
 };

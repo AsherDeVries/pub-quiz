@@ -7,8 +7,8 @@ export default function scoreboardReducer(state = initialState, action) {
       return {
         ...state,
         scoreboardState: action.scoreboardState,
-        question: action.question.question,
-        category: action.question.category,
+        question: action.question,
+        category: action.category,
         teams: action.teams
       };
     case(types.SHOW_ANSWERS):

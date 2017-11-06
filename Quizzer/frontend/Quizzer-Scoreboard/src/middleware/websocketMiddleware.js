@@ -37,7 +37,7 @@ const socketMiddleware = (function () {
         });
 
         socket.on(SHOW_SCORES, data => {
-          console.log(SHOW_SCORE, data);
+          console.log(SHOW_SCORES, data);
         });
 
         socket.on(SHOW_QUESTION_RESULTS, data => {

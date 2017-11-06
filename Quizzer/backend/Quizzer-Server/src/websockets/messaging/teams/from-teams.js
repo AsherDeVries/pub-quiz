@@ -15,7 +15,7 @@ export default (socket, quiznightNamespace) => {
 
     let currentAmountOfConnections = LocalDataStoreRetriever.getTeamsOfQuiznight(quiznightCode);
     const MAX_ALLOWED_CONNECTIONS = 6;
-    if(currentAmountOfConnections < MAX_ALLOWED_CONNECTIONS) {
+    if(currentAmountOfConnections.length < MAX_ALLOWED_CONNECTIONS) {
       LocalDataStoreHandler
         .addTeamConnectionToCache(quiznightCode, message.teamName, socket);
       

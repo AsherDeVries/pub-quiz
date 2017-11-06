@@ -12,7 +12,7 @@ export function acceptTeam(team, isAccepted) {
   return (dispatch) => {
     if (isAccepted) {
       dispatch({
-        type: WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM,
+        type: WEBSOCKET_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM,
         team: {
           teamName: team.teamName,
           socketId: team.socketId,
@@ -22,7 +22,7 @@ export function acceptTeam(team, isAccepted) {
     }
     else {
       dispatch({
-        type: WEBSOCKET_ACTION_TYPES.DECLINE_TEAM,
+        type: WEBSOCKET_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM,
         team: team
       });
     }

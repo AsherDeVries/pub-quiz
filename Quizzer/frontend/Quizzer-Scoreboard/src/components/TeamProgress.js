@@ -13,7 +13,7 @@ const TeamProgress = (props) => {
         <span>{props.team._id}</span>
         <br/>
         <span>RP: {props.team.roundPoints}</span>
-        <br/><br/>
+        <br/><span>Amount of answers correct: {props.team.score.questionsCorrect}</span><br/>
         <Grid gutter="collapse">
           {/* {array.map(roundResult => <TeamRoundResults key={props.team.name+roundResult.round} results={roundResult}/>)} */}
         </Grid>

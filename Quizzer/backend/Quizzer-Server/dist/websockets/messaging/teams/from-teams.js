@@ -49,7 +49,8 @@ exports.default = function (socket, quiznightNamespace) {
     var quiznightCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
     var currentAmountOfConnections = _retriever2.default.getTeamsOfQuiznight(quiznightCode);
-    if (currentAmountOfConnections < 6) {
+    var MAX_ALLOWED_CONNECTIONS = 6;
+    if (currentAmountOfConnections.length < MAX_ALLOWED_CONNECTIONS) {
       _local2.default.addTeamConnectionToCache(quiznightCode, message.teamName, socket);
 
       _local2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName);

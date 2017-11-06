@@ -34,12 +34,12 @@ const socketMiddleware = (function () {
         });
 
         break;
-      case WEBSOCKET_ACTION_TYPES.ACCEPT_TEAM:
+      case WEBSOCKET_ACTION_TYPES.WEBSOCKET_ACCEPT_TEAM:
         socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, {team: action.team});
         acceptTeam(store, action.team);
         break;   
-      case WEBSOCKET_ACTION_TYPES.DECLINE_TEAM:
-        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, action.team);
+      case WEBSOCKET_ACTION_TYPES.WEBSOCKET_DECLINE_TEAM:
+        socket.emit(QUIZNIGHT_ACTION_TYPES.ACCEPT_TEAM, {team: action.team});
         declineTeam(store, action.team);
         break;
       case WEBSOCKET_ACTION_TYPES.WEBSOCKET_START_ROUND:

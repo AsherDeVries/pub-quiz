@@ -66,4 +66,7 @@ app.use('/quiznights', (0, _quiznightRoutes2.default)());
 app.use(_errorHandling2.default);
 
 exports.default = app;
+
+
+module.exports = app;
 //# sourceMappingURL=app.js.map

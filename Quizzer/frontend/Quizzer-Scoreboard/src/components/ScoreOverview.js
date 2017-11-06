@@ -27,9 +27,9 @@ import TeamProgress from './TeamProgress';
   );
 };
 ScoreOverview.propTypes = {
-  roundNumber: PropTypes.number.isRequired,
-  questionProgression: PropTypes.number.isRequired,
-  teams: PropTypes.object
+  roundNumber: PropTypes.number,
+  questionProgression: PropTypes.number,
+  teams: PropTypes.array
 };
 
 export default ScoreOverview;

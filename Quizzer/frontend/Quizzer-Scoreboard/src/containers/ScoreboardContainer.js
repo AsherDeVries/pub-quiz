@@ -31,7 +31,7 @@ class ScoreboardContainer extends Component {
   render() {
     return (
       <div>
-        <WithLoading loadingState="">
+        <WithLoading loadingState="IDLE">
           {this.renderPageBasedOnScoreboardState()}
         </WithLoading>
       </div>
@@ -51,9 +51,9 @@ function mapStateToProps(state) {
 }
 
 ScoreboardContainer.propTypes = {
-  roundNumber: PropTypes.number.isRequired,
-  questionProgression: PropTypes.number.isRequired,
-  teams: PropTypes.object,
+  roundNumber: PropTypes.number,
+  questionProgression: PropTypes.number,
+  teams: PropTypes.array,
   scoreboardState: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired

@@ -23,7 +23,7 @@ export default function scoreboardReducer(state = initialState, action) {
       return{
         ...state,
         scoreboardState: action.scoreboardState,
-        teasms: action.teams,
+        teams: action.teams,
         round: action.roundNumber
       };
     default:

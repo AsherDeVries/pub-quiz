@@ -38,10 +38,12 @@ const socketMiddleware = (function () {
 
         socket.on(SHOW_SCORES, data => {
           console.log(SHOW_SCORES, data);
+          showScores(store, data);
         });
 
         socket.on(SHOW_QUESTION_RESULTS, data => {
           console.log(SHOW_QUESTION_RESULTS, data);
+          showAnswers(store, data);
         });
 
 
@@ -64,11 +66,19 @@ function showQuestion(store, data) {
 
 function showAnswers(store, data) {
   store.dispatch({
-    type: SHOW_ANSWERS,
+    type: SCOREBOARD_STATE.SHOW_ANSWERS,
     question: data.question.question,
     category: data.question.category,
     teams: data.teams,
     scoreboardState: SCOREBOARD_STATE.SHOW_ANSWERS
+  });
+}
+
+function showScores(store, data) {
+  store.dispatch({
+    type: SCOREBOARD_STATE.SHOW_SCORES,
+    teams: data.teams,
+    scoreboardState: SCOREBOARD_STATE.SHOW_SCORES
   });
 }
 

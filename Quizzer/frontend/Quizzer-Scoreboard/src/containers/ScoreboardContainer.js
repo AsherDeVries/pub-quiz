@@ -12,10 +12,7 @@ class ScoreboardContainer extends Component {
 
     if(this.props.scoreboardState === SCOREBOARD_STATE.SHOW_SCORES) {
       return (
-        <ScoreOverview roundNumber = {this.props.roundNumber}
-                       questionProgression = {this.props.questionProgression}
-                       teams = {this.props.teams}
-        />
+        <ScoreOverview teams = {this.props.teams} />
       );
     } else {
       return (

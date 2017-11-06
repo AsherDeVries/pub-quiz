@@ -114,99 +114,36 @@ New question overview | ```{messageType: "NEW_QUESTION", question: {question: St
 Answer submitted | ```{messageType: "ANSWER_SUBMITTED", teamName: String, hasAnswered: Boolean}```
 
 
-## API Specifications
+## API specification
 
-The text below describes the REST api specification of the server. Which endpoints can be accessed, by which url and what there responses look like.
+### Questions
 
-### REST
+ - GET  /questions  ```// fetch all questions ```
 
-The paragraph below lists each REST endpoint which can be accessed from the Quizzer's server.
+Filter params: ?category: string, ?random: boolean, ?limit: number
 
-#### List question categories
+### Categories
 
-List all the question's categories which can be used in the quiz.
+- GET /categories ```/// fetch all categories ```
 
-```GET /categories```
+### Quiznight
 
-##### Response
+- POST /quiznights/:id/rounds/:roundId ```// create questions for a new round in a quiznight ```
+- GET  /quiznights ```// get all quiznights ```
+- POST /quiznights ```// create new quiznight ```
 
-```
-{
-  "name": String
-}
-```
-
-#### List available questions
-
-List all questions of which the quiz master can choose to ask during a quiz session.
-
-```GET /questions```
-
-##### Response
-
-```
-{
-  [
-    {
-      "name" : String,
-      "category" : String,
-      "correctAnswer" : String
-    }
-  ]
-}
-```
-
-#### List applying teams in quiz
-
-List all applying teams in the quiz.
-
-```GET /teams```
-
-##### Response
-
-```
-{
-  [
-    {
-      "name" : String
-    }
-  ]
-}
-```
-
-#### Apply for a quiz
-
-Apply as a team for a quiz. The team needs to know the correct quiz night code to apply.
-
-```POST /teams```
-
-##### Body
-
-```
-{
-  {
-    "name" : String,
-    "quizNightCode" : String
-  }
-}
-```
 
 ## Technologies
 
 |Tech|Description|Rationale|
 |----|-----------|---------|
-|Node.js|Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.||
-|Express|Fast, unopinionated, minimalist web framework for Node.js.||
-|React|Fast, composable client-side components.||
-|MongoDB|MongoDB is an open-source, document database designed for ease of development and scaling.||
-|Websocket|A computer communications protocol, providing full-duplex communication channels over a single TCP connection.||
-|Mongoose|Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment.|For easy schema creation and validation|
 |React UIkit Components|Collection of React components using the UIkit CSS framework.|The programmers have more experience with UIkit|
-|Axios|Promise based HTTP client for the browser and node.js.|To prevent callback hell.|
+|Axios|Promise based HTTP client for the browser and node.js.|To prevent callback hell.| easy to use and experienced with it
 |Mocha Test|Mocha is a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun.||
 |Chai|Chai is a BDD / TDD assertion library for node and the browser that can be delightfully paired with any javascript testing framework.|For more readable tests|
 |Supertest|The motivation with this module is to provide a high-level abstraction for testing HTTP, while still allowing you to drop down to the lower-level API provided by superagent.||
-|SocketIO|Socket.IO enables real-time bidirectional event-based communication.||
+|SocketIO|Socket.IO enables real-time bidirectional event-based communication.|| Let's learn something!!
+|Redux|Predictable state container for appstate management|| To introduce structure in our application
 
 ## User Interface
 The wireframes for the 3 apps are under this heading.

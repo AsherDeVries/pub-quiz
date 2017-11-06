@@ -28,21 +28,17 @@ const socketMiddleware = (function () {
         });
 
         socket.on(NEW_QUESTION, data => {
-          console.log(NEW_QUESTION, data)
           showQuestion(store, data);
         });
 
         socket.on(ANSWER_SUBMITTED, data => {
-          console.log(ANSWER_SUBMITTED , data);
         });
 
         socket.on(SHOW_SCORES, data => {
-          console.log(SHOW_SCORES, data);
           showScores(store, data);
         });
 
         socket.on(SHOW_QUESTION_RESULTS, data => {
-          console.log(SHOW_QUESTION_RESULTS, data);
           showAnswers(store, data);
         });
 

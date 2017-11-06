@@ -32,14 +32,9 @@ export function acceptTeam(team, isAccepted) {
 export function startRound(questions) {
   return (dispatch, getState) => {
     const state = getState();
-    const { questionSequenceNr, _id } = state.quiznightReducer;
+    const { questionSequenceNr, _id, currentRound } = state.quiznightReducer;
 
-    dispatch({
-      type: GAME_ACTION_TYPES.SET_GAME_STATE,
-      gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
-    });
-
-    axios.post(`http://localhost:8080/quiznights/${_id}/rounds`, questions.map(question => {
+    axios.post(`http://localhost:8080/quiznights/${_id}/rounds/${currentRound}`, questions.map(question => {
       return { _id: question._id };
     })).then(() => {
       dispatch({
@@ -71,9 +66,12 @@ export function startRound(questions) {
 }
 
 export function closeQuestion() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const question = getState().quiznightReducer.currentQuestion;
+    
     dispatch({
-      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION
+      type: WEBSOCKET_ACTION_TYPES.CLOSE_QUESTION,
+      question: question
     });
   };
 }
@@ -82,6 +80,7 @@ export function submitAnswerReview(question, correctAnswerTeam) {
   return (dispatch, getState) => {
     const state = getState();
     const { questionSequenceNr, questionsPerRound } = state.quiznightReducer;
+    const { availableQuestions } = state.questionReducer;
     const questionIsLastQuestionOfRound = (questionSequenceNr === questionsPerRound);
 
     dispatch({
@@ -94,7 +93,7 @@ export function submitAnswerReview(question, correctAnswerTeam) {
       createNewRoundAndEmptyState(dispatch);
     }
     else {
-      emptyLastQuestionAndWaitForNextQuestion(dispatch);
+      setNextQuestion(dispatch, availableQuestions, questionSequenceNr);
     }
   };
 }
@@ -111,16 +110,26 @@ function createNewRoundAndEmptyState(dispatch) {
     questionSequenceNr: 0,
     questionsPerRound: 0
   });
+  dispatch({
+    type: WEBSOCKET_ACTION_TYPES.END_ROUND
+  });
 }
 
-function emptyLastQuestionAndWaitForNextQuestion(dispatch) {
+function setNextQuestion(dispatch, questions, questionSequenceNr) {
   dispatch({
     type: QUIZNIGHT_ACTION_TYPES.EMPTY_CURRENT_QUESTION,
-    currentQuestion: {},
     currentSubmittedAnswers: []
   });
   dispatch({
-    type: GAME_ACTION_TYPES.SET_GAME_STATE,
-    gameState: GAME_STATE.WAITING_FOR_NEXT_QUESTION
+    type: WEBSOCKET_ACTION_TYPES.NEXT_QUESTION,
+    question: {
+      _id: questions[questionSequenceNr]._id,
+      category: questions[questionSequenceNr].category
+    } 
+  });
+  dispatch({
+    type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
+    question: questions[questionSequenceNr],
+    questionSequenceNr: questionSequenceNr + 1
   });
 }

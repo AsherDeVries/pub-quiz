@@ -36,6 +36,16 @@ class TeamWidgetComponent extends Component {
     this.handleToggle = this.handleToggle.bind(this);
   }
 
+  handleToggle() {
+    if(this.props.closed) {
+      this.setState({
+        toggled: !this.state.toggled
+      }, () => {
+        this.props.onApproveClick(this.props.answer, this.state.toggled);
+      });
+    }
+  }
+
   renderCardActions() {
     return (
       <CardText>
@@ -54,16 +64,6 @@ class TeamWidgetComponent extends Component {
     );
   }
 
-  handleToggle() {
-    if(this.props.closed) {
-      this.setState({
-        toggled: !this.state.toggled
-      }, () => {
-        this.props.onApproveClick(this.props.answer, this.state.toggled);
-      });
-    }
-  }
-
   renderIcons() {
     if(this.props.closed) {
       return (this.state.toggled) ? <Done style={styles.done} /> : <HighlightOff style={styles.highlight} />;
@@ -75,7 +75,7 @@ class TeamWidgetComponent extends Component {
       <Panel margin="left">
         <Card onClick={this.handleToggle}>
           <CardHeader
-            title={this.props.answer.team}
+            title={this.props.answer.teamName}
             textStyle={{"padding-right": 0}}
           />
           {this.renderCardActions()}

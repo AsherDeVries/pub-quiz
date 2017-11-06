@@ -17,7 +17,7 @@ const TeamAnswer = (props) => {
     case SCOREBOARD_STATE.SHOW_QUESTION:
       return (
         <Panel box col="1-4" margin="top bottom" textAlign="center">
-          <span>{props.team.name}</span>
+          <span>{props.team.teamName}</span>
           <br/>
           <span>{answerStatus}</span>
         </Panel>
@@ -25,9 +25,9 @@ const TeamAnswer = (props) => {
     case SCOREBOARD_STATE.SHOW_ANSWERS:
       return(
         <Panel box col="1-4" margin="top bottom" textAlign="center">
-          <span>{props.team.name}</span>
+          <span>{props.team.teamName}</span>
           <br/>
-          <span>{props.team.answer}</span>
+          {props.team.givenAnswer && <span>Answered: <b>{props.team.givenAnswer.value}</b></span>} 
         </Panel>
       );
   }

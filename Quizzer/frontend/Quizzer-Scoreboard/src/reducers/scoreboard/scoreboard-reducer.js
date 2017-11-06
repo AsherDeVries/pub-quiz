@@ -1,5 +1,6 @@
 import initialState from './initial-scoreboard-state';
 import * as types from '../../constants/actionTypes';
+import {SCOREBOARD_STATE} from '../../constants/scoreboardState';
 
 export default function scoreboardReducer(state = initialState, action) {
   switch (action.type) {
@@ -7,25 +8,23 @@ export default function scoreboardReducer(state = initialState, action) {
       return {
         ...state,
         scoreboardState: action.scoreboardState,
-        question: action.question.question,
-        category: action.question.category,
+        question: action.question,
+        category: action.category,
         teams: action.teams
       };
-    case(types.SHOW_ANSWERS):
+    case(SCOREBOARD_STATE.SHOW_ANSWERS):
       return{
         ...state,
-        question: action.question.question,
-        category: action.question.category,
         teams: action.teams,
         scoreboardState: action.scoreboardState
-      }
-    case(types.SHOW_SCORES):
+      };
+    case(SCOREBOARD_STATE.SHOW_SCORES):
       return{
         ...state,
         scoreboardState: action.scoreboardState,
-        teasms: action.teams,
+        teams: action.teams,
         round: action.roundNumber
-      }
+      };
     default:
       return state;
   }

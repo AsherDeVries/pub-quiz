@@ -10,25 +10,19 @@ import AnswerQuestion from '../components/AnswerQuestion';
 import { submitAnswer } from '../actions/quizActions';
 
 class GameContainer extends Component {
-  renderQuestionIfThereIsOne() {
-    if(this.props.questionState) {
-      return (
-        <AnswerQuestion question={this.props.currentQuestion.question}
-                        category={this.props.currentQuestion.category}
-                        submitAnswer={this.props.submitAnswer}
-        />
-      );
-    } else {
-      return <h1>Welcome {this.props.teamName}</h1>;
-    }
+  submitAnswer(questionId, answer, reSubmit) {
+    this.props.submitAnswer(questionId, answer, reSubmit);
   }
 
   render() {
     return (
       <Flex center middle viewport row="wrap" direction="column">
-          <WithLoading loadingState={this.props.loadingState} message={this.props.message}>
-            {this.renderQuestionIfThereIsOne()}
-          </WithLoading>
+        <WithLoading loadingState={this.props.loadingState} message={this.props.message}>
+          <AnswerQuestion
+            question={this.props.currentQuestion}
+            submitAnswer={this.submitAnswer.bind(this)}
+          />
+        </WithLoading>
       </Flex>
     );
   }
@@ -39,9 +33,7 @@ function mapStateToProps(state) {
     teamName: state.sessionReducer.teamName,
     loadingState: state.quizReducer.questionWebsocketState,
     message: state.quizReducer.questionWebsocketMessage,
-    currentQuestion: state.quizReducer.currentQuestion,
-    questionState: state.quizReducer.questionState,
-    isAllowed: state.quizReducer.isAllowed
+    currentQuestion: state.quizReducer.currentQuestion
   };
 }
 
@@ -50,8 +42,7 @@ GameContainer.propTypes = {
   loadingState: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   submitAnswer: PropTypes.func,
-  questionState: PropTypes.bool,
   currentQuestion: PropTypes.object,
 };
 
-export default connect(mapStateToProps, {submitAnswer})(GameContainer);
+export default connect(mapStateToProps, { submitAnswer })(GameContainer);

@@ -88,15 +88,4 @@ describe('Quizzer API', () => {
       });
     });
   });
-
-  describe('POST /quiznights/:quiznightId/rounds', () => {
-    it('should return saved round notification', (done) => {
-      request.post(`/quiznights/${gameCode}/rounds`).send(testChosenQuestions).expect('Content-Type', /json/).expect('Content-Type', /utf-8/).expect(200).end((err, res) => {
-        if (err)
-          return done(err);
-        expect(res.body).to.be.a('object').and.to.have.property('ok').and.to.equal(1);
-        done();
-      });
-    });
-  });
 });

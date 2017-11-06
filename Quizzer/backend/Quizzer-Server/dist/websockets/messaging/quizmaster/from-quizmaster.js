@@ -95,12 +95,11 @@ exports.default = function (socket, quiznightNamespace) {
 
         var socketId = _local2.default.getSocketIdFromTeam(quiznightCode, givenAnswer.teamName);
 
-        if (givenAnswer.isCorrect) {
-          _local2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
+        _local2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
 
-          _database2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
-        }
-        _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
+        _database2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
+
+        _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: true });
       }
     } catch (err) {
       _didIteratorError = true;
@@ -126,6 +125,8 @@ exports.default = function (socket, quiznightNamespace) {
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
     _local2.default.updateRoundPointsOfAllTeams(qnCode);
+
+    _database2.default.updateRoundPointsOfAllTeams(qnCode);
 
     _toScoreboard2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendShowScoresMessage(qnCode);
 

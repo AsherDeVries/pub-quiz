@@ -13,30 +13,39 @@ export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.CONNECT_TEAM, (message) => {
     let quiznightCode = getQuiznightCodeFromSocket(socket);
 
-    LocalDataStoreHandler
-      .addTeamConnectionToCache(quiznightCode, message.teamName, socket);
-    
-    LocalDataStoreHandler
-      .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
+    let currentAmountOfConnections = LocalDataStoreRetriever.getTeamsOfQuiznight(quiznightCode);
+    const MAX_ALLOWED_CONNECTIONS = 6;
+    if(currentAmountOfConnections < MAX_ALLOWED_CONNECTIONS) {
+      LocalDataStoreHandler
+        .addTeamConnectionToCache(quiznightCode, message.teamName, socket);
+      
+      LocalDataStoreHandler
+        .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
 
-    DatabaseCacheHandler
-      .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
-      .then(() => {
-        QuizmasterMessageSender
-          .toNamespace(quiznightNamespace)
-          .usingSocket(socket)
-          .sendMessageToQuizmaster(MESSAGE_TYPES.TEAM_JOINED, {
-            teamName: message.teamName,
-            socketId: socket.id
-          });
+      DatabaseCacheHandler
+        .saveNewTeamInQuiznightToCache(quiznightCode, message.teamName)
+        .then(() => {
+          QuizmasterMessageSender
+            .toNamespace(quiznightNamespace)
+            .usingSocket(socket)
+            .sendMessageToQuizmaster(MESSAGE_TYPES.TEAM_JOINED, {
+              teamName: message.teamName,
+              socketId: socket.id
+            });
 
-        TeamMessageSender
-          .toNamespace(quiznightNamespace)
-          .usingSocket(socket)
-          .sendMessageToSocketViaId(socket.id, MESSAGE_TYPES.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+          TeamMessageSender
+            .toNamespace(quiznightNamespace)
+            .usingSocket(socket)
+            .sendMessageToSocketViaId(socket.id, MESSAGE_TYPES.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
 
-        socket.join(ROOM_NAMES.TEAMS);
-      });
+          socket.join(ROOM_NAMES.TEAMS);
+        });
+    } else {
+      TeamMessageSender
+        .toNamespace(quiznightNamespace)
+        .usingSocket(socket)
+        .sendMessageToSocketViaId(socket.id, MESSAGE_TYPES.PENDING, 'Sorry, quiznight is full.');
+    }
   });
 
   socket.on(MESSAGE_TYPES.SUBMIT_ANSWER, (message) => {

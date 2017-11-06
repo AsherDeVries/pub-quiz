@@ -84,16 +84,15 @@ export default (socket, quiznightNamespace) => {
       let socketId = LocalDataStoreHandler
         .getSocketIdFromTeam(quiznightCode, givenAnswer.teamName);
 
-      if(givenAnswer.isCorrect) {
-        LocalDataStoreHandler
-          .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
+      LocalDataStoreHandler
+        .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
 
-        DatabaseCacheHandler
-          .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
-      }
+      DatabaseCacheHandler
+        .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
+
       TeamMessageSender
         .toNamespace(quiznightNamespace)
-        .sendMessageToSocketViaId(socketId, MESSAGE_TYPES.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
+        .sendMessageToSocketViaId(socketId, MESSAGE_TYPES.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: true });
     }
     LocalDataStoreHandler
       .updateQuestionToReviewed(quiznightCode, message.question);
@@ -106,6 +105,9 @@ export default (socket, quiznightNamespace) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
 
     LocalDataStoreHandler
+      .updateRoundPointsOfAllTeams(qnCode);
+
+    DatabaseCacheHandler
       .updateRoundPointsOfAllTeams(qnCode);
 
     ScoreboardMessageSender

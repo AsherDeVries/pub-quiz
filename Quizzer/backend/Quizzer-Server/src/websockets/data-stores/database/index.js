@@ -1,4 +1,5 @@
 import Quiznight from '../../../models/Quiznight';
+import LocalDataStoreRetriever from '../local/retriever';
 
 const DatabaseCacheHandler = {
   saveNewQuiznightRoundToCache(quiznightCode) {
@@ -40,17 +41,21 @@ const DatabaseCacheHandler = {
     );
   },
   incrementCorrectAnswersOfTeam(quiznightCode, round, teamName) {
+    round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode)._id;
     return Quiznight.findOne({ 
       _id: quiznightCode, rounds: { $elemMatch: { _id: round } },  "rounds.teamStatistics" : { $elemMatch: { team: teamName } } 
     })
     .then((quiznight) => {
-      let correctAnswersAmount = quiznight.rounds[0].teamStatistics[0].correctAnswersAmount;
-      console.log(quiznight.rounds[0].teamStatistics[0]);
-      correctAnswersAmount++;
+      let teamStatistics = quiznight.rounds[0].teamStatistics;
+      for(let teamStat of teamStatistics) {
+        if(teamStat.team == teamName) {
+          teamStat.correctAnswersAmount++;
+        }
+      }
 
       return Quiznight.update(
-        { _id: quiznightCode, rounds: { $elemMatch: { _id: round } },  "rounds.teamStatistics" : { $elemMatch: { team: teamName } } },
-        { $set: { "rounds.0.teamStatistics.0.correctAnswersAmount": correctAnswersAmount } }
+        { _id: quiznightCode, rounds: { $elemMatch: { _id: round } } },
+        { $set: { "rounds.$.teamStatistics": teamStatistics } }
       );
     });
   },
@@ -81,7 +86,16 @@ const DatabaseCacheHandler = {
       }
     })
   },
+  updateRoundPointsOfAllTeams(quiznightCode) {
+    let teams = LocalDataStoreRetriever.getTeamsOfQuiznight(quiznightCode);
+
+    return Quiznight.update(
+      { _id: quiznightCode },
+      { $set: { teams: teams } }
+    );
+  },
   updateQuestionToReviewed(quiznightCode, round, question) {
+    round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode)._id;
     return Quiznight.update(
       { _id: quiznightCode, rounds: { $elemMatch: { _id: round } },  "rounds.chosenQuestions" : { $elemMatch: { _id: question } } },
       { $set: { "rounds.0.chosenQuestions.0.hasBeenReviewed": true } }

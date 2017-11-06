@@ -13,8 +13,6 @@ const LocalDataStoreHandler = {
         teams: []
       }
     });
-    console.log('-- IN addQuiznightToCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   addChosenQuestionsToRound(quiznightCode, chosenQuestions) {
     let round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
@@ -26,8 +24,6 @@ const LocalDataStoreHandler = {
       teamName: teamName,
       socketId: socket.id
     });
-    console.log('-- IN addTeamToCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   saveNewQuiznightRoundToCache(quiznightCode) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
@@ -46,8 +42,6 @@ const LocalDataStoreHandler = {
       _id: newRoundNumber,
       teamStatistics: newTeamStatistics
     });
-    console.log('-- IN saveNewQuiznightRoundToCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   removeTeamInQuiznightFromCache(quiznightCode, teamName) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
@@ -63,8 +57,6 @@ const LocalDataStoreHandler = {
     }
     // remove team data
     quiznight.state.teams.splice(index, 1);
-    console.log('-- IN removeTeamInQuiznightFromCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   saveNewTeamInQuiznightToCache(quiznightCode, teamName) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
@@ -72,23 +64,17 @@ const LocalDataStoreHandler = {
       _id: teamName,
       roundPoints: 0
     });
-    console.log('-- IN saveNewTeamInQuiznightToCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   getSocketIdFromTeam(quiznightCode, teamName) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
     let team = quiznight.connections.teams.find((object) => {
       return object.teamName == teamName;
     });
-    console.log('-- IN getSocketIdFromTeam --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
     return team.socketId;
   },
   incrementCorrectAnswersOfTeam(quiznightCode, round, teamName) {
     let teamStatistics = LocalDataStoreRetriever.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, teamName);
     teamStatistics.correctAnswersAmount++;
-    console.log('-- IN incrementCorrectAnswersOfTeam --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   saveAnswerOfTeamInRoundToCache(quiznightCode, round, teamName, question, answer) {
     let teamStatistics = LocalDataStoreRetriever.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, teamName);
@@ -101,8 +87,6 @@ const LocalDataStoreHandler = {
         value: answer
       });
     }
-    console.log('-- IN saveAnswerOfTeamInRoundToCache --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   teamHasGivenAnswerForQuestion(teamStatistics, question) {
     return LocalDataStoreRetriever.getGivenAnswerToQuestion(teamStatistics, question) != null;
@@ -115,7 +99,6 @@ const LocalDataStoreHandler = {
 
     for(let i = 0; i < topListTeams.length; i++) {
       let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
-      console.log(team);
       if(i == 0) {
         team.roundPoints = 4;
       }
@@ -128,12 +111,10 @@ const LocalDataStoreHandler = {
         team.roundPoints = 0.1;
       }
     }
-    console.log('-- IN updateRoundPointsOfAllTeams --');
-    console.log(JSON.stringify(LocalDataStore.data.quizNights));
+    let teams = LocalDataStoreRetriever.getTeamsOfQuiznight(quiznightCode);
   },
   updateQuestionToReviewed(quiznightCode, question) {
     let round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
-    console.log(round);
     let questionToUpdate = round.chosenQuestions.find((q) => {
       return q._id == question;
     })

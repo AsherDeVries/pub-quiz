@@ -1,12 +1,16 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Quiznight = require("../../../models/Quiznight");
+var _Quiznight = require('../../../models/Quiznight');
 
 var _Quiznight2 = _interopRequireDefault(_Quiznight);
+
+var _retriever = require('../local/retriever');
+
+var _retriever2 = _interopRequireDefault(_retriever);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58,14 +62,39 @@ var DatabaseCacheHandler = {
     return _Quiznight2.default.update({ _id: quiznightCode }, { $push: { teams: { _id: teamName, roundPoints: 0 } } });
   },
   incrementCorrectAnswersOfTeam: function incrementCorrectAnswersOfTeam(quiznightCode, round, teamName) {
+    round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode)._id;
     return _Quiznight2.default.findOne({
       _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } }
     }).then(function (quiznight) {
-      var correctAnswersAmount = quiznight.rounds[0].teamStatistics[0].correctAnswersAmount;
-      console.log(quiznight.rounds[0].teamStatistics[0]);
-      correctAnswersAmount++;
+      var teamStatistics = quiznight.rounds[0].teamStatistics;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
-      return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.teamStatistics": { $elemMatch: { team: teamName } } }, { $set: { "rounds.0.teamStatistics.0.correctAnswersAmount": correctAnswersAmount } });
+      try {
+        for (var _iterator2 = teamStatistics[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var teamStat = _step2.value;
+
+          if (teamStat.team == teamName) {
+            teamStat.correctAnswersAmount++;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } } }, { $set: { "rounds.$.teamStatistics": teamStatistics } });
     });
   },
   saveAnswerOfTeamInRoundToCache: function saveAnswerOfTeamInRoundToCache(quiznightCode, round, teamName, question, answer) {
@@ -88,7 +117,13 @@ var DatabaseCacheHandler = {
       }
     });
   },
+  updateRoundPointsOfAllTeams: function updateRoundPointsOfAllTeams(quiznightCode) {
+    var teams = _retriever2.default.getTeamsOfQuiznight(quiznightCode);
+
+    return _Quiznight2.default.update({ _id: quiznightCode }, { $set: { teams: teams } });
+  },
   updateQuestionToReviewed: function updateQuestionToReviewed(quiznightCode, round, question) {
+    round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode)._id;
     return _Quiznight2.default.update({ _id: quiznightCode, rounds: { $elemMatch: { _id: round } }, "rounds.chosenQuestions": { $elemMatch: { _id: question } } }, { $set: { "rounds.0.chosenQuestions.0.hasBeenReviewed": true } });
   },
   removeQuiznight: function removeQuiznight(quiznightCode) {

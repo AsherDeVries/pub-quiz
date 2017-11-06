@@ -110,15 +110,12 @@ export default (socket, quiznightNamespace) => {
     ScoreboardMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
-      .sendShowScoresMessage();
+      .sendShowScoresMessage(qnCode);
 
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has ended');
-
-    LocalDataStoreHandler
-    .updateRoundPointsOfAllTeams(qnCode);
   });
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {

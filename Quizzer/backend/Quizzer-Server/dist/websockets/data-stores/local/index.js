@@ -143,8 +143,10 @@ var LocalDataStoreHandler = {
       return b.correctAnswersAmount - a.correctAnswersAmount;
     });
 
+    console.log(topListTeams);
     for (var i = 0; i < topListTeams.length; i++) {
-      var team = _retriever2.default.getTeamOfQuiznightByName(topListTeams[i].team);
+      var team = _retriever2.default.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
+      console.log(team);
       if (i == 0) {
         team.roundPoints = 4;
       } else if (i == 1) {
@@ -155,6 +157,8 @@ var LocalDataStoreHandler = {
         team.roundPoints = 0.1;
       }
     }
+    console.log('-- IN updateRoundPointsOfAllTeams --');
+    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   removeQuiznightByCode: function removeQuiznightByCode(quiznightCode) {
     var quiznights = _retriever2.default.getAllQuiznights(quiznightCode);

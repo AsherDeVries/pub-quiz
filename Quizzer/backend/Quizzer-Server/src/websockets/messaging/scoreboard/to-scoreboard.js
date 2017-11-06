@@ -36,7 +36,10 @@ const ScoreboardMessageSender = {
     });
   },
   sendShowScoresMessage(quiznightCode) {
-    let teams = {...LocalDataStoreRetriever.getQuiznightByCode(quiznightCode).teams};
+    let data = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
+    
+    let qn = Object.create(data);
+    let teams = qn.state.teams;
     let quizRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
 
     for(let team of teams) {
@@ -47,8 +50,7 @@ const ScoreboardMessageSender = {
       }
     }
 
-    this.sendMessageToAllScoreboards(MESSAGE_TYPES.SHOW_QUESTION_RESULTS, {
-      question: { question: question, category: category },
+    this.sendMessageToAllScoreboards(MESSAGE_TYPES.SHOW_SCORES, {
       teams: teams
     });
   }

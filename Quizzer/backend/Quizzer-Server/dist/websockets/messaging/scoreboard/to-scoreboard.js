@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _message_types = require('../../constants/message_types');
 
 var _message_types2 = _interopRequireDefault(_message_types);
@@ -75,7 +73,10 @@ var ScoreboardMessageSender = {
     });
   },
   sendShowScoresMessage: function sendShowScoresMessage(quiznightCode) {
-    var teams = _extends({}, _retriever2.default.getQuiznightByCode(quiznightCode).teams);
+    var data = _retriever2.default.getQuiznightByCode(quiznightCode);
+
+    var qn = Object.create(data);
+    var teams = qn.state.teams;
     var quizRound = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
 
     var _iteratorNormalCompletion2 = true;
@@ -107,8 +108,7 @@ var ScoreboardMessageSender = {
       }
     }
 
-    this.sendMessageToAllScoreboards(_message_types2.default.SHOW_QUESTION_RESULTS, {
-      question: { question: question, category: category },
+    this.sendMessageToAllScoreboards(_message_types2.default.SHOW_SCORES, {
       teams: teams
     });
   }

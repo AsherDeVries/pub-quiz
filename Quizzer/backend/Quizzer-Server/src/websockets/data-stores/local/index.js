@@ -109,8 +109,10 @@ const LocalDataStoreHandler = {
       return b.correctAnswersAmount - a.correctAnswersAmount;
     })
 
+    console.log(topListTeams);
     for(let i = 0; i < topListTeams.length; i++) {
-      let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(topListTeams[i].team);
+      let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
+      console.log(team);
       if(i == 0) {
         team.roundPoints = 4;
       }
@@ -123,6 +125,8 @@ const LocalDataStoreHandler = {
         team.roundPoints = 0.1;
       }
     }
+    console.log('-- IN updateRoundPointsOfAllTeams --');
+    console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
   removeQuiznightByCode(quiznightCode) {
     let quiznights = LocalDataStoreRetriever.getAllQuiznights(quiznightCode);

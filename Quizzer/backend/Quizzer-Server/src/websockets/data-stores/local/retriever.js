@@ -33,8 +33,9 @@ const LocalDataStoreRetriever = {
   },
   getTeamOfQuiznightByName(quiznightCode, teamName) {
     let quiznight = this.getQuiznightByCode(quiznightCode);
+    
     return quiznight.state.teams.find((team) => {
-      return team.teamName == teamName;
+      return team._id == teamName;
     });
   },
   getAllQuiznights() {

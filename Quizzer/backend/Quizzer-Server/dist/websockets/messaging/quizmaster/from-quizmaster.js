@@ -127,11 +127,9 @@ exports.default = function (socket, quiznightNamespace) {
 
     _local2.default.updateRoundPointsOfAllTeams(qnCode);
 
-    _toScoreboard2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendShowScoresMessage();
+    _toScoreboard2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendShowScoresMessage(qnCode);
 
     _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToAllTeams(_message_types2.default.PENDING, 'Round has ended');
-
-    _local2.default.updateRoundPointsOfAllTeams(qnCode);
   });
 
   socket.on(_message_types2.default.END_GAME, function (message) {

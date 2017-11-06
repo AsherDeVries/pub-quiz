@@ -65,8 +65,9 @@ var LocalDataStoreRetriever = {
   },
   getTeamOfQuiznightByName: function getTeamOfQuiznightByName(quiznightCode, teamName) {
     var quiznight = this.getQuiznightByCode(quiznightCode);
+
     return quiznight.state.teams.find(function (team) {
-      return team.teamName == teamName;
+      return team._id == teamName;
     });
   },
   getAllQuiznights: function getAllQuiznights() {

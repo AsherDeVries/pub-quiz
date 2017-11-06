@@ -57,7 +57,6 @@ exports.default = function (socket, quiznightNamespace) {
       _local2.default.removeTeamInQuiznightFromCache(qnCode, message.team.teamName);
 
       _database2.default.removeTeamInQuiznightFromCache(qnCode, message.team.teamName).then(_toTeams2.default.disconnectSocket(message.team.socketId));
-      // TODO: leave werkt nog niet
     }
   });
 
@@ -85,7 +84,7 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.UPDATE_SCORE, function (message) {
-    var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
+    var quiznightCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -94,16 +93,15 @@ exports.default = function (socket, quiznightNamespace) {
       for (var _iterator = message.givenAnswers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var givenAnswer = _step.value;
 
-        var socketId = _local2.default.getSocketIdFromTeam(qnCode, givenAnswer.teamName);
+        var socketId = _local2.default.getSocketIdFromTeam(quiznightCode, givenAnswer.teamName);
 
         if (givenAnswer.isCorrect) {
-          _local2.default.incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+          _local2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
 
-          _database2.default.incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+          _database2.default.incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
         }
         _toTeams2.default.toNamespace(quiznightNamespace).sendMessageToSocketViaId(socketId, _message_types2.default.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
       }
-      // TODO: zet vraag op gereviewed bij chosenquestions
     } catch (err) {
       _didIteratorError = true;
       _iteratorError = err;
@@ -118,11 +116,13 @@ exports.default = function (socket, quiznightNamespace) {
         }
       }
     }
+
+    _local2.default.updateQuestionToReviewed(quiznightCode, message.question);
+
+    _database2.default.updateQuestionToReviewed(quiznightCode, message.round, message.question);
   });
 
   socket.on(_message_types2.default.END_ROUND, function (message) {
-    // Loop door lijst met teams
-    // 1. update roundpoints in database
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
     _local2.default.updateRoundPointsOfAllTeams(qnCode);
@@ -133,8 +133,6 @@ exports.default = function (socket, quiznightNamespace) {
   });
 
   socket.on(_message_types2.default.END_GAME, function (message) {
-    // Loop door lijst met teams
-    // 1. haal quiznight uit database
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
     _local2.default.removeQuiznightByCode(qnCode);

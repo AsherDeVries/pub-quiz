@@ -16,6 +16,10 @@ const LocalDataStoreHandler = {
     console.log('-- IN addQuiznightToCache --');
     console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
+  addChosenQuestionsToRound(quiznightCode, chosenQuestions) {
+    let round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+    round.chosenQuestions = chosenQuestions;
+  },
   addTeamConnectionToCache(quiznightCode, teamName, socket) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
     quiznight.connections.teams.push({
@@ -109,7 +113,6 @@ const LocalDataStoreHandler = {
       return b.correctAnswersAmount - a.correctAnswersAmount;
     })
 
-    console.log(topListTeams);
     for(let i = 0; i < topListTeams.length; i++) {
       let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
       console.log(team);
@@ -127,6 +130,14 @@ const LocalDataStoreHandler = {
     }
     console.log('-- IN updateRoundPointsOfAllTeams --');
     console.log(JSON.stringify(LocalDataStore.data.quizNights));
+  },
+  updateQuestionToReviewed(quiznightCode, question) {
+    let round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+    console.log(round);
+    let questionToUpdate = round.chosenQuestions.find((q) => {
+      return q._id == question;
+    })
+    questionToUpdate.hasBeenReviewed = true;
   },
   removeQuiznightByCode(quiznightCode) {
     let quiznights = LocalDataStoreRetriever.getAllQuiznights(quiznightCode);

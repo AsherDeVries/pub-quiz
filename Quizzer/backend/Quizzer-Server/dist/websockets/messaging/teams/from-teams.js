@@ -38,6 +38,10 @@ var _local = require('../../data-stores/local');
 
 var _local2 = _interopRequireDefault(_local);
 
+var _retriever = require('../../data-stores/local/retriever');
+
+var _retriever2 = _interopRequireDefault(_retriever);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (socket, quiznightNamespace) {
@@ -64,8 +68,9 @@ exports.default = function (socket, quiznightNamespace) {
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
     _local2.default.saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer);
 
-    _database2.default.saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
-    .then(function () {
+    var round = _retriever2.default.getCurrentRoundInQuiznight(qnCode);
+
+    _database2.default.saveAnswerOfTeamInRoundToCache(qnCode, round, message.teamName, message.question, message.answer).then(function () {
       _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.ANSWER_RECEIVED, { teamName: message.teamName, answer: message.answer, reSubmit: message.reSubmit });
 
       _toScoreboard2.default.sendMessageToAllScoreboards(_message_types2.default.ANSWER_SUBMITTED, { teamName: message.teamName, hasAnswered: true });

@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _message_types = require('../../constants/message_types');
 
 var _message_types2 = _interopRequireDefault(_message_types);
@@ -34,7 +36,7 @@ var ScoreboardMessageSender = {
     this.namespace.to(_rooms2.default.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage: function sendNewQuestionMessage(quiznightCode, question, category) {
-    var quiznightRound = Object.create(_retriever2.default.getCurrentRoundInQuiznight(quiznightCode));
+    var quiznightRound = _extends({}, _retriever2.default.getCurrentRoundInQuiznight(quiznightCode));
     var teamsDataToSend = [];
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
@@ -92,9 +94,6 @@ var ScoreboardMessageSender = {
       }
     }
 
-    console.log("SEND QUESTION");
-    console.log(answersPerTeam);
-
     this.sendMessageToAllScoreboards(_message_types2.default.NEW_QUESTION, {
       question: { question: question, category: category },
       teams: answersPerTeam
@@ -109,7 +108,7 @@ var ScoreboardMessageSender = {
   sendShowScoresMessage: function sendShowScoresMessage(quiznightCode) {
     var data = _retriever2.default.getQuiznightByCode(quiznightCode);
 
-    var qn = Object.create(data);
+    var qn = _extends({}, data);
     var teams = qn.state.teams;
     var quizRound = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
 
@@ -142,6 +141,8 @@ var ScoreboardMessageSender = {
       }
     }
 
+    console.log("SHOW SCORES");
+    console.log(teams);
     this.sendMessageToAllScoreboards(_message_types2.default.SHOW_SCORES, {
       teams: teams
     });

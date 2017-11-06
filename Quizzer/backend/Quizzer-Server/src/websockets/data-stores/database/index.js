@@ -45,6 +45,7 @@ const DatabaseCacheHandler = {
     })
     .then((quiznight) => {
       let correctAnswersAmount = quiznight.rounds[0].teamStatistics[0].correctAnswersAmount;
+      console.log(quiznight.rounds[0].teamStatistics[0]);
       correctAnswersAmount++;
 
       return Quiznight.update(
@@ -79,6 +80,12 @@ const DatabaseCacheHandler = {
         );
       }
     })
+  },
+  updateQuestionToReviewed(quiznightCode, round, question) {
+    return Quiznight.update(
+      { _id: quiznightCode, rounds: { $elemMatch: { _id: round } },  "rounds.chosenQuestions" : { $elemMatch: { _id: question } } },
+      { $set: { "rounds.0.chosenQuestions.0.hasBeenReviewed": true } }
+    );
   },
   removeQuiznight(quiznightCode) {
     return Quiznight.remove({

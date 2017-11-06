@@ -7,6 +7,7 @@ import ROOM_NAMES from '../../constants/rooms';
 import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
 import TeamMessageSender from '../teams/to-teams';
 import LocalDataStoreHandler from '../../data-stores/local';
+import LocalDataStoreRetriever from '../../data-stores/local/retriever';
 
 export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.CONNECT_TEAM, (message) => {
@@ -41,10 +42,12 @@ export default (socket, quiznightNamespace) => {
   socket.on(MESSAGE_TYPES.SUBMIT_ANSWER, (message) => {
     let qnCode = getQuiznightCodeFromSocket(socket);
     LocalDataStoreHandler
-      .saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer)
+      .saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer);
+
+    let round = LocalDataStoreRetriever.getCurrentRoundInQuiznight(qnCode);
 
     DatabaseCacheHandler
-      .saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
+      .saveAnswerOfTeamInRoundToCache(qnCode, round, message.teamName, message.question, message.answer)
       .then(() => {
         QuizmasterMessageSender
           .toNamespace(quiznightNamespace)

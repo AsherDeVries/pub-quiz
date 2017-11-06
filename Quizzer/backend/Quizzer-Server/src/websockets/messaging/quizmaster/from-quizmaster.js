@@ -34,7 +34,6 @@ export default (socket, quiznightNamespace) => {
       DatabaseCacheHandler
         .removeTeamInQuiznightFromCache(qnCode, message.team.teamName)
       .then(TeamMessageSender.disconnectSocket(message.team.socketId));
-      // TODO: leave werkt nog niet
     }
   });
 
@@ -80,28 +79,30 @@ export default (socket, quiznightNamespace) => {
   });
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
-    let qnCode = getQuiznightCodeFromSocket(socket);
+    let quiznightCode = getQuiznightCodeFromSocket(socket);
     for(let givenAnswer of message.givenAnswers) {
       let socketId = LocalDataStoreHandler
-        .getSocketIdFromTeam(qnCode, givenAnswer.teamName);
+        .getSocketIdFromTeam(quiznightCode, givenAnswer.teamName);
 
       if(givenAnswer.isCorrect) {
         LocalDataStoreHandler
-          .incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+          .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
 
         DatabaseCacheHandler
-          .incrementCorrectAnswersOfTeam(qnCode, message.round, givenAnswer.teamName);
+          .incrementCorrectAnswersOfTeam(quiznightCode, message.round, givenAnswer.teamName);
       }
       TeamMessageSender
         .toNamespace(quiznightNamespace)
         .sendMessageToSocketViaId(socketId, MESSAGE_TYPES.ANSWER_REVIEWED, { correctAnswer: message.answer, isCorrect: givenAnswer.isCorrect });
     }
-    // TODO: zet vraag op gereviewed bij chosenquestions
+    LocalDataStoreHandler
+      .updateQuestionToReviewed(quiznightCode, message.question);
+
+    DatabaseCacheHandler
+      .updateQuestionToReviewed(quiznightCode, message.round, message.question);
   });
 
   socket.on(MESSAGE_TYPES.END_ROUND, (message) => {
-    // Loop door lijst met teams
-    // 1. update roundpoints in database
     let qnCode = getQuiznightCodeFromSocket(socket);
 
     LocalDataStoreHandler
@@ -119,8 +120,6 @@ export default (socket, quiznightNamespace) => {
   });
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {
-    // Loop door lijst met teams
-    // 1. haal quiznight uit database
     let qnCode = getQuiznightCodeFromSocket(socket);
 
     LocalDataStoreHandler

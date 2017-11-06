@@ -66,6 +66,8 @@ exports.default = function () {
         var newRounds = [].concat(_toConsumableArray(data.rounds));
         newRounds[parseInt(req.params.roundId) - 1].chosenQuestions = req.body;
 
+        _local2.default.addChosenQuestionsToRound(req.params.quiznightId, req.body);
+
         _Quiznight2.default.update({ _id: req.params.quiznightId }, {
           $set: {
             rounds: newRounds

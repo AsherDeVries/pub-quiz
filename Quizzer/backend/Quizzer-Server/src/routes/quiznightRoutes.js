@@ -45,6 +45,9 @@ export default () => {
         const newRounds = [...data.rounds];
         newRounds[parseInt(req.params.roundId) -1].chosenQuestions = req.body
 
+        LocalDataStoreHandler
+          .addChosenQuestionsToRound(req.params.quiznightId, req.body);
+
         Quiznight.update(
           { _id: req.params.quiznightId},
           {

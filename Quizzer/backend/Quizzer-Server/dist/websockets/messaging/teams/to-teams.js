@@ -26,7 +26,7 @@ var TeamMessageSender = {
     this.namespace.to(_rooms2.default.TEAMS).emit(messageType, message);
   },
   disconnectSocket: function disconnectSocket(socketId) {
-    this.namespace.to(socketId).leave(_rooms2.default.TEAMS);
+    this.socket.disconnect();
   }
 };
 

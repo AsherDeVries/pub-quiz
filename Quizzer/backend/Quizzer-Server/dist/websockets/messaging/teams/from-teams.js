@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _database = require('../../caching/database');
+var _database = require('../../data-stores/database');
 
 var _database2 = _interopRequireDefault(_database);
 
@@ -30,30 +30,43 @@ var _toScoreboard = require('../scoreboard/to-scoreboard');
 
 var _toScoreboard2 = _interopRequireDefault(_toScoreboard);
 
-var _connections = require('../../caching/connections');
+var _toTeams = require('../teams/to-teams');
 
-var _connections2 = _interopRequireDefault(_connections);
+var _toTeams2 = _interopRequireDefault(_toTeams);
+
+var _local = require('../../data-stores/local');
+
+var _local2 = _interopRequireDefault(_local);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (socket, quiznightNamespace) {
   socket.on(_message_types2.default.CONNECT_TEAM, function (message) {
     var quiznightCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
-    _connections2.default.addTeamToCache(quiznightCode, message.teamName, socket);
+
+    _local2.default.addTeamConnectionToCache(quiznightCode, message.teamName, socket);
+
+    _local2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName);
 
     _database2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName).then(function () {
       _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.TEAM_JOINED, {
         teamName: message.teamName,
         socketId: socket.id
       });
+
+      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(socket.id, _message_types2.default.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
       socket.join(_rooms2.default.TEAMS);
     });
   });
 
   socket.on(_message_types2.default.SUBMIT_ANSWER, function (message) {
     var qnCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
-    _database2.default.saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer).then(function () {
-      _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.ANSWER_SUBMITTED, { question: message.question, answer: message.answer });
+    _local2.default.saveAnswerOfTeamInRoundToCache(qnCode, message.round, message.teamName, message.question, message.answer);
+
+    _database2.default.saveAnswerOfTeamInRoundToCache(qnCode, 1, message.teamName, message.question, message.answer) // replace 1 with current round
+    .then(function () {
+      _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.ANSWER_RECEIVED, { teamName: message.teamName, answer: message.answer, reSubmit: message.reSubmit });
 
       _toScoreboard2.default.sendMessageToAllScoreboards(_message_types2.default.ANSWER_SUBMITTED, { teamName: message.teamName, hasAnswered: true });
     });

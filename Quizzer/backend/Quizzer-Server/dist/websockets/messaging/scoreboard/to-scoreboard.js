@@ -34,17 +34,22 @@ var ScoreboardMessageSender = {
     this.namespace.to(_rooms2.default.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage: function sendNewQuestionMessage(quiznightCode, question, category) {
-    var data = _retriever2.default.getGivenAnswersOfQuestionPerTeam(quiznightCode, question);
-    var answersPerTeam = Object.create(data);
+    var quiznightRound = Object.create(_retriever2.default.getCurrentRoundInQuiznight(quiznightCode));
+    var teamsDataToSend = [];
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-      for (var _iterator = answersPerTeam[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var answerOfTeam = _step.value;
+      for (var _iterator = quiznightRound.teamStatistics[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var teamStat = _step.value;
 
-        answerOfTeam.hasAnswered = false;
+        var givenAnswerOfTeam = _retriever2.default.getGivenAnswerToQuestion(teamStat, question);
+
+        teamsDataToSend.push({
+          teamName: teamStat.team,
+          givenAnswer: givenAnswerOfTeam
+        });
       }
     } catch (err) {
       _didIteratorError = true;
@@ -60,6 +65,35 @@ var ScoreboardMessageSender = {
         }
       }
     }
+
+    var answersPerTeam = teamsDataToSend;
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = answersPerTeam[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var answerOfTeam = _step2.value;
+
+        answerOfTeam.hasAnswered = false;
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
+      }
+    }
+
+    console.log("SEND QUESTION");
+    console.log(answersPerTeam);
 
     this.sendMessageToAllScoreboards(_message_types2.default.NEW_QUESTION, {
       question: { question: question, category: category },
@@ -79,13 +113,13 @@ var ScoreboardMessageSender = {
     var teams = qn.state.teams;
     var quizRound = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
 
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
+    var _iteratorNormalCompletion3 = true;
+    var _didIteratorError3 = false;
+    var _iteratorError3 = undefined;
 
     try {
-      for (var _iterator2 = teams[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var team = _step2.value;
+      for (var _iterator3 = teams[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        var team = _step3.value;
 
         var teamStats = _retriever2.default.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, team._id);
         team.score = {
@@ -94,16 +128,16 @@ var ScoreboardMessageSender = {
         };
       }
     } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
+      _didIteratorError3 = true;
+      _iteratorError3 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-          _iterator2.return();
+        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+          _iterator3.return();
         }
       } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
+        if (_didIteratorError3) {
+          throw _iteratorError3;
         }
       }
     }

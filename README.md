@@ -129,6 +129,7 @@ Filter params: ?category: string, ?random: boolean, ?limit: number
 ### Quiznight
 
 - POST /quiznights/:id/rounds/:roundId ```// create questions for a new round in a quiznight ```
+``` body: [Questions] ```
 - GET  /quiznights ```// get all quiznights ```
 - POST /quiznights ```// create new quiznight ```
 

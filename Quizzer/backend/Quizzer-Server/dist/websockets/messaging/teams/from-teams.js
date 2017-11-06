@@ -48,20 +48,25 @@ exports.default = function (socket, quiznightNamespace) {
   socket.on(_message_types2.default.CONNECT_TEAM, function (message) {
     var quiznightCode = (0, _utils.getQuiznightCodeFromSocket)(socket);
 
-    _local2.default.addTeamConnectionToCache(quiznightCode, message.teamName, socket);
+    var currentAmountOfConnections = _retriever2.default.getTeamsOfQuiznight(quiznightCode);
+    if (currentAmountOfConnections < 6) {
+      _local2.default.addTeamConnectionToCache(quiznightCode, message.teamName, socket);
 
-    _local2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName);
+      _local2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName);
 
-    _database2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName).then(function () {
-      _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.TEAM_JOINED, {
-        teamName: message.teamName,
-        socketId: socket.id
+      _database2.default.saveNewTeamInQuiznightToCache(quiznightCode, message.teamName).then(function () {
+        _toQuizmaster2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToQuizmaster(_message_types2.default.TEAM_JOINED, {
+          teamName: message.teamName,
+          socketId: socket.id
+        });
+
+        _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(socket.id, _message_types2.default.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
+        socket.join(_rooms2.default.TEAMS);
       });
-
-      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(socket.id, _message_types2.default.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
-
-      socket.join(_rooms2.default.TEAMS);
-    });
+    } else {
+      _toTeams2.default.toNamespace(quiznightNamespace).usingSocket(socket).sendMessageToSocketViaId(socket.id, _message_types2.default.PENDING, 'Sorry, quiznight is full.');
+    }
   });
 
   socket.on(_message_types2.default.SUBMIT_ANSWER, function (message) {

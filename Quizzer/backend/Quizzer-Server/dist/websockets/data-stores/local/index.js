@@ -26,8 +26,6 @@ var LocalDataStoreHandler = {
         teams: []
       }
     });
-    console.log('-- IN addQuiznightToCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   addChosenQuestionsToRound: function addChosenQuestionsToRound(quiznightCode, chosenQuestions) {
     var round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
@@ -39,8 +37,6 @@ var LocalDataStoreHandler = {
       teamName: teamName,
       socketId: socket.id
     });
-    console.log('-- IN addTeamToCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   saveNewQuiznightRoundToCache: function saveNewQuiznightRoundToCache(quiznightCode) {
     var quiznight = _retriever2.default.getQuiznightByCode(quiznightCode);
@@ -80,8 +76,6 @@ var LocalDataStoreHandler = {
       _id: newRoundNumber,
       teamStatistics: newTeamStatistics
     });
-    console.log('-- IN saveNewQuiznightRoundToCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   removeTeamInQuiznightFromCache: function removeTeamInQuiznightFromCache(quiznightCode, teamName) {
     var quiznight = _retriever2.default.getQuiznightByCode(quiznightCode);
@@ -97,8 +91,6 @@ var LocalDataStoreHandler = {
     }
     // remove team data
     quiznight.state.teams.splice(index, 1);
-    console.log('-- IN removeTeamInQuiznightFromCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   saveNewTeamInQuiznightToCache: function saveNewTeamInQuiznightToCache(quiznightCode, teamName) {
     var quiznight = _retriever2.default.getQuiznightByCode(quiznightCode);
@@ -106,23 +98,17 @@ var LocalDataStoreHandler = {
       _id: teamName,
       roundPoints: 0
     });
-    console.log('-- IN saveNewTeamInQuiznightToCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   getSocketIdFromTeam: function getSocketIdFromTeam(quiznightCode, teamName) {
     var quiznight = _retriever2.default.getQuiznightByCode(quiznightCode);
     var team = quiznight.connections.teams.find(function (object) {
       return object.teamName == teamName;
     });
-    console.log('-- IN getSocketIdFromTeam --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
     return team.socketId;
   },
   incrementCorrectAnswersOfTeam: function incrementCorrectAnswersOfTeam(quiznightCode, round, teamName) {
     var teamStatistics = _retriever2.default.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, teamName);
     teamStatistics.correctAnswersAmount++;
-    console.log('-- IN incrementCorrectAnswersOfTeam --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   saveAnswerOfTeamInRoundToCache: function saveAnswerOfTeamInRoundToCache(quiznightCode, round, teamName, question, answer) {
     var teamStatistics = _retriever2.default.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, teamName);
@@ -135,8 +121,6 @@ var LocalDataStoreHandler = {
         value: answer
       });
     }
-    console.log('-- IN saveAnswerOfTeamInRoundToCache --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
   },
   teamHasGivenAnswerForQuestion: function teamHasGivenAnswerForQuestion(teamStatistics, question) {
     return _retriever2.default.getGivenAnswerToQuestion(teamStatistics, question) != null;
@@ -149,7 +133,6 @@ var LocalDataStoreHandler = {
 
     for (var i = 0; i < topListTeams.length; i++) {
       var team = _retriever2.default.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
-      console.log(team);
       if (i == 0) {
         team.roundPoints = 4;
       } else if (i == 1) {
@@ -160,12 +143,10 @@ var LocalDataStoreHandler = {
         team.roundPoints = 0.1;
       }
     }
-    console.log('-- IN updateRoundPointsOfAllTeams --');
-    console.log(JSON.stringify(_store2.default.data.quizNights));
+    var teams = _retriever2.default.getTeamsOfQuiznight(quiznightCode);
   },
   updateQuestionToReviewed: function updateQuestionToReviewed(quiznightCode, question) {
     var round = _retriever2.default.getCurrentRoundInQuiznight(quiznightCode);
-    console.log(round);
     var questionToUpdate = round.chosenQuestions.find(function (q) {
       return q._id == question;
     });

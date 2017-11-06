@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 
-import { CONNECT_SCOREBOARD, NEW_QUESTION, ANSWER_SUBMITTED, SHOW_SCORES, SHOW_QUESTION_RESULTS} from '../constants/actionTypes';
+import { LOGIN_STATUS_CHANGE, LOGIN_REQUEST_STATE, CONNECT_SCOREBOARD, NEW_QUESTION, ANSWER_SUBMITTED, SHOW_SCORES, SHOW_QUESTION_RESULTS} from '../constants/actionTypes';
+import { SCOREBOARD_STATE } from '../constants/scoreboardState';
 
 
 const socketMiddleware = (function () {
@@ -16,22 +17,29 @@ const socketMiddleware = (function () {
         socket = io(`http://localhost:8080/${action.code}`);
         socket.on('connect', () => {
           socket.emit(CONNECT_SCOREBOARD, {});
+          store.dispatch({
+            type: LOGIN_REQUEST_STATE,
+            loginState: 'SUCCESS'
+          });
+          store.dispatch({
+            type: LOGIN_STATUS_CHANGE,
+            isLoggedIn: true
+          });
         });
 
         socket.on(NEW_QUESTION, data => {
-          console.log(data);
+          showQuestion(store, data);
         });
 
         socket.on(ANSWER_SUBMITTED, data => {
-          console.log(data);
         });
 
         socket.on(SHOW_SCORES, data => {
-          console.log(data);
+          showScores(store, data);
         });
 
         socket.on(SHOW_QUESTION_RESULTS, data => {
-          console.log(data);
+          showAnswers(store, data);
         });
 
 
@@ -41,6 +49,34 @@ const socketMiddleware = (function () {
     }
   };
 })();
+
+function showQuestion(store, data) {
+  store.dispatch({
+    type: NEW_QUESTION,
+    scoreboardState: SCOREBOARD_STATE.SHOW_QUESTION,
+    question: data.question.question,
+    category: data.question.category,
+    teams: data.teams
+  })
+}
+
+function showAnswers(store, data) {
+  store.dispatch({
+    type: SCOREBOARD_STATE.SHOW_ANSWERS,
+    question: data.question.question,
+    category: data.question.category,
+    teams: data.teams,
+    scoreboardState: SCOREBOARD_STATE.SHOW_ANSWERS
+  });
+}
+
+function showScores(store, data) {
+  store.dispatch({
+    type: SCOREBOARD_STATE.SHOW_SCORES,
+    teams: data.teams,
+    scoreboardState: SCOREBOARD_STATE.SHOW_SCORES
+  });
+}
 
 export default socketMiddleware;
 

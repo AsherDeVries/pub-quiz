@@ -30,7 +30,7 @@ class LoginContainer extends Component {
   render() {
     return (
       <Flex center middle viewport row="wrap" direction="column">
-        <WithLoading loadingState={this.props.loginState.requestStatus} >
+        <WithLoading loadingState={this.props.loginState} >
           <TextField
             id="text-field-controlled"
             value={this.state.password}
@@ -59,7 +59,7 @@ function mapStateToProps(state) {
 }
 
 LoginContainer.propTypes = {
-  loginState: PropTypes.object,
+  loginState: PropTypes.string,
   login: PropTypes.func
 };
 

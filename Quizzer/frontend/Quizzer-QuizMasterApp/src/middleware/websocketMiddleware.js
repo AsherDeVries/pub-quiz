@@ -136,15 +136,5 @@ function addAnswer(store, data) {
 
 export default socketMiddleware;
 
-// code for next question received
-// dispatch({
-//   type: QUIZNIGHT_ACTION_TYPES.ROUND_QUESTION_RECEIVED,
-//   question: availableQuestions[questionSequenceNr],
-//   questionSequenceNr: questionSequenceNr + 1
-// });
-// dispatch({
-//   type: GAME_ACTION_TYPES.SET_GAME_STATE,
-//   gameState: GAME_STATE.CHECKING_ANSWERS
-// });
 
 

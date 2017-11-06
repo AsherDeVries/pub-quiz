@@ -24,6 +24,31 @@ HTTP requests are used for static data, websockets connections for dynamic data.
 The model below is is an overview of all the domain concepts mentioned in the Quizzer case study:
 ![alt text](https://github.com/HANICA-DWA/fall2017-quizz-NickEnWessel/blob/master/Quizzer_cd.png?raw=true "Domain model")
 
+### Database structure
+
+The diagram below shows the structure of the MongoDB database. It shows which collections exist and which relations they have.
+
+![Database structure](./attachments/Quizzer_database.png)
+
+### Model rationale
+For this situation we considered two factors:
+1. Will the entities on the “N” side of the One-to-N ever need to stand alone?
+2. What is the cardinality of the relationship: is it one-to-few; one-to-many; or one-to-squillions?
+
+Regarding point one: As is shown in the domain model, we'll be dealing with a lot of one-to-N relationships.
+The most important ones are:
+- A quiz night has multiple teams
+- A quiz night has multiple rounds
+- A Round has multiple questions
+
+**Regarding point two:** Only the _question_ collection needs to stand alone, as we expect new questions to be submitted, updated and deleted during the entire lifetime of this application. Also questions need to be queried on independently to fill a round with questions (within a specific category).
+
+**That leaves us to one remaining issue:** embed _question_ inside quiz night or use a reference?
+Denormalizing saves you a lookup of the denormalized data at the cost of a more expensive update. We assume that once a question is submitted, it's not very likely that an answer or category changes so we could embed it.
+
+Source: [MongoDB rules of thumb for mongodb schema design](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1)
+
+
 ## The Websocket Interface
 Now that we have our models, let's look at which events occur during a Quiz Night and which messages are sent between clients and servers over the websocket protocol.
 
@@ -165,12 +190,6 @@ Apply as a team for a quiz. The team needs to know the correct quiz night code t
   }
 }
 ```
-
-### Database structure
-
-The diagram below shows the structure of the MongoDB database. It shows which collections exist and which relations they have.
-
-![Database structure](./attachments/Quizzer_database.png)
 
 ## Technologies
 

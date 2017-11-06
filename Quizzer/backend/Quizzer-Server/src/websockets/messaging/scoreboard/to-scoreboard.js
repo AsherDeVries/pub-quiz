@@ -33,9 +33,6 @@ const ScoreboardMessageSender = {
     for(let answerOfTeam of answersPerTeam) {
       answerOfTeam.hasAnswered = false;
     }
-    console.log("SEND QUESTION");
-    console.log(answersPerTeam);
-
     this.sendMessageToAllScoreboards(MESSAGE_TYPES.NEW_QUESTION, {
       question: { question: question, category: category },
       teams: answersPerTeam

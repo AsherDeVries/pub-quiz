@@ -6,6 +6,19 @@ const LocalDataStoreRetriever = {
       return givenAnswer.question == question;
     });
   },
+  getGivenAnswersOfQuestionPerTeam(quiznightCode, question) {
+    let quiznightRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+    let teamsDataToSend = [];
+    for(let teamStat of quiznightRound.teamStatistics) {
+      let givenAnswerOfTeam = this.getGivenAnswerToQuestion(teamStat, question);
+
+      teamsDataToSend.push({
+        teamName: teamStat.team,
+        givenAnswer: givenAnswerOfTeam
+      });
+    }
+    return teamsDataToSend;
+  },
   getTeamStatisticsOfTeamInCurrentRound(quiznightCode, teamName) {
     let quiznight = this.getQuiznightByCode(quiznightCode);
     let currentRoundState = this.getCurrentRoundInQuiznight(quiznightCode);
@@ -20,9 +33,13 @@ const LocalDataStoreRetriever = {
   },
   getTeamOfQuiznightByName(quiznightCode, teamName) {
     let quiznight = this.getQuiznightByCode(quiznightCode);
+    
     return quiznight.state.teams.find((team) => {
-      return team.teamName == teamName;
+      return team._id == teamName;
     });
+  },
+  getAllQuiznights() {
+    return LocalDataStore.data.quizNights;
   },
   getQuiznightByCode(quiznightCode) {
     return LocalDataStore.data.quizNights.find((quiznight) => {

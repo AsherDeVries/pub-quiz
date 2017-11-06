@@ -79,6 +79,11 @@ const DatabaseCacheHandler = {
         );
       }
     })
+  },
+  removeQuiznight(quiznightCode) {
+    return Quiznight.remove({
+      _id: quiznightCode
+    })
   }
 };
 

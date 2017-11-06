@@ -18,9 +18,40 @@ const ScoreboardMessageSender = {
     this.namespace.to(ROOM_NAMES.SCOREBOARD).emit(messageType, message);
   },
   sendNewQuestionMessage(quiznightCode, question, category) {
+    let data = LocalDataStoreRetriever.getGivenAnswersOfQuestionPerTeam(quiznightCode, question);
+    let answersPerTeam = Object.create(data);
+    for(let answerOfTeam of answersPerTeam) {
+      answerOfTeam.hasAnswered = false;
+    }
+
     this.sendMessageToAllScoreboards(MESSAGE_TYPES.NEW_QUESTION, {
       question: { question: question, category: category },
-      teams: LocalDataStoreRetriever.getTeamsOfQuiznight(quiznightCode)
+      teams: answersPerTeam
+    });
+  },
+  sendShowQuestionResultsMessage(quiznightCode, question, category) {
+    this.sendMessageToAllScoreboards(MESSAGE_TYPES.SHOW_QUESTION_RESULTS, {
+      question: { question: question, category: category },
+      teams: LocalDataStoreRetriever.getGivenAnswersOfQuestionPerTeam(quiznightCode, question)
+    });
+  },
+  sendShowScoresMessage(quiznightCode) {
+    let data = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
+    
+    let qn = Object.create(data);
+    let teams = qn.state.teams;
+    let quizRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+
+    for(let team of teams) {
+      let teamStats = LocalDataStoreRetriever.getTeamStatisticsOfTeamInCurrentRound(quiznightCode, team._id);
+      team.score = {
+        round: quizRound._id,
+        questionsCorrect: teamStats.correctAnswersAmount
+      }
+    }
+
+    this.sendMessageToAllScoreboards(MESSAGE_TYPES.SHOW_SCORES, {
+      teams: teams
     });
   }
 };

@@ -71,6 +71,12 @@ export default (socket, quiznightNamespace) => {
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Quizmaster is currently reviewing answers.');
+
+    let qnCode = getQuiznightCodeFromSocket(socket);
+    ScoreboardMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendShowQuestionResultsMessage(qnCode, message.question._id, message.question.category);
   });
 
   socket.on(MESSAGE_TYPES.UPDATE_SCORE, (message) => {
@@ -98,17 +104,35 @@ export default (socket, quiznightNamespace) => {
     // 1. update roundpoints in database
     let qnCode = getQuiznightCodeFromSocket(socket);
 
+    LocalDataStoreHandler
+      .updateRoundPointsOfAllTeams(qnCode);
+
+    ScoreboardMessageSender
+      .toNamespace(quiznightNamespace)
+      .usingSocket(socket)
+      .sendShowScoresMessage(qnCode);
+
     TeamMessageSender
       .toNamespace(quiznightNamespace)
       .usingSocket(socket)
       .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Round has ended');
-
-    LocalDataStoreHandler
-    .updateRoundPointsOfAllTeams(qnCode);
   });
 
   socket.on(MESSAGE_TYPES.END_GAME, (message) => {
     // Loop door lijst met teams
     // 1. haal quiznight uit database
+    let qnCode = getQuiznightCodeFromSocket(socket);
+
+    LocalDataStoreHandler
+      .removeQuiznightByCode(qnCode);
+
+    DatabaseCacheHandler
+      .removeQuiznight(qnCode)
+      .then(() => {
+        TeamMessageSender
+          .toNamespace(quiznightNamespace)
+          .usingSocket(socket)
+          .sendMessageToAllTeams(MESSAGE_TYPES.PENDING, 'Game has ended');
+      });
   });
 }

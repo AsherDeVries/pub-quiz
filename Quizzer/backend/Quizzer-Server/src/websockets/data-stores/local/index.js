@@ -48,7 +48,17 @@ const LocalDataStoreHandler = {
   removeTeamInQuiznightFromCache(quiznightCode, teamName) {
     let quiznight = LocalDataStoreRetriever.getQuiznightByCode(quiznightCode);
     let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, teamName);
-    quiznight.state.teams.remove(team);
+
+    var index = quiznight.state.teams.indexOf(team);
+    let teamConnections = quiznight.connections.teams;
+    // remove connection
+    for(let i = 0; i < teamConnections.length; i++) {
+      if(teamConnections[i].teamName == teamName) {
+        teamConnections.splice(i, 1);
+      }
+    }
+    // remove team data
+    quiznight.state.teams.splice(index, 1);
     console.log('-- IN removeTeamInQuiznightFromCache --');
     console.log(JSON.stringify(LocalDataStore.data.quizNights));
   },
@@ -93,6 +103,39 @@ const LocalDataStoreHandler = {
   teamHasGivenAnswerForQuestion(teamStatistics, question) {
     return LocalDataStoreRetriever.getGivenAnswerToQuestion(teamStatistics, question) != null;
   },
+  updateRoundPointsOfAllTeams(quiznightCode) {
+    let quiznightRound = LocalDataStoreRetriever.getCurrentRoundInQuiznight(quiznightCode);
+    let topListTeams = quiznightRound.teamStatistics.sort((a, b) => {
+      return b.correctAnswersAmount - a.correctAnswersAmount;
+    })
+
+    console.log(topListTeams);
+    for(let i = 0; i < topListTeams.length; i++) {
+      let team = LocalDataStoreRetriever.getTeamOfQuiznightByName(quiznightCode, topListTeams[i].team);
+      console.log(team);
+      if(i == 0) {
+        team.roundPoints = 4;
+      }
+      else if(i == 1) {
+        team.roundPoints = 2;
+      }
+      else if(i == 2) {
+        team.roundPoints = 1;
+      } else {
+        team.roundPoints = 0.1;
+      }
+    }
+    console.log('-- IN updateRoundPointsOfAllTeams --');
+    console.log(JSON.stringify(LocalDataStore.data.quizNights));
+  },
+  removeQuiznightByCode(quiznightCode) {
+    let quiznights = LocalDataStoreRetriever.getAllQuiznights(quiznightCode);
+    for(let i = 0; i < quiznights.length; i++) {
+      if(quiznights[i].quiznight == quiznightCode) {
+        quiznights.splice(i, 1);
+      }
+    }
+  }
 };
 
 export default LocalDataStoreHandler;

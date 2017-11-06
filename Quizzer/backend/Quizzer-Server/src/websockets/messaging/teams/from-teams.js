@@ -5,6 +5,7 @@ import QuizmasterMessageSender from '../quizmaster/to-quizmaster';
 import Quiznight from '../../../models/Quiznight';
 import ROOM_NAMES from '../../constants/rooms';
 import ScoreboardMessageSender from '../scoreboard/to-scoreboard';
+import TeamMessageSender from '../teams/to-teams';
 import LocalDataStoreHandler from '../../data-stores/local';
 
 export default (socket, quiznightNamespace) => {
@@ -27,6 +28,12 @@ export default (socket, quiznightNamespace) => {
             teamName: message.teamName,
             socketId: socket.id
           });
+
+        TeamMessageSender
+          .toNamespace(quiznightNamespace)
+          .usingSocket(socket)
+          .sendMessageToSocketViaId(socket.id, MESSAGE_TYPES.PENDING, 'Welcome to the quiznight!, waiting for approval of quizmaster..');
+
         socket.join(ROOM_NAMES.TEAMS);
       });
   });
